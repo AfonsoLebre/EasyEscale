@@ -1,0 +1,124 @@
+﻿<Window x:Class="EasyEscale.PaginaEscalasGuardadas"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EasyEscale"
+        mc:Ignorable="d"
+        Title="PaginaEscalasGuardadas" Height="450" Width="800">
+    <Grid>
+        <StackPanel  Height="30" VerticalAlignment="Top" Orientation="Horizontal">
+            <Menu Margin="0,0,0,0" Background="Transparent">
+                <MenuItem Header="inicio">
+
+                    <MenuItem Name="Ini" Header="Inicio" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="Professor" Header="Professores" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="Horario" Header="Horario" Click="IR"/>
+                </MenuItem>
+
+                <MenuItem Header="Gerar ">
+                    <MenuItem Name="Exames" Header="Escalas Exames" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="Epoca" Header=" Escalas Epoca Especial" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="Reuniao" Header="Escalas Reuniões" Click="IR"/>
+                    <MenuItem Name="Pdf" Header="pdf" Click="IR"/>
+                    <MenuItem Name="Graf" Header="Gráficos" Click="IR"/>
+                </MenuItem>
+                <MenuItem Name="EscalasGuarda" Header="Escalas guardadas" Click="IR">
+
+
+                </MenuItem>
+                <MenuItem Header="Adicionar">
+                    <MenuItem Name="AddProf" Header="Professor" Click="IR" />
+                    <Separator/>
+                    <MenuItem Name="AddTurma" Header="Turma" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
+
+                </MenuItem>
+            </Menu>
+        </StackPanel>
+        <StackPanel  Width="200" HorizontalAlignment="Left" Margin="0,-150,70,0" Height="100" >
+            <Label Content ="Selecione o Tipo" HorizontalContentAlignment="Center"/>
+            <ComboBox Name="cbP" SelectionChanged="cbP_SelectionChanged" >
+                <ComboBoxItem Content="Exames" ></ComboBoxItem>
+                <ComboBoxItem Content="Epocas Especias" ></ComboBoxItem>
+                <ComboBoxItem Content="Reuniões" ></ComboBoxItem>
+            </ComboBox>
+            
+            
+            
+            
+        </StackPanel>
+        <StackPanel x:Name="st1" Width="200" HorizontalAlignment="Left" Margin="0,0,70,0" Height="100" Visibility="Collapsed" >
+            <Label Name="lbE" HorizontalContentAlignment="Center"/>
+            <ComboBox Name="cbE" SelectionChanged="cbP_SelectionChanged2" >
+                <ComboBoxItem Content="ex1" ></ComboBoxItem>
+                <ComboBoxItem Content="ex2 Especias" ></ComboBoxItem>
+                <ComboBoxItem Content="ex3" ></ComboBoxItem>
+            </ComboBox>
+
+
+
+
+        </StackPanel>
+        <StackPanel Name="Info1" Height="30" Width="500" HorizontalAlignment="Right" Margin="0,-180,0,0" Orientation="Horizontal" Visibility="Collapsed" >
+            <Label Content="Dia:" FontSize="16" />
+            <Label Content="Terça Feira" FontSize="16" FontWeight="DemiBold"/>
+            <Label Content="Data:" FontSize="16" />
+            <Label Content="17/06/2025" FontSize="16" FontWeight="DemiBold"/>
+            <Label Content="Hora:" FontSize="16" />
+            <Label Content="08:45" FontSize="16" FontWeight="DemiBold"/>
+        </StackPanel>
+        <StackPanel Name="Info2" Height="35" Width="500" HorizontalAlignment="Right" Margin="0,-130,0,0" Orientation="Horizontal" Visibility="Collapsed" >
+            <Label Content="Prova de:" FontSize="16" />
+            <Label Content="Português" FontSize="16" FontWeight="DemiBold"/>
+            <Label Content="Código:" FontSize="16" />
+            <Label Content="639" FontSize="16" FontWeight="DemiBold"/>
+            <Label Content="Duração:" FontSize="16" />
+            <Label Content="120+30 min" FontSize="16" FontWeight="DemiBold"/>
+        </StackPanel>
+        <StackPanel Name="Info3" Height="30" Width="500" HorizontalAlignment="Right" Margin="0,-180,0,0" Orientation="Horizontal" Visibility="Collapsed" >
+            <Label Content="Dia:" FontSize="16" />
+            <Label Content="Terça Feira" FontSize="16" FontWeight="DemiBold"/>
+            <Label Content="Data:" FontSize="16" />
+            <Label Content="17/06/2025" FontSize="16" FontWeight="DemiBold"/>
+            <Label Content="Hora:" FontSize="16" />
+            <Label Content="08:45" FontSize="16" FontWeight="DemiBold"/>
+        </StackPanel>
+        <StackPanel Name="Info4" Height="35" Width="500" HorizontalAlignment="Right" Margin="0,-130,0,0" Orientation="Horizontal" Visibility="Collapsed" >
+            <Label Content="Turma:" FontSize="16" />
+            <Label Content="3E" FontSize="16" FontWeight="DemiBold"/>
+            <Label Content="Duração:" FontSize="16" />
+            <Label Content="60 min" FontSize="16" FontWeight="DemiBold"/>
+        </StackPanel>
+        <Rectangle Name="quadrado" Visibility="Collapsed"
+Width="1"
+Fill="Gray"
+Margin="0,200,0,0"
+        Height="400"/>
+        <Label Name="lb1" Content="Vigilantes Efetivos" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Margin="60,-25,0,0" FontSize="20" Visibility="Collapsed"/>
+        <DataGrid Name="DG1" ItemsSource="{Binding}" AutoGenerateColumns="False" Width="300" Height="200" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="5" Visibility="Collapsed" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nome Professor"  Binding="{Binding FirstName}"/>
+                <DataGridTextColumn Header="NºProcesso" Binding="{Binding LastName}" />
+
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label Name="lb2" Content="Vigilantes Suplentes" VerticalAlignment="Center" Width="250" HorizontalAlignment="Right" Margin="-60,-25,40,0" FontSize="20" Visibility="Collapsed"/>
+        <DataGrid Name="DG2" ItemsSource="{Binding}" AutoGenerateColumns="False" Width="300" Height="200" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="5" Visibility="Collapsed" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nome Professor" />
+                <DataGridTextColumn Header="NºProcesso"  />
+
+
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

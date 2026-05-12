@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Imagem\unnamed.jpg" />
+    <None Remove="Imagem\WhatsApp Image 2026-01-07 at 15.07.44.jpeg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="9.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Imagem\unnamed.jpg" />
+    <Resource Include="Imagem\WhatsApp Image 2026-01-07 at 15.07.44.jpeg" />
+  </ItemGroup>
+
+</Project>

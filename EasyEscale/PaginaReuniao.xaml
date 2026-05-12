@@ -1,0 +1,81 @@
+﻿<Window x:Class="EasyEscale.PaginaReuniao"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EasyEscale"
+        mc:Ignorable="d"
+        Title="PaginaReuniao" Height="450" Width="800">
+    <Grid>
+        <StackPanel  Height="30" VerticalAlignment="Top" Orientation="Horizontal">
+            <Menu Margin="0,0,0,0" Background="Transparent">
+                <MenuItem Header="inicio">
+
+                    <MenuItem Name="Ini" Header="Inicio" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="Professor" Header="Professores" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="Horario" Header="Horario" Click="IR"/>
+                </MenuItem>
+
+                <MenuItem Header="Gerar ">
+                    <MenuItem Name="Exames" Header="Escalas Exames" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="Epoca" Header=" Escalas Epoca Especial" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="Reuniao" Header="Escalas Reuniões" Click="IR"/>
+                    <MenuItem Name="Pdf" Header="pdf" Click="IR"/>
+                    <MenuItem Name="Graf" Header="Gráficos" Click="IR"/>
+                </MenuItem>
+                <MenuItem Name="EscalasGuarda" Header="Escalas guardadas" Click="IR">
+
+
+                </MenuItem>
+                <MenuItem Header="Adicionar">
+                    <MenuItem Name="AddProf" Header="Professor" Click="IR" />
+                    <Separator/>
+                    <MenuItem Name="AddTurma" Header="Turma" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
+
+                </MenuItem>
+            </Menu>
+        </StackPanel>
+        <StackPanel  Width="200" HorizontalAlignment="Left" Margin="0,-150,70,0" Height="100" >
+            <Label Content ="Selecionar Reunião" HorizontalContentAlignment="Center"/>
+            <ComboBox Name="cbP" SelectionChanged="cbP_SelectionChanged" >
+                <ComboBoxItem Content="Reunião1" ></ComboBoxItem>
+                <ComboBoxItem Content="Reunião2" ></ComboBoxItem>
+            </ComboBox>
+            <Button Name="btn1" Content="Gerar Escala" Click="gerar" Margin="0,10,0,0" Visibility="Collapsed" />
+        </StackPanel>
+        <StackPanel Name="Info1" Height="30" Width="500" HorizontalAlignment="Right" Margin="0,-180,0,0" Orientation="Horizontal" Visibility="Collapsed" >
+            <Label Content="Dia:" FontSize="16" />
+            <Label Content="Terça Feira" FontSize="16" FontWeight="DemiBold"/>
+            <Label Content="Data:" FontSize="16" />
+            <Label Content="17/06/2025" FontSize="16" FontWeight="DemiBold"/>
+            <Label Content="Hora:" FontSize="16" />
+            <Label Content="08:45" FontSize="16" FontWeight="DemiBold"/>
+        </StackPanel>
+        <StackPanel Name="Info2" Height="35" Width="500" HorizontalAlignment="Right" Margin="0,-130,0,0" Orientation="Horizontal" Visibility="Collapsed" >
+            <Label Content="Turma:" FontSize="16" />
+            <Label Content="3E" FontSize="16" FontWeight="DemiBold"/>
+            <Label Content="Duração:" FontSize="16" />
+            <Label Content="60 min" FontSize="16" FontWeight="DemiBold"/>
+        </StackPanel>
+
+       
+        <Label Name="lb1" Content="Professores Convocados" VerticalAlignment="Center" Width="300" HorizontalAlignment="Center" Margin="0,-25,0,0" FontSize="20" Visibility="Collapsed"/>
+        <DataGrid Name="DG1" ItemsSource="{Binding}" AutoGenerateColumns="False" Width="300" Height="200" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="5" Visibility="Collapsed" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nome Professor"  Binding="{Binding FirstName}"/>
+                <DataGridTextColumn Header="NºProcesso" Binding="{Binding LastName}" />
+
+
+            </DataGrid.Columns>
+        </DataGrid>
+       
+    </Grid>
+</Window>
