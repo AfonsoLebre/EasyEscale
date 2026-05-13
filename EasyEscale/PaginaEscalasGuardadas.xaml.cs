@@ -108,32 +108,41 @@ namespace EasyEscale
             }
 
         }
-
+        Dictionary<string, string> Nomes = new Dictionary<string, string>();
+        Exame este = new Exame();
+        List<Exame> exames = new List<Exame>();
         private void cbP_SelectionChanged2(object sender, SelectionChangedEventArgs e)
         {
-            if(lbE.Content == "Escolha o Exame" || lbE.Content == "Escolha a Epoca especial")
-            { 
-            Info1.Visibility = Visibility.Visible;
-            Info2.Visibility = Visibility.Visible;
-            lb1.Visibility = Visibility.Visible;
-            lb2.Visibility = Visibility.Visible;
-            DG1.Visibility = Visibility.Visible;
-            DG2.Visibility = Visibility.Visible;
-
-                st1.Visibility = Visibility.Collapsed;
-
-            }
-            else
+            if (cbE.SelectedIndex >= 0 && (lbE.Content.ToString() == "Escolha o Exame" || lbE.Content.ToString() == "Escolha a Epoca especial"))
             {
-                Info3.Visibility = Visibility.Visible;
-                Info4.Visibility = Visibility.Visible;
+                int idexa = cbE.SelectedIndex;
+                este = exames[idexa];
+
+                if (este != null)
+                {
+                    Dados.Text = "  Data:  " + este.Data.ToShortDateString() + " Dia da Semana: " + metodos.DiaSenana(este.Data.DayOfWeek) + "   " + "  Hora de Inicio: " + este.HoraIni + "  Hora Final: " + este.HoraFini + "\n" + "  Diciplina: " + este.Designacao + "  Codigo: " + este.CodExa;
+
+                    Nomes = metodos.BuscaGuardados(este.Idxa);
+
+                    var listaProfessores = Nomes.ToList();
+                    DG1.ItemsSource = listaProfessores.Take(3);
+                    DG2.ItemsSource = listaProfessores.Skip(3).Take(2);
+                    Info1.Visibility = Visibility.Visible;
+                    lb1.Visibility = Visibility.Visible;
+                    lb2.Visibility = Visibility.Visible;
+                    DG1.Visibility = Visibility.Visible;
+                    DG2.Visibility = Visibility.Visible;
+                    st1.Visibility = Visibility.Collapsed;
+                }
+            }
+            else if (cbE.SelectedIndex >= 0)
+            {
                 lb2.Visibility = Visibility.Visible;
                 DG2.Visibility = Visibility.Visible;
                 lb2.Content = "Professores Convocados";
             }
-
         }
-
+       
         private void cbP_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbP.SelectedItem is ComboBoxItem item)
@@ -142,43 +151,66 @@ namespace EasyEscale
 
                 if (valor == "Exames")
                 {
+
+                     exames = Exame.BuscarJ();
+
+
+                    cbE.ItemsSource = exames;
+
+                    cbE.DisplayMemberPath = "Juncao";
+                    cbE.SelectedValuePath = "IdExa";
+
+
                     st1.Visibility = Visibility.Visible;
                     lbE.Content = "Escolha o Exame";
                     Info1.Visibility = Visibility.Collapsed;
-                    Info2.Visibility = Visibility.Collapsed;
+                   
                     lb1.Visibility = Visibility.Collapsed;
                     lb2.Visibility = Visibility.Collapsed;
                     DG1.Visibility = Visibility.Collapsed;
                     DG2.Visibility = Visibility.Collapsed;
-                    Info3.Visibility = Visibility.Collapsed;
-                    Info4.Visibility = Visibility.Collapsed;
+                  
                 }
                 else if (valor == "Epocas Especias") 
                 {
+                     exames = Exame.BuscarSE();
+
+
+                    cbE.ItemsSource = exames;
+
+                    cbE.DisplayMemberPath = "Juncao";
+                    cbE.SelectedValuePath = "IdExa";
+
                     st1.Visibility = Visibility.Visible;
                     lbE.Content = "Escolha a Epoca especial";
                     Info1.Visibility = Visibility.Collapsed;
-                    Info2.Visibility = Visibility.Collapsed;
+                    
                     lb1.Visibility = Visibility.Collapsed;
                     lb2.Visibility = Visibility.Collapsed;
                     DG1.Visibility = Visibility.Collapsed;
                     DG2.Visibility = Visibility.Collapsed;
-                    Info3.Visibility = Visibility.Collapsed;
-                    Info4.Visibility = Visibility.Collapsed;
+                    
 
                 }
                 else
                 {
+                     exames = Exame.BuscarJ();
+
+
+                    cbE.ItemsSource = exames;
+
+                    cbE.DisplayMemberPath = "Juncao";
+                    cbE.SelectedValuePath = "IdExa";
+
                     st1.Visibility = Visibility.Visible;
                     lbE.Content = "Escolha o Reunião";
                     Info1.Visibility = Visibility.Collapsed;
-                    Info2.Visibility = Visibility.Collapsed;
+                   
                     lb1.Visibility = Visibility.Collapsed;
                     lb2.Visibility = Visibility.Collapsed;
                     DG1.Visibility = Visibility.Collapsed;
                     DG2.Visibility = Visibility.Collapsed;
-                    Info3.Visibility = Visibility.Collapsed;
-                    Info4.Visibility = Visibility.Collapsed;
+                    
                 }
             }
         }

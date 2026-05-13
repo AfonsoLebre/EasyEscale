@@ -158,7 +158,7 @@ namespace EasyEscale
 
             Exame este = exames[idexa];
 
-            TextDados.Text = "  Data:  " + este.Data.ToShortDateString() + "Dia da Semana: "+metodos.DiaSenana(este.Data.DayOfWeek)+ "   " + "  Hora de Inicio: " + este.HoraIni + "  Hora Final: " + este.HoraFini +"\n" + "  Diciplina: " + este.Designacao + "  Codigo: " + este.CodExa       ;
+            TextDados.Text = "  Data:  " + este.Data.ToShortDateString() + " Dia da Semana: "+metodos.DiaSenana(este.Data.DayOfWeek)+ "   " + "  Hora de Inicio: " + este.HoraIni + "  Hora Final: " + este.HoraFini +"\n" + "  Diciplina: " + este.Designacao + "  Codigo: " + este.CodExa       ;
 
             
 

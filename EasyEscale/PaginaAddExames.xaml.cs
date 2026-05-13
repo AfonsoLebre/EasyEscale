@@ -157,7 +157,16 @@ namespace EasyEscale
                 string valorF = (CBT.SelectedItem as ComboBoxItem).Content.ToString();
                 int id = (int)CBD.SelectedValue;
                 int Cod = int.Parse(TxtCod.Text);
-             string sucesso = metodos.AddExame(DP.SelectedDate.Value,valorHI,valorF,id,Cod);
+                int es = 0;
+
+                if(check.IsChecked == true)
+                {
+                    es = 1;
+                }
+
+
+
+                string sucesso = metodos.AddExame(DP.SelectedDate.Value,valorHI,valorF,id,Cod,es);
 
 
                 MessageBox.Show(sucesso);

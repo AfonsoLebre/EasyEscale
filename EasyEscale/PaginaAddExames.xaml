@@ -138,6 +138,10 @@
                                     <ColumnDefinition Width="20"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="Epoca Especial" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
+                                    <CheckBox Name="check" Height="40" FontSize="16" VerticalContentAlignment="Center" Padding="5,0"/>
+                                </StackPanel>
                                 <StackPanel Grid.Column="0">
                                     <TextBlock Text="Disciplina" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
                                     <ComboBox Name="CBD" Height="40" FontSize="16" VerticalContentAlignment="Center"/>
@@ -146,6 +150,7 @@
                                     <TextBlock Text="Código do Exame" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
                                     <TextBox Name="TxtCod" Height="40" FontSize="16" VerticalContentAlignment="Center" Padding="5,0"/>
                                 </StackPanel>
+                              
                             </Grid>
                         </StackPanel>
 

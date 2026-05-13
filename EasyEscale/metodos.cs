@@ -23,7 +23,7 @@ namespace EasyEscale
         public static DataTable Disciplinas()
         {
             DataTable dt = new DataTable();
-            string con = "server=localhost;user=root;password=rootroot;database=easyescale";
+            string con = "server=localhost;user=root;password=root;database=easyescale";
             List<string> valor = new List<string>();
             using (MySqlConnection conx = new MySqlConnection(con))
             {
@@ -57,29 +57,40 @@ namespace EasyEscale
 
         }
 
-        public static string AddExame(DateTime a,string horai,string horaf,int idD, int CoDE)
+        public static string AddExame(DateTime a,string horai,string horaf,int idD, int CoDE,int es)
         {
             string sucesso = "";
-            string con = "server=localhost;user=root;password=rootroot;database=easyescale";
-            MySqlConnection conx = new MySqlConnection(con);
-            string query = "START TRANSACTION;\r\n\r\nInsert into exames(exames.`Data`,HoraInicial,HoraFinal,IdDisciplina,CodExame) values(@Data,@HoraIni,@HoraFini,@Dis,@Cod);\r\nCOMMIT;";
-            MySqlCommand cmd = new MySqlCommand(query, conx);
-            cmd.Parameters.AddWithValue("@Data", a);
-            cmd.Parameters.AddWithValue("@HoraIni", horai);
-            cmd.Parameters.AddWithValue("@HoraFini", horaf);
-            cmd.Parameters.AddWithValue("@Dis", idD);
-            cmd.Parameters.AddWithValue("@Cod", CoDE);
-
-            try
+            string con = "server=localhost;user=root;password=root;database=easyescale";
+            using (MySqlConnection conx = new MySqlConnection(con))
             {
                 conx.Open();
-                cmd.ExecuteNonQuery();
-                sucesso = "Exame Adicinado com Sucesso";
+                MySqlTransaction tran = conx.BeginTransaction();
+                string query = "Insert into exames(exames.`Data`,HoraInicial,HoraFinal,IdDisciplina,CodExame,ES) values(@Data,@HoraIni,@HoraFini,@Dis,@Cod,@ES);";
+                MySqlCommand cmd = new MySqlCommand(query, conx);
+                cmd.Parameters.AddWithValue("@Data", a);
+                cmd.Parameters.AddWithValue("@HoraIni", horai);
+                cmd.Parameters.AddWithValue("@HoraFini", horaf);
+                cmd.Parameters.AddWithValue("@Dis", idD);
+                cmd.Parameters.AddWithValue("@Cod", CoDE);
+                cmd.Parameters.AddWithValue("@ES", es);
+
+                try
+                {
+                  
+                    cmd.ExecuteNonQuery();
+                    sucesso = "Exame Adicinado com Sucesso";
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    sucesso = ex.Message;
+                    tran.Rollback();
+                }
+
+
+
             }
-            catch (Exception ex)
-            { sucesso = ex.Message;
-            
-            }
+               
 
             
 
@@ -517,10 +528,15 @@ namespace EasyEscale
                     con.Open();
                     MySqlTransaction tran = con.BeginTransaction();
 
-                    string query = "Insert into vigiasexames(IdProfessor, IdExame, Estado) values(@T, @P, @E);";
-                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    // LIMPAR ESCALA ANTIGA ANTES DE GUARDAR A NOVA
+                    string queryDel = "DELETE FROM vigiasexames WHERE IdExame = @P;";
+                    MySqlCommand cmdDel = new MySqlCommand(queryDel, con, tran);
+                    cmdDel.Parameters.AddWithValue("@P", z);
+                    cmdDel.ExecuteNonQuery();
 
-                    cmd.Transaction = tran;
+                    string query = "Insert into vigiasexames(IdProfessor, IdExame, Estado) values(@T, @P, @E);";
+                    MySqlCommand cmd = new MySqlCommand(query, con, tran);
+
                     cmd.Parameters.AddWithValue("@P", z);
                     cmd.Parameters.AddWithValue("@T", 0);
                     cmd.Parameters.AddWithValue("@E", "efetivo");
@@ -550,15 +566,36 @@ namespace EasyEscale
             catch (Exception A)
             {
                 return "Erro a Guardar Escala: " + A.Message;
-                throw;
             }
-           
-
-
-
         }
-       
 
+        public static Dictionary<string, string> BuscaGuardados(int id)
+        {
+            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            Dictionary<string, string> Escala = new Dictionary<string, string>();
+            using (MySqlConnection con = new MySqlConnection(conx))
+            {
+                con.Open();
+                string query = "SELECT DISTINCT professor.Nome, professor.NProcesso, vigiasexames.Estado FROM professor INNER JOIN vigiasexames ON professor.IdProfessor = vigiasexames.IdProfessor WHERE vigiasexames.IdExame = @id ORDER BY vigiasexames.Estado ASC";
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@id", id);
+                using (MySqlDataReader leitor = cmd.ExecuteReader())
+                {
+                    while (leitor.Read())
+                    {
+                        string nProcesso = leitor["NProcesso"].ToString();
+                        string nome = leitor["Nome"].ToString();
+                        
+                        // Evita o erro de chave duplicada caso a BD tenha dados repetidos
+                        if (!Escala.ContainsKey(nProcesso))
+                        {
+                            Escala.Add(nProcesso, nome);
+                        }
+                    }
+                }
+                return Escala;
+            }
+        }
        
     }
 }

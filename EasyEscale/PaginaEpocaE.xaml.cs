@@ -23,6 +23,14 @@ namespace EasyEscale
         {
             x.Close();
             InitializeComponent();
+
+
+            List<Exame> exames = Exame.BuscarSE();
+
+            cbP.ItemsSource = exames;
+
+            cbP.DisplayMemberPath = "Juncao";
+            cbP.SelectedValuePath = "IdExa";
         }
 
         private void IR(object sender, RoutedEventArgs e)
@@ -108,35 +116,57 @@ namespace EasyEscale
             }
 
         }
+        Dictionary<int, string> Nomes = new Dictionary<int, string>();
+        List<Exame> exames = new List<Exame>();
         private void gerar(object sender, RoutedEventArgs e)
         {
+            exames = Exame.Buscar();
+
+            int idexa = cbP.SelectedIndex;
+
+            Nomes = metodos.GeradorEsCalasExames(exames[idexa]);
+
+
+
+
+
+            DG1.ItemsSource = Nomes.Take(3);
+            DG2.ItemsSource = Nomes.Skip(3).Take(2);
             DG2.Visibility = Visibility.Visible;
             DG1.Visibility = Visibility.Visible;
             quadrado.Visibility = Visibility.Visible;
             lb1.Visibility = Visibility.Visible;
             lb2.Visibility = Visibility.Visible;
+            btn2.Visibility = Visibility.Visible;
         }
 
         private void cbP_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbP.SelectedItem is ComboBoxItem item)
-            {
-                string valor = item.Content.ToString();
 
-                if (valor == "Exame1")
-                {
-                    btn1.Visibility = Visibility.Visible;
-                    Info1.Visibility = Visibility.Visible;
-                    Info2.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    btn1.Visibility = Visibility.Collapsed;
-                    Info1.Visibility = Visibility.Collapsed;
-                    Info2.Visibility = Visibility.Collapsed;
+            exames = Exame.Buscar();
 
-                }
-            }
+            int idexa = cbP.SelectedIndex;
+
+            Exame este = exames[idexa];
+
+            TextDados.Text = "  Data:  " + este.Data.ToShortDateString() + "Dia da Semana: " + metodos.DiaSenana(este.Data.DayOfWeek) + "   " + "  Hora de Inicio: " + este.HoraIni + "  Hora Final: " + este.HoraFini + "\n" + "  Diciplina: " + este.Designacao + "  Codigo: " + este.CodExa;
+
+
+
+            Info1.Visibility = Visibility.Visible;
+
+            btn1.Visibility = Visibility.Visible;
+        }
+
+        private void Guardar(object sender, RoutedEventArgs e)
+        {
+            exames = Exame.Buscar();
+
+            int idexa = cbP.SelectedIndex;
+
+            MessageBox.Show(metodos.GuardaEscala(Nomes, exames[idexa].Idxa));
+
+
         }
     }
 }
