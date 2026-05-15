@@ -1,0 +1,100 @@
+-- =========================================================================
+-- SCRIPT MEGA DADOS V3 - LIMPEZA TOTAL E RECARGA MASSIVA
+-- Projeto: EasyEscale
+-- Este script apaga os dados antigos para garantir que não há erros de IDs.
+-- =========================================================================
+
+-- 1. LIMPEZA TOTAL (POR ORDEM DE DEPENDÊNCIA)
+DELETE FROM vigiasexames;
+DELETE FROM reuniao;
+DELETE FROM exames;
+DELETE FROM aulas;
+DELETE FROM turmasprofessor;
+DELETE FROM professor;
+DELETE FROM turmas;
+
+-- 2. INSERIR 12 TURMAS (IDs 1 a 12)
+INSERT INTO turmas (IdTurma, Ano, Letra, AnoLetivo) VALUES 
+(1, 10, 'A', '2025/2026'), (2, 10, 'B', '2025/2026'), (3, 10, 'C', '2025/2026'),
+(4, 11, 'A', '2025/2026'), (5, 11, 'B', '2025/2026'), (6, 11, 'C', '2025/2026'),
+(7, 12, 'A', '2025/2026'), (8, 12, 'B', '2025/2026'), (9, 12, 'C', '2025/2026'),
+(10, 7, 'A', '2025/2026'), (11, 8, 'A', '2025/2026'), (12, 9, 'A', '2025/2026');
+
+-- 3. INSERIR 20 PROFESSORES (IDs 1 a 20)
+INSERT INTO professor (IdProfessor, Nome, Email, NProcesso) VALUES 
+(1, 'Carlos Mendes', 'carlos@escola.pt', '11101'),
+(2, 'Ana Rita Silva', 'ana@escola.pt', '11102'),
+(3, 'Paulo Jorge', 'paulo@escola.pt', '11103'),
+(4, 'Ricardo Pereira', 'ricardo@escola.pt', '11104'),
+(5, 'Sofia Santos', 'sofia@escola.pt', '11105'),
+(6, 'Marta Oliveira', 'marta@escola.pt', '11106'),
+(7, 'Joao Ferreira', 'joao@escola.pt', '11107'),
+(8, 'Beatriz Costa', 'beatriz@escola.pt', '11108'),
+(9, 'Nuno Almeida', 'nuno@escola.pt', '11109'),
+(10, 'Luisa Martins', 'luisa@escola.pt', '11110'),
+(11, 'Tiago Rodrigues', 'tiago@escola.pt', '11111'),
+(12, 'Ines Ferreira', 'ines@escola.pt', '11112'),
+(13, 'Pedro Silva', 'pedro@escola.pt', '11113'),
+(14, 'Helena Gomes', 'helena@escola.pt', '11114'),
+(15, 'Jose Carvalho', 'jose@escola.pt', '11115'),
+(16, 'Maria Jose', 'maria@escola.pt', '11116'),
+(17, 'Antonio Braganca', 'antonio@escola.pt', '11117'),
+(18, 'Carla Filipa', 'carla@escola.pt', '11118'),
+(19, 'Rui Pedro', 'rui@escola.pt', '11119'),
+(20, 'Sonia Maria', 'sonia@escola.pt', '11120');
+
+-- 4. CONSELHOS DE TURMA (ASSOCIAR PROFESSORES ÀS TURMAS)
+INSERT INTO turmasprofessor (IdTurma, IdProfessor) VALUES 
+(1,1),(1,2),(1,3),(1,4),(1,5), -- 10A
+(2,6),(2,7),(2,8),(2,9),(2,10), -- 10B
+(3,11),(3,12),(3,13),(3,14),(3,15), -- 10C
+(4,16),(4,17),(4,18),(4,19),(4,20), -- 11A
+(5,1),(5,6),(5,11),(5,16),(5,2), -- 11B
+(6,3),(6,8),(6,13),(6,18),(6,4), -- 11C
+(7,5),(7,10),(7,15),(7,20),(7,7), -- 12A
+(8,9),(8,14),(8,19),(8,1),(8,11), -- 12B
+(9,2),(9,3),(9,4),(9,5),(9,6), -- 12C
+(10,7),(10,8),(10,9),(10,10),(10,11), -- 7A
+(11,12),(11,13),(11,14),(11,15),(11,16), -- 8A
+(12,17),(12,18),(12,19),(12,20),(12,1); -- 9A
+
+-- 5. ATRIBUIR AULAS (HORÁRIOS RESPEITANDO ENUM DE AULAS)
+-- ENUM Ini: '8:25','9:10','10:10','10:55','11:50','12:35','13:35','14:20','15:15','16:00','16:55','17:40'
+-- ENUM Fim: '9:10','9:55','10:55','11:40','12:35','13:20','14:20','15:05','16:00','16:45','17:40','18:25'
+
+INSERT INTO aulas (IdProfessor, HoraInicial, HoraFinal, Dia_Semana, IdDisciplina, IdTurma) VALUES 
+(1, '8:25', '9:10', 'Segunda-Feira', 1, 1),
+(2, '9:10', '9:55', 'Segunda-Feira', 2, 1),
+(3, '10:10', '10:55', 'Segunda-Feira', 3, 1),
+(1, '10:55', '11:40', 'Segunda-Feira', 1, 1),
+(4, '8:25', '9:10', 'Terça-Feira', 4, 1),
+(5, '10:10', '10:55', 'Terça-Feira', 5, 1),
+(6, '11:50', '12:35', 'Terça-Feira', 1, 2),
+(7, '13:35', '14:20', 'Quarta-Feira', 2, 2),
+(8, '14:20', '15:05', 'Quarta-Feira', 3, 2),
+(16, '8:25', '9:10', 'Segunda-Feira', 1, 4),
+(17, '9:10', '9:55', 'Segunda-Feira', 2, 4),
+(18, '10:10', '10:55', 'Segunda-Feira', 3, 4);
+
+-- 6. INSERIR 12 REUNIÕES (UMA PARA CADA TURMA - ENUM RIGOROSO)
+-- ENUM Ini: '8:00','9:00','10:00','11:00'
+-- ENUM Fim: '13:00','14:00','15:00','16:00'
+
+INSERT INTO reuniao (IdReuniao, HoraInicial, HoraFinal, `Data`, IdTurma, sala) VALUES 
+(1, '8:00', '13:00', '2025-06-16', 1, 101),
+(2, '9:00', '14:00', '2025-06-16', 2, 102),
+(3, '10:00', '15:00', '2025-06-16', 3, 103),
+(4, '11:00', '16:00', '2025-06-17', 4, 104),
+(5, '8:00', '13:00', '2025-06-17', 5, 105),
+(6, '9:00', '14:00', '2025-06-17', 6, 106),
+(7, '10:00', '15:00', '2025-06-18', 7, 107),
+(8, '11:00', '16:00', '2025-06-18', 8, 108),
+(9, '8:00', '13:00', '2025-06-18', 9, 109),
+(10, '9:00', '14:00', '2025-06-19', 10, 110),
+(11, '10:00', '15:00', '2025-06-19', 11, 111),
+(12, '11:00', '16:00', '2025-06-19', 12, 112);
+
+-- 7. INSERIR EXAMES DE TESTE (ENUM RIGOROSO)
+INSERT INTO exames (IdExame, HoraInicial, HoraFinal, `Data`, IdDisciplina, CodExame, ES) VALUES 
+(100, '9:00', '12:00', '2025-06-30', 1, 639, 0),
+(101, '13:00', '15:30', '2025-07-02', 2, 714, 0);

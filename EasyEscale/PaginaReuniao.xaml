@@ -85,8 +85,7 @@
                     <ComboBox Name="cbP"
                               Height="35"
                               SelectionChanged="cbP_SelectionChanged">
-                        <ComboBoxItem Content="Reunião1"/>
-                        <ComboBoxItem Content="Reunião2"/>
+                       
                     </ComboBox>
 
                     <Button Name="btn1"
@@ -111,14 +110,8 @@
                     <StackPanel Name="Info1"
                                 Orientation="Horizontal"
                                 Visibility="Collapsed">
-                        <TextBlock Text="Dia:" FontWeight="Bold" Margin="0,0,5,0" FontSize="16"/>
-                        <TextBlock Text="Terça Feira" Margin="0,0,20,0" FontSize="16"/>
-                        
-                        <TextBlock Text="Data:" FontWeight="Bold" Margin="0,0,5,0" FontSize="16"/>
-                        <TextBlock Text="17/06/2025" Margin="0,0,20,0" FontSize="16"/>
-                        
-                        <TextBlock Text="Hora:" FontWeight="Bold" Margin="0,0,5,0" FontSize="16"/>
-                        <TextBlock Text="08:45" FontSize="16"/>
+                        <TextBlock Name="txt" FontWeight="Bold" Margin="0,0,5,0" FontSize="16"/>
+                      
                     </StackPanel>
 
                     <StackPanel Name="Info2"
@@ -128,8 +121,7 @@
                         <TextBlock Text="Turma:" FontWeight="Bold" Margin="0,0,5,0" FontSize="16"/>
                         <TextBlock Text="3E" Margin="0,0,20,0" FontSize="16"/>
                         
-                        <TextBlock Text="Duração:" FontWeight="Bold" Margin="0,0,5,0" FontSize="16"/>
-                        <TextBlock Text="60 min" FontSize="16"/>
+                       
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -160,10 +152,10 @@
                               ItemsSource="{Binding}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Nome Professor" 
-                                                Binding="{Binding FirstName}" 
+                                                Binding="{Binding Value}" 
                                                 Width="*"/>
                             <DataGridTextColumn Header="Nº Processo" 
-                                                Binding="{Binding LastName}" 
+                                                Binding="{Binding Key}" 
                                                 Width="150"/>
                         </DataGrid.Columns>
                     </DataGrid>

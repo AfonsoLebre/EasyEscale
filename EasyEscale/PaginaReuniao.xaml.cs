@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Ocsp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,10 +21,20 @@ namespace EasyEscale
     /// </summary>
     public partial class PaginaReuniao : Window
     {
+        Dictionary<int, string> Nomes = new Dictionary<int, string>();
+        List<Reuniao> Reu = EasyEscale.Reuniao.Buscar();
         public PaginaReuniao(Window x)
         {
             x.Close();
             InitializeComponent();
+          
+
+
+
+            cbP.ItemsSource = Reu;
+
+            cbP.DisplayMemberPath = "juncao";
+            cbP.SelectedValuePath = "IdRe";
         }
         private void IR(object sender, RoutedEventArgs e)
         {
@@ -109,7 +121,16 @@ namespace EasyEscale
         }
         private void gerar(object sender, RoutedEventArgs e)
         {
-           
+
+            int idReuniao = cbP.SelectedIndex;
+            Reuniao este = Reu[idReuniao];
+            Nomes = metodos.GeradorEscalasReunioes(este);
+
+            List<KeyValuePair<int, string>> listaProfessores = Nomes.ToList();
+
+            MessageBox.Show("Professores encontrados para esta turma: " + Nomes.Count);
+            DG1.ItemsSource = listaProfessores;
+
             DG1.Visibility = Visibility.Visible;
             
             lb1.Visibility = Visibility.Visible;
@@ -118,25 +139,23 @@ namespace EasyEscale
 
         private void cbP_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbP.SelectedItem is ComboBoxItem item)
-            {
-                string valor = item.Content.ToString();
+            Reu = EasyEscale.Reuniao.Buscar();
+            int idReuniao = cbP.SelectedIndex;
+            Reuniao este = Reu[idReuniao];
 
-                if (valor == "Reunião1")
-                {
-                    btn1.Visibility = Visibility.Visible;
-                    Info1.Visibility = Visibility.Visible;
-                    Info2.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    btn1.Visibility = Visibility.Collapsed;
-                    Info1.Visibility = Visibility.Collapsed;
-                    Info2.Visibility = Visibility.Collapsed;
+            txt.Text = "  Data:  " + este.Data.ToShortDateString() + " Dia da Semana: " + metodos.DiaSenana(este.Data.DayOfWeek) + "   " + "  Hora de Inicio: " + este.HoraIni + "  Hora Final: " + este.HoraFini + "\n" + "  turma: " + este.Ano + este.Letra;
 
-                }
-            }
+
+          
+
+            btn1.Visibility = Visibility.Visible;
+            Info1 .Visibility = Visibility.Visible;
+            Info2.Visibility = Visibility.Visible;
+
+
+
         }
+        
     }
     
 }

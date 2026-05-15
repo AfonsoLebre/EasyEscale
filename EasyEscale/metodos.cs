@@ -492,14 +492,7 @@ namespace EasyEscale
                     }
 
 
-                    MySqlTransaction tran = con.BeginTransaction();
-                    
-                 string query2 = "Insert into vigiasexames(IdProfessor, IdExame) values(@T, @P);";
-                MySqlCommand cmd2 = new MySqlCommand(query2, con);
                    
-               
-                    
-                 tran.Commit();
 
 
                 }
@@ -516,8 +509,101 @@ namespace EasyEscale
             }
 
         }
-     
-        public static string GuardaEscala(Dictionary<int,string> x, int z)
+
+      
+
+
+        public static Dictionary<int, string> GeradorEscalasReunioes(Reuniao r)
+        {
+            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            Dictionary<int, string> ProfsEscolhidos = new Dictionary<int, string>();
+            List<Aula> aulas = new List<Aula>();
+
+            Dictionary<int, int> sobreposicoes = new Dictionary<int, int>();
+            Dictionary<int, string> professores = new Dictionary<int, string>();
+
+            using (MySqlConnection con = new MySqlConnection(conx))
+            {
+                con.Open();
+
+                string query = @"
+                    SELECT p.IdProfessor, p.Nome, p.NProcesso, p.Email, a.IdAula, a.IdDisciplina, a.IdTurma, a.HoraInicial, a.HoraFinal, a.Dia_Semana
+                    FROM professor p
+                    INNER JOIN turmasprofessor tp ON p.IdProfessor = tp.IdProfessor
+                    LEFT JOIN aulas a ON a.IdProfessor = p.IdProfessor
+                    WHERE tp.IdTurma = @IdTurma";
+
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@IdTurma", r.IdTurma);
+
+                using (MySqlDataReader leitor = cmd.ExecuteReader())
+                {
+                    while (leitor.Read())
+                    {
+                        int idProf = (int)leitor["IdProfessor"];
+                        string nome = leitor["Nome"].ToString();
+
+                        if (!professores.ContainsKey(idProf))
+                        {
+                            professores.Add(idProf, nome);
+                            sobreposicoes.Add(idProf, 0); 
+                        }
+
+                        if (leitor["IdAula"] != DBNull.Value)
+                        {
+                            int idaula = (int)leitor["IdAula"];
+                            int dis = (int)leitor["IdDisciplina"];
+                            int t = (int)leitor["IdTurma"];
+                            string hi = leitor["HoraInicial"].ToString();
+                            string hf = leitor["HoraFinal"].ToString();
+                            string ds = leitor["Dia_Semana"].ToString();
+
+                            aulas.Add(new Aula(idProf, leitor["NProcesso"].ToString(), nome, leitor["Email"].ToString(), idaula, dis, t, hi, hf, ds));
+                        }
+                    }
+                }
+
+                try
+                {
+                    TimeSpan HoraReuIni = TimeSpan.Parse(r.HoraIni);
+                    TimeSpan HoraReuFini = TimeSpan.Parse(r.HoraFini);
+
+                    Dictionary<int, int> pontos = new Dictionary<int, int>();
+                    foreach (var id in professores.Keys) pontos.Add(id, 0);
+
+                    foreach (Aula au in aulas)
+                    {
+                        if (au.DSemana == metodos.DiaSenana(r.Data.DayOfWeek))
+                        {
+                            if (TimeSpan.TryParse(au.HI, out TimeSpan HoraAulIni) && TimeSpan.TryParse(au.Hf, out TimeSpan HoraAulFini))
+                            {
+                                if (HoraReuIni < HoraAulFini && HoraReuFini > HoraAulIni)
+                                {
+                                    pontos[au.Idprof] += 9999;
+                                }
+                            }
+                        }
+                    }
+
+                    
+                    var ordenados = pontos.OrderBy(kv => kv.Value).Take(3).ToList();
+
+                    foreach (var kvp in ordenados)
+                    {
+                        ProfsEscolhidos.Add(kvp.Key, professores[kvp.Key]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ProfsEscolhidos.Clear();
+                    MessageBox.Show("Erro a Carregar Horas de Reunião: " + ex.Message);
+                }
+
+                return ProfsEscolhidos;
+            }
+        }
+
+        public static string GuardaEscala(Dictionary<int,string> x, int z, bool eReuniao = false)
         {
             string conx = "server=localhost;user=root;password=root;database=easyescale";
             int contador = 0;
@@ -528,7 +614,7 @@ namespace EasyEscale
                     con.Open();
                     MySqlTransaction tran = con.BeginTransaction();
 
-                    // LIMPAR ESCALA ANTIGA ANTES DE GUARDAR A NOVA
+                   
                     string queryDel = "DELETE FROM vigiasexames WHERE IdExame = @P;";
                     MySqlCommand cmdDel = new MySqlCommand(queryDel, con, tran);
                     cmdDel.Parameters.AddWithValue("@P", z);
@@ -543,13 +629,21 @@ namespace EasyEscale
                     foreach (int m in x.Keys)
                     {
                         contador++;
-                        if (contador <= 3)
+                        
+                        if (eReuniao)
                         {
                             cmd.Parameters["@E"].Value = "efetivo";
                         }
                         else
-                        { 
-                            cmd.Parameters["@E"].Value = "suplente";
+                        {
+                            if (contador <= 3)
+                            {
+                                cmd.Parameters["@E"].Value = "efetivo";
+                            }
+                            else
+                            { 
+                                cmd.Parameters["@E"].Value = "suplente";
+                            }
                         }
                         cmd.Parameters["@T"].Value = m;
                         cmd.ExecuteNonQuery();
@@ -586,7 +680,7 @@ namespace EasyEscale
                         string nProcesso = leitor["NProcesso"].ToString();
                         string nome = leitor["Nome"].ToString();
                         
-                        // Evita o erro de chave duplicada caso a BD tenha dados repetidos
+                       
                         if (!Escala.ContainsKey(nProcesso))
                         {
                             Escala.Add(nProcesso, nome);
