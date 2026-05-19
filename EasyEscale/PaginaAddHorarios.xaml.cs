@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace EasyEscale
 {
-    /// <summary>
-    /// Lógica interna para PaginaAddHorarios.xaml
-    /// </summary>
     public partial class PaginaAddHorarios : Window
     {
         public PaginaAddHorarios(Window x)
@@ -44,13 +41,10 @@ namespace EasyEscale
             CBD.DisplayMemberPath = "Designacao";
             CBD.SelectedValuePath = "IdDisciplina";
 
-
         }
 
         private void IR(object sender, RoutedEventArgs e)
         {
-
-           
 
             MainWindow a = new MainWindow();
             PaginaProfs b = new PaginaProfs(this);
@@ -68,7 +62,6 @@ namespace EasyEscale
             PaginaPDF pdf = new PaginaPDF(this);
 
             MenuItem x = (MenuItem)sender;
-            
 
             if (x.Name == "Professor")
             {
@@ -141,11 +134,10 @@ namespace EasyEscale
             this.Close();
         }
 
-       
         private void Add(object sender, RoutedEventArgs e)
         {
             int Idp = (int)CBP.SelectedValue;
-            
+
             string HI = (CBHI.SelectedItem as ComboBoxItem).Content.ToString();
 
             string Hf = (CBHF.SelectedItem as ComboBoxItem).Content.ToString();
@@ -156,9 +148,7 @@ namespace EasyEscale
 
             int IdT = (int)CBT.SelectedValue;
 
-
             MessageBox.Show(metodos.AddHora(Idp, HI, Hf, semana,IdD, IdT));
-
 
         }
     }

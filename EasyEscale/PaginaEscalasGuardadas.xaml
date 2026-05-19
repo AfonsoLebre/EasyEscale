@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyEscale"
         mc:Ignorable="d"
-        Title="PaginaEscalasGuardadas" 
-        Height="750" 
+        Title="PaginaEscalasGuardadas"
+        Height="750"
         Width="1000"
         WindowState="Maximized"
         Background="#F0F2F5">
@@ -17,7 +17,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Menu de Navegação -->
         <Border Grid.Row="0"
                 Background="White"
                 BorderBrush="#DDD"
@@ -60,14 +59,12 @@
             </Menu>
         </Border>
 
-        <!-- Conteúdo Principal -->
         <Grid Grid.Row="1" Margin="50">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Cartões do Topo: Filtros e Info -->
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="350"/>
@@ -75,7 +72,6 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Cartão 1: Seleção / Filtros -->
                 <Border Grid.Column="0"
                         Background="White"
                         CornerRadius="10"
@@ -102,7 +98,6 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Cartão 2: Informações do Evento -->
                 <Border Grid.Column="2"
                         Background="White"
                         CornerRadius="10"
@@ -116,15 +111,12 @@
 
                         <TextBlock Name="Dados" FontWeight="Bold" Margin="0,0,5,0" FontSize="16"/>
 
-                        <!-- Info Exames -->
                         <StackPanel Name="Info1" Orientation="Horizontal" Visibility="Collapsed" Margin="0,0,0,10">
-                            <!-- Aqui podes adicionar etiquetas individuais se quiseres separar os dados do TextBlock 'Dados' -->
                         </StackPanel>
                     </StackPanel>
                 </Border>
             </Grid>
 
-            <!-- Grelhas de Professores -->
             <Grid Grid.Row="1" Margin="0,30,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -132,7 +124,6 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Tabela Efetivos -->
                 <Border Grid.Column="0" Background="White" CornerRadius="10" Padding="15">
                     <StackPanel>
                         <Label Name="lb1"
@@ -159,10 +150,8 @@
                     </StackPanel>
                 </Border>
 
-                <!-- Divisória Visual -->
                 <Rectangle Name="quadrado" Grid.Column="1" Fill="#E0E0E0" Width="1" Margin="0,15" Visibility="Collapsed"/>
 
-                <!-- Tabela Suplentes -->
                 <Border Grid.Column="2" Background="White" CornerRadius="10" Padding="15">
                     <StackPanel>
                         <Label Name="lb2"

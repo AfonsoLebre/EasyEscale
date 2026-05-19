@@ -5,43 +5,135 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyEscale"
         mc:Ignorable="d"
-        Title="PaginaAddReunioes" Height="450" Width="800">
+        Title="EasyEscale - Adicionar Reuniões" Height="750" Width="1000"
+        WindowState="Maximized"
+        Background="#F0F2F5">
+
     <Grid>
-        <StackPanel  Height="30" VerticalAlignment="Top" Orientation="Horizontal">
-            <Menu Margin="0,0,0,0" Background="Transparent">
-                <MenuItem Header="inicio">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                    <MenuItem Name="Ini" Header="Inicio" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Professor" Header="Professores" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Horario" Header="Horario" Click="IR"/>
-                </MenuItem>
+        <Border Grid.Row="0" Background="White" BorderBrush="#DDD" BorderThickness="0,0,0,1">
+            <Grid>
+                <Menu Background="Transparent" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="18">
+                    <MenuItem Header="Início">
+                        <MenuItem Name="Ini" Header="Início" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Professor" Header="Professores" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Horario" Header="Horários" Click="IR"/>
+                    </MenuItem>
+                    <MenuItem Header="Gerar">
+                        <MenuItem Name="Exames" Header="Escalas Exames" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Epoca" Header="Escalas Época Especial" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Reuniao" Header="Escalas Reuniões" Click="IR"/>
+                        <MenuItem Name="Pdf" Header="Exportar PDF" Click="IR"/>
+                        <MenuItem Name="Graf" Header="Gráficos" Click="IR"/>
+                    </MenuItem>
+                    <MenuItem Name="EscalasGuarda" Header="Escalas Guardadas" Click="IR"/>
+                    <MenuItem Header="Adicionar">
+                        <MenuItem Name="AddProf" Header="Professor" Click="IR" />
+                        <Separator/>
+                        <MenuItem Name="AddTurma" Header="Turma" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
+                    </MenuItem>
+                </Menu>
 
-                <MenuItem Header="Gerar ">
-                    <MenuItem Name="Exames" Header="Escalas Exames" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Epoca" Header=" Escalas Epoca Especial" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Reuniao" Header="Escalas Reuniões" Click="IR"/>
-                    <MenuItem Name="Pdf" Header="pdf" Click="IR"/>
-                    <MenuItem Name="Graf" Header="Gráficos" Click="IR"/>
-                </MenuItem>
-                <MenuItem Name="EscalasGuarda" Header="Escalas guardadas" Click="IR">
+                <Button Content="✕" HorizontalAlignment="Right" Width="45" Background="Transparent" Foreground="#666" BorderThickness="0" FontSize="18" FontWeight="Bold" Cursor="Hand" Click="FecharJanela_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#E81123"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </Border>
 
+        <Grid Grid.Row="1">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="Agendar Nova Reunião"
+                           FontSize="32" FontWeight="Bold"
+                           Foreground="#2D3436" Margin="0,0,0,30"
+                           HorizontalAlignment="Center"/>
 
-                </MenuItem>
-                <MenuItem Header="Adicionar">
-                    <MenuItem Name="AddProf" Header="Professor" Click="IR" />
-                    <Separator/>
-                    <MenuItem Name="AddTurma" Header="Turma" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
+                <Border Background="White" CornerRadius="15" Padding="40" Width="650"
+                        BorderBrush="#D1D8E0" BorderThickness="1">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="25" Direction="270" Opacity="0.1" ShadowDepth="5"/>
+                    </Border.Effect>
 
-                </MenuItem>
-            </Menu>
-        </StackPanel>
+                    <StackPanel>
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Data" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
+                                <DatePicker Name="DP" Height="40" FontSize="16" VerticalContentAlignment="Center" Margin="0,0,0,15"/>
+
+                                <TextBlock Text="Hora de Início" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
+                                <ComboBox Name="CBI" Height="40" FontSize="16" VerticalContentAlignment="Center">
+                                    <ComboBoxItem Content="9:30"/>
+                                    <ComboBoxItem Content="11:00"/>
+                                    <ComboBoxItem Content="14:00"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Hora de Término" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
+                                <ComboBox Name="CBT" Height="40" FontSize="16" VerticalContentAlignment="Center" Margin="0,0,0,15">
+                                    <ComboBoxItem Content="10:30"/>
+                                    <ComboBoxItem Content="12:00"/>
+                                    <ComboBoxItem Content="16:00"/>
+                                </ComboBox>
+                            </StackPanel>
+                        </Grid>
+
+                        <Grid Margin="0,0,0,30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Turma" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
+                                <ComboBox Name="CBTurma" Height="40" FontSize="16" VerticalContentAlignment="Center"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="Sala / Local" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
+                                <TextBox Name="TxtSala" Height="40" FontSize="16" VerticalContentAlignment="Center" Padding="10,0"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <Button Click="Button_ClickADD" Content="ADICIONAR REUNIÃO"
+                                Height="55" Background="#27AE60" Foreground="White"
+                                FontSize="18" FontWeight="Bold" Cursor="Hand">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="8"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

@@ -16,9 +16,6 @@ using System.Windows.Shapes;
 
 namespace EasyEscale
 {
-    /// <summary>
-    /// Lógica interna para PaginaAddExames.xaml
-    /// </summary>
     public partial class PaginaAddExames : Window
     {
         public PaginaAddExames(Window x)
@@ -28,8 +25,6 @@ namespace EasyEscale
         }
 
         bool exame = false;
-
-
 
         private void IR(object sender, RoutedEventArgs e)
         {
@@ -49,7 +44,6 @@ namespace EasyEscale
             PaginaPDF pdf = new PaginaPDF(this);
 
             MenuItem x = (MenuItem)sender;
-
 
             if (x.Name == "Professor")
             {
@@ -127,7 +121,6 @@ namespace EasyEscale
                     CBD.ItemsSource = dtD.DefaultView;
                     CBD.DisplayMemberPath = "Designacao";
                     CBD.SelectedValuePath = "IdDisciplina";
-                    
 
                     Exa1.Visibility = Visibility.Visible;
                     Reuna.Visibility = Visibility.Collapsed;
@@ -135,7 +128,7 @@ namespace EasyEscale
                 else
                 {
                     exame = false;
-                   
+
                     Exa1.Visibility = Visibility.Collapsed;
                     Reuna.Visibility = Visibility.Visible;
                 }
@@ -144,14 +137,12 @@ namespace EasyEscale
 
         private void FecharJanela_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
-
-
 
         private void Button_ClickADD(object sender, RoutedEventArgs e)
         {
-            if (exame) 
+            if (exame)
             {
                 string valorHI =  (CBI.SelectedItem as ComboBoxItem).Content.ToString();
                 string valorF = (CBT.SelectedItem as ComboBoxItem).Content.ToString();
@@ -164,15 +155,10 @@ namespace EasyEscale
                     es = 1;
                 }
 
-
-
                 string sucesso = metodos.AddExame(DP.SelectedDate.Value,valorHI,valorF,id,Cod,es);
 
-
                 MessageBox.Show(sucesso);
-            
-            
-            
+
             }
         }
     }

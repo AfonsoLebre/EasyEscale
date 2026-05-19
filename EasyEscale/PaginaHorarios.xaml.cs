@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace EasyEscale
 {
-    /// <summary>
-    /// Lógica interna para PaginaHorarios.xaml
-    /// </summary>
     public partial class PaginaHorarios : Window
     {
         public PaginaHorarios( Window x)
@@ -24,7 +21,6 @@ namespace EasyEscale
             x.Close();
             InitializeComponent();
         }
-
 
         private void IR(object sender, RoutedEventArgs e)
         {
@@ -45,7 +41,6 @@ namespace EasyEscale
             PaginaPDF pdf = new PaginaPDF(this);
 
             MenuItem x = (MenuItem)sender;
-
 
             if (x.Name == "Professor")
             {
@@ -110,21 +105,18 @@ namespace EasyEscale
 
         }
 
+        private void FecharJanela_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         private void cbP_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbP.SelectedItem is ComboBoxItem item)
             {
-                string valor = item.Content.ToString();
-
-                if (valor == "Prof1")
-                {
-                    Horar.Visibility = Visibility.Visible;
-
-                }
-                else
-                {
-                   Horar.Visibility= Visibility.Collapsed;
-                }
+                ImageBorder.Visibility = Visibility.Visible;
+                Horar.Visibility = Visibility.Visible;
+                EmptyState.Visibility = Visibility.Collapsed;
             }
         }
     }

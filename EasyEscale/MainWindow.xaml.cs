@@ -11,25 +11,22 @@ using System.Windows.Shapes;
 
 namespace EasyEscale
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
-           
-            
-             
-           
+
             InitializeComponent();
         }
 
-
+        private void FecharJanela_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
 
         private void IR(object sender, RoutedEventArgs e)
         {
-            
+
             PaginaProfs b = new PaginaProfs(this);
             PaginaHorarios c = new PaginaHorarios(this);
             PaginaExames d = new PaginaExames(this);
@@ -43,28 +40,27 @@ namespace EasyEscale
             PaginaAddReunioes reu = new PaginaAddReunioes(this);
             PaginaGRAF graf = new PaginaGRAF(this);
             PaginaPDF pdf = new PaginaPDF(this);
-            
+
             MenuItem x = (MenuItem)sender;
-           
-            
+
              if(x.Name == "Professor")
             {
-                
+
                 b.Show();
             }
             else if(x.Name == "Horario")
             {
-                
+
                 c.Show();
             }
             else if (x.Name == "Exames")
             {
-                
+
                 d.Show();
             }
             else if( x.Name == "Epoca")
             {
-                
+
                 f.Show();
             }
             else if(x.Name == "Reuniao")
@@ -103,6 +99,6 @@ namespace EasyEscale
             {
                 graf.Show();
             }
-        } 
+        }
     }
 }

@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyEscale"
         mc:Ignorable="d"
-        Title="PaginaReuniao" 
-        Height="750" 
+        Title="PaginaReuniao"
+        Height="750"
         Width="1000"
         WindowState="Maximized"
         Background="#F0F2F5">
@@ -17,52 +17,52 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Menu de Navegação (Igual à PaginaExames) -->
-        <Border Grid.Row="0"
-                Background="White"
-                BorderBrush="#DDD"
-                BorderThickness="0,0,0,1">
+        <Border Grid.Row="0" Background="White" BorderBrush="#DDD" BorderThickness="0,0,0,1">
+            <Grid>
+                <Menu Background="Transparent" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="18">
+                    <MenuItem Header="Início">
+                        <MenuItem Name="Ini" Header="Início" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Professor" Header="Professores" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Horario" Header="Horários" Click="IR"/>
+                    </MenuItem>
+                    <MenuItem Header="Gerar">
+                        <MenuItem Name="Exames" Header="Escalas Exames" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Epoca" Header="Escalas Época Especial" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Reuniao" Header="Escalas Reuniões" Click="IR"/>
+                        <MenuItem Name="Pdf" Header="Exportar PDF" Click="IR"/>
+                        <MenuItem Name="Graf" Header="Gráficos" Click="IR"/>
+                    </MenuItem>
+                    <MenuItem Name="EscalasGuarda" Header="Escalas Guardadas" Click="IR"/>
+                    <MenuItem Header="Adicionar">
+                        <MenuItem Name="AddProf" Header="Professor" Click="IR" />
+                        <Separator/>
+                        <MenuItem Name="AddTurma" Header="Turma" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
+                    </MenuItem>
+                </Menu>
 
-            <Menu Background="Transparent"
-                  VerticalAlignment="Center"
-                  Margin="10,0,0,0"
-                  FontSize="18">
-
-                <MenuItem Header="inicio">
-                    <MenuItem Name="Ini" Header="Inicio" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Professor" Header="Professores" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Horario" Header="Horario" Click="IR"/>
-                </MenuItem>
-
-                <MenuItem Header="Gerar">
-                    <MenuItem Name="Exames" Header="Escalas Exames" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Epoca" Header="Escalas Epoca Especial" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Reuniao" Header="Escalas Reuniões" Click="IR"/>
-                    <MenuItem Name="Pdf" Header="pdf" Click="IR"/>
-                    <MenuItem Name="Graf" Header="Gráficos" Click="IR"/>
-                </MenuItem>
-
-                <MenuItem Name="EscalasGuarda"
-                          Header="Escalas guardadas"
-                          Click="IR"/>
-
-                <MenuItem Header="Adicionar">
-                    <MenuItem Name="AddProf" Header="Professor" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="AddTurma" Header="Turma" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
-                </MenuItem>
-            </Menu>
+                <Button Content="✕" HorizontalAlignment="Right" Width="45" Background="Transparent" Foreground="#666" BorderThickness="0" FontSize="18" FontWeight="Bold" Cursor="Hand" Click="FecharJanela_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#E81123"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
         </Border>
 
-        <!-- Conteúdo Principal -->
         <Grid Grid.Row="1" Margin="50">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -70,7 +70,6 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Cartão de Seleção -->
             <Border Background="White"
                     CornerRadius="10"
                     Padding="20"
@@ -85,7 +84,7 @@
                     <ComboBox Name="cbP"
                               Height="35"
                               SelectionChanged="cbP_SelectionChanged">
-                       
+
                     </ComboBox>
 
                     <Button Name="btn1"
@@ -100,7 +99,6 @@
                 </StackPanel>
             </Border>
 
-            <!-- Cartão de Informações -->
             <Border Grid.Row="1"
                     Background="White"
                     CornerRadius="10"
@@ -111,7 +109,7 @@
                                 Orientation="Horizontal"
                                 Visibility="Collapsed">
                         <TextBlock Name="txt" FontWeight="Bold" Margin="0,0,5,0" FontSize="16"/>
-                      
+
                     </StackPanel>
 
                     <StackPanel Name="Info2"
@@ -120,13 +118,11 @@
                                 Visibility="Collapsed">
                         <TextBlock Text="Turma:" FontWeight="Bold" Margin="0,0,5,0" FontSize="16"/>
                         <TextBlock Text="3E" Margin="0,0,20,0" FontSize="16"/>
-                        
-                       
+
                     </StackPanel>
                 </StackPanel>
             </Border>
 
-            <!-- Cartão da Tabela -->
             <Border Grid.Row="2"
                     Background="White"
                     CornerRadius="10"
@@ -151,14 +147,23 @@
                               GridLinesVisibility="None"
                               ItemsSource="{Binding}">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Nome Professor" 
-                                                Binding="{Binding Value}" 
+                            <DataGridTextColumn Header="Nome Professor"
+                                                Binding="{Binding Value}"
                                                 Width="*"/>
-                            <DataGridTextColumn Header="Nº Processo" 
-                                                Binding="{Binding Key}" 
+                            <DataGridTextColumn Header="Nº Processo"
+                                                Binding="{Binding Key}"
                                                 Width="150"/>
                         </DataGrid.Columns>
                     </DataGrid>
+                    <Button Name="btnguarda"
+          Content="Gerar Escala"
+          Click="Guarda"
+          Margin="0,15,0,0"
+          Height="40"
+          Background="#27AE60"
+          Foreground="White"
+          FontWeight="Bold"
+          Visibility="Collapsed"/>
                 </StackPanel>
             </Border>
         </Grid>

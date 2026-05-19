@@ -14,17 +14,20 @@ using System.Windows.Shapes;
 
 namespace EasyEscale
 {
-    /// <summary>
-    /// Lógica interna para PaginaProfs.xaml
-    /// </summary>
     public partial class PaginaProfs : Window
     {
+        List<Professor> professores = new List<Professor>();
         public PaginaProfs(Window x)
         {
             x.Close();
             InitializeComponent();
-        }
 
+            professores = EasyEscale.Professor.Buscar();
+            cbP.ItemsSource = professores;
+            cbP.DisplayMemberPath = "Nome";
+            cbP.SelectedValuePath = "IdProf";
+
+        }
 
         private void IR(object sender, RoutedEventArgs e)
         {
@@ -45,7 +48,6 @@ namespace EasyEscale
             PaginaPDF pdf = new PaginaPDF(this);
 
             MenuItem x = (MenuItem)sender;
-
 
             if (x.Name == "Professor")
             {
@@ -110,24 +112,49 @@ namespace EasyEscale
 
         }
 
-       
+        private void FecharJanela_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
 
         private void cbP_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbP.SelectedItem is ComboBoxItem item)
+            if (cbP.SelectedIndex >= 0)
             {
-                string valor = item.Content.ToString();
+                DetailsContainer.Visibility = Visibility.Visible;
+                EmptyState.Visibility = Visibility.Collapsed;
+                dgExamesProfessor.Visibility = Visibility.Collapsed;
 
-                if (valor == "Prof1")
+                Professor profSelecionado = (Professor)cbP.SelectedItem;
+
+                var estatisticas = metodos.ObterEstatisticasProfessor(profSelecionado.Idprof);
+
+                txtAulas.Text = estatisticas.totalAulas.ToString();
+                txtVigias.Text = estatisticas.totalVigilancias.ToString();
+                txtDias.Text = estatisticas.diasTrabalho;
+
+                int horasTotais = (estatisticas.totalAulas * 2) + (estatisticas.totalVigilancias * 3);
+                txtHoras.Text = horasTotais + "h";
+            }
+        }
+
+        private void btnVerExames_Click(object sender, RoutedEventArgs e)
+        {
+            if (cbP.SelectedIndex >= 0)
+            {
+                Professor profSelecionado = (Professor)cbP.SelectedItem;
+
+                System.Data.DataTable examesDoProf = metodos.ObterExamesDoProfessor(profSelecionado.Idprof);
+
+                if (examesDoProf.Rows.Count > 0)
                 {
-                    St1.Visibility = Visibility.Visible;
-                    St2.Visibility = Visibility.Visible;
-                    
+                    dgExamesProfessor.ItemsSource = examesDoProf.DefaultView;
+                    dgExamesProfessor.Visibility = Visibility.Visible;
                 }
                 else
                 {
-                    
-                    
+                    dgExamesProfessor.Visibility = Visibility.Collapsed;
+                    MessageBox.Show(profSelecionado.Nome + " não está convocado para nenhum exame.");
                 }
             }
         }

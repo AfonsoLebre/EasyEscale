@@ -17,9 +17,6 @@ using System.Windows.Shapes;
 
 namespace EasyEscale
 {
-    /// <summary>
-    /// Lógica interna para PaginaAddProf.xaml
-    /// </summary>
     public partial class PaginaAddProf : Window
     {
         public PaginaAddProf(Window x)
@@ -27,9 +24,7 @@ namespace EasyEscale
             x.Close();
             InitializeComponent();
 
-
             DataTable dis = metodos.Disciplinas();
-
 
             foreach (DataRow dr in dis.Rows)
             {
@@ -43,12 +38,8 @@ namespace EasyEscale
                 };
                 Disciplinas.Children.Add(cb);
 
-
-
-
             }
         }
-        
 
         string con = "server=localhost;user=root;password=root;database=easyescale";
         private void IR(object sender, RoutedEventArgs e)
@@ -70,7 +61,6 @@ namespace EasyEscale
             PaginaPDF pdf = new PaginaPDF(this);
 
             MenuItem x = (MenuItem)sender;
-
 
             if (x.Name == "Professor")
             {
@@ -137,7 +127,7 @@ namespace EasyEscale
 
         private void FecharJanela_Click(object sender, RoutedEventArgs e)
         {
-           
+
             MainWindow a = new MainWindow();
             a.Show();
             this.Close();

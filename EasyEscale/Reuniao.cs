@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using static Google.Protobuf.Collections.MapField<TKey, TValue>;
 
 namespace EasyEscale
 {
@@ -13,7 +12,6 @@ namespace EasyEscale
         public int IdRe { get; set; }
         public DateTime Data { get; set; }
 
-   
         public string HoraIni { get; set; }
         public string HoraFini { get; set; }
 
@@ -22,7 +20,7 @@ namespace EasyEscale
         public string juncao { get; set; }
         public Reuniao()
         {
-            
+
         }
 
         public Reuniao(int idTurma, int ano, string letra, string anoLetivo, int a, DateTime b, string c, string d, int e) : base(idTurma, ano, letra,anoLetivo)
@@ -42,7 +40,6 @@ namespace EasyEscale
             sala = e;
             juncao = f;
         }
-
 
         public static List<Reuniao> Buscar()
         {

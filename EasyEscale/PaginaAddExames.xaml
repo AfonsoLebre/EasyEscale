@@ -64,9 +64,9 @@
         <Grid Grid.Row="1">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
 
-                <TextBlock Text="Agendar Exame ou Reunião" 
-                           FontSize="32" FontWeight="Bold" 
-                           Foreground="#2D3436" Margin="0,0,0,30" 
+                <TextBlock Text="Agendar Exame ou Reunião"
+                           FontSize="32" FontWeight="Bold"
+                           Foreground="#2D3436" Margin="0,0,0,30"
                            HorizontalAlignment="Center"/>
 
                 <Border Background="White" CornerRadius="15" Padding="40" Width="650"
@@ -150,18 +150,18 @@
                                     <TextBlock Text="Código do Exame" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
                                     <TextBox Name="TxtCod" Height="40" FontSize="16" VerticalContentAlignment="Center" Padding="5,0"/>
                                 </StackPanel>
-                              
+
                             </Grid>
                         </StackPanel>
 
                         <Button
                             Click="Button_ClickADD"
-                            
-                            Content="ADICIONAR" 
-                                Height="55" 
-                                Background="#27AE60" 
-                                Foreground="White" 
-                                FontSize="18" 
+
+                            Content="ADICIONAR"
+                                Height="55"
+                                Background="#27AE60"
+                                Foreground="White"
+                                FontSize="18"
                                 FontWeight="Bold"
                                 Cursor="Hand"
                                 Margin="0,10,0,0">

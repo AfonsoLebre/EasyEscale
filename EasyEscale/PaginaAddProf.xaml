@@ -7,9 +7,9 @@
         Title="Adicionar Professor"
         Height="700"
         Width="1000"
-       
+
         WindowState="Maximized"
-       
+
         Background="#F0F2F5">
 
     <Grid>
@@ -19,8 +19,6 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-
-        <!-- BARRA SUPERIOR -->
         <Border Grid.Row="0"
                 Background="White"
                 BorderBrush="#DDD"
@@ -43,7 +41,6 @@
 
                     </MenuItem>
 
-
                     <MenuItem Header="Gerar">
 
                         <MenuItem Name="Exames" Header="Escalas Exames" Click="IR"/>
@@ -56,11 +53,9 @@
 
                     </MenuItem>
 
-
                     <MenuItem Name="EscalasGuarda"
                               Header="Escalas guardadas"
                               Click="IR"/>
-
 
                     <MenuItem Header="Adicionar">
 
@@ -76,8 +71,6 @@
 
                 </Menu>
 
-
-                <!-- BOTÃO FECHAR -->
                 <Button Content="✕"
                         HorizontalAlignment="Right"
                         Width="45"
@@ -110,9 +103,6 @@
 
         </Border>
 
-
-
-        <!-- CONTEÚDO -->
         <Grid Grid.Row="1">
 
             <Grid.ColumnDefinitions>
@@ -120,9 +110,6 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
 
-
-
-            <!-- FORMULÁRIO -->
             <StackPanel VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Grid.Column="0">
@@ -133,7 +120,6 @@
                            Foreground="#2D3436"
                            Margin="0,0,0,40"
                            HorizontalAlignment="Center"/>
-
 
                 <Border Background="White"
                         CornerRadius="15"
@@ -148,7 +134,6 @@
                                           Opacity="0.1"
                                           ShadowDepth="5"/>
                     </Border.Effect>
-
 
                     <StackPanel>
 
@@ -165,7 +150,6 @@
                                  VerticalContentAlignment="Center"
                                  Name="txtProc"/>
 
-
                         <TextBlock Text="Nome Completo"
                                    FontSize="16"
                                    Foreground="#555"
@@ -179,7 +163,6 @@
                                  VerticalContentAlignment="Center"
                                  Name="txNome"/>
 
-
                         <TextBlock Text="Endereço de E-mail"
                                    FontSize="16"
                                    Foreground="#555"
@@ -192,7 +175,6 @@
                                  BorderBrush="#CCC"
                                  VerticalContentAlignment="Center"
                                  Name="txMail"/>
-
 
                         <Button Content="CONCLUIR REGISTO"
                                 Height="55"
@@ -217,9 +199,6 @@
 
             </StackPanel>
 
-
-
-            <!-- LISTA PROFESSORES -->
             <Border Grid.Column="1"
                     Margin="40"
                     Background="White"
@@ -236,7 +215,6 @@
                                Foreground="#333"
                                Margin="0,0,0,20"
                                HorizontalAlignment="Center"/>
-
 
                     <ScrollViewer VerticalScrollBarVisibility="Auto"
                                   Height="350">

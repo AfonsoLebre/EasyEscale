@@ -5,53 +5,94 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyEscale"
         mc:Ignorable="d"
-        Title="PaginaHorarios" Height="450" Width="800">
+        Title="EasyEscale - Horários" Height="750" Width="1000"
+        WindowState="Maximized"
+        Background="#F0F2F5">
+
     <Grid>
-        <StackPanel  Height="30" VerticalAlignment="Top" Orientation="Horizontal">
-            <Menu Margin="0,0,0,0" Background="Transparent">
-                <MenuItem Header="inicio">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                    <MenuItem Name="Ini" Header="Inicio" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Professor" Header="Professores" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Horario" Header="Horario" Click="IR"/>
-                </MenuItem>
+        <Border Grid.Row="0" Background="White" BorderBrush="#DDD" BorderThickness="0,0,0,1">
+            <Grid>
+                <Menu Background="Transparent" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="18">
+                    <MenuItem Header="Início">
+                        <MenuItem Name="Ini" Header="Início" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Professor" Header="Professores" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Horario" Header="Horários" Click="IR"/>
+                    </MenuItem>
+                    <MenuItem Header="Gerar">
+                        <MenuItem Name="Exames" Header="Escalas Exames" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Epoca" Header="Escalas Época Especial" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Reuniao" Header="Escalas Reuniões" Click="IR"/>
+                        <MenuItem Name="Pdf" Header="Exportar PDF" Click="IR"/>
+                        <MenuItem Name="Graf" Header="Gráficos" Click="IR"/>
+                    </MenuItem>
+                    <MenuItem Name="EscalasGuarda" Header="Escalas Guardadas" Click="IR"/>
+                    <MenuItem Header="Adicionar">
+                        <MenuItem Name="AddProf" Header="Professor" Click="IR" />
+                        <Separator/>
+                        <MenuItem Name="AddTurma" Header="Turma" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
+                    </MenuItem>
+                </Menu>
 
-                <MenuItem Header="Gerar ">
-                    <MenuItem Name="Exames" Header="Escalas Exames" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Epoca" Header=" Escalas Epoca Especial" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Reuniao" Header="Escalas Reuniões" Click="IR"/>
-                    <MenuItem Name="Pdf" Header="pdf" Click="IR"/>
-                    <MenuItem Name="Graf" Header="Gráficos" Click="IR"/>
-                </MenuItem>
-                <MenuItem Name="EscalasGuarda" Header="Escalas guardadas" Click="IR">
+                <Button Content="✕" HorizontalAlignment="Right" Width="45" Background="Transparent" Foreground="#666" BorderThickness="0" FontSize="18" FontWeight="Bold" Cursor="Hand" Click="FecharJanela_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#E81123"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
+        </Border>
 
+        <Grid Grid.Row="1">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="Visualização de Horários"
+                           FontSize="32" FontWeight="Bold"
+                           Foreground="#2D3436" Margin="0,0,0,30"
+                           HorizontalAlignment="Center"/>
 
-                </MenuItem>
-                <MenuItem Header="Adicionar">
-                    <MenuItem Name="AddProf" Header="Professor" Click="IR" />
-                    <Separator/>
-                    <MenuItem Name="AddTurma" Header="Turma" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
+                <Border Background="White" CornerRadius="15" Padding="40" Width="800"
+                        BorderBrush="#D1D8E0" BorderThickness="1">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="25" Direction="270" Opacity="0.1" ShadowDepth="5"/>
+                    </Border.Effect>
 
-                </MenuItem>
-            </Menu>
-        </StackPanel>
-        <StackPanel  Width="200" HorizontalAlignment="Left" Margin="0,0,70,0" Height="300" >
-            <Label Content ="Lista de Professores" HorizontalContentAlignment="Center"/>
-            <ComboBox Name="cbP" SelectionChanged="cbP_SelectionChanged" >
-                <ComboBoxItem Content="Prof1" ></ComboBoxItem>
-                <ComboBoxItem Content="Prof2" ></ComboBoxItem>
-            </ComboBox>
-        </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Selecione um professor para visualizar o horário" FontSize="14" Foreground="#3498DB" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                        <ComboBox Name="cbP" SelectionChanged="cbP_SelectionChanged" Height="45" FontSize="16" VerticalContentAlignment="Center" Margin="0,0,0,30">
+                            <ComboBoxItem Content="Prof1" />
+                            <ComboBoxItem Content="Prof2" />
+                        </ComboBox>
 
-        <Image Name="Horar" Source="/Imagem/WhatsApp Image 2026-01-07 at 15.07.44.jpeg" Width="500" HorizontalAlignment="Right" Margin="0,0,40,0" Visibility="Collapsed"  />
+                        <Separator Background="#EEE" Margin="0,0,0,30"/>
 
+                        <Border Name="ImageBorder" Visibility="Collapsed" BorderBrush="#EEE" BorderThickness="2" CornerRadius="10" Padding="5">
+                             <Image Name="Horar" Source="/Imagem/WhatsApp Image 2026-01-07 at 15.07.44.jpeg"
+                                    Stretch="Uniform" MaxHeight="400"/>
+                        </Border>
+
+                        <TextBlock Name="EmptyState" Text="Nenhum horário selecionado."
+                                   FontSize="16" Foreground="#999" HorizontalAlignment="Center" Margin="0,20"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

@@ -15,9 +15,6 @@ using System.Windows.Shapes;
 
 namespace EasyEscale
 {
-    /// <summary>
-    /// Lógica interna para PaginaExames.xaml
-    /// </summary>
     public partial class PaginaExames : Window
     {
 
@@ -26,20 +23,10 @@ namespace EasyEscale
             x.Close();
             InitializeComponent();
 
-          
-
-
-
-         List<Exame> exames = Exame.BuscarJ();
-
-
-
-            cbP.ItemsSource = exames;
-
+            examesAtuais = Exame.BuscarJ();
+            cbP.ItemsSource = examesAtuais;
             cbP.DisplayMemberPath = "Juncao";
             cbP.SelectedValuePath = "IdExa";
-
-
         }
         Dictionary<int, string> Nomes = new Dictionary<int, string>();
             private void IR(object sender, RoutedEventArgs e)
@@ -61,7 +48,6 @@ namespace EasyEscale
             PaginaPDF pdf = new PaginaPDF(this);
 
             MenuItem x = (MenuItem)sender;
-
 
             if (x.Name == "Professor")
             {
@@ -126,19 +112,14 @@ namespace EasyEscale
 
         }
 
-        List<Exame> exames = new List<Exame>();
+        List<Exame> examesAtuais = new List<Exame>();
         private void gerar(object sender, RoutedEventArgs e)
         {
-            exames = Exame.Buscar();
+            if (cbP.SelectedIndex < 0) return;
 
-            int idexa = cbP.SelectedIndex;
+            Exame selecionado = examesAtuais[cbP.SelectedIndex];
+            Nomes = metodos.GeradorEsCalasExames(selecionado);
 
-            Nomes = metodos.GeradorEsCalasExames(exames[idexa]);
-
-
-
-
-           
             DG1.ItemsSource = Nomes.Take(3);
             DG2.ItemsSource = Nomes.Skip(3).Take(2);
             DG2.Visibility = Visibility.Visible;
@@ -149,36 +130,30 @@ namespace EasyEscale
             btn2.Visibility = Visibility.Visible;
         }
 
+        private void FecharJanela_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
         private void cbP_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (cbP.SelectedIndex < 0) return;
 
-            exames = Exame.Buscar();
-
-            int idexa = cbP.SelectedIndex;
-
-            Exame este = exames[idexa];
+            Exame este = examesAtuais[cbP.SelectedIndex];
 
             TextDados.Text = "  Data:  " + este.Data.ToShortDateString() + " Dia da Semana: "+metodos.DiaSenana(este.Data.DayOfWeek)+ "   " + "  Hora de Inicio: " + este.HoraIni + "  Hora Final: " + este.HoraFini +"\n" + "  Diciplina: " + este.Designacao + "  Codigo: " + este.CodExa       ;
 
-            
-
             Info1.Visibility = Visibility.Visible;
-
             btn1.Visibility = Visibility.Visible;
         }
 
-       
-
         private void Guardar(object sender, RoutedEventArgs e)
         {
-            exames = Exame.Buscar();
+            if (cbP.SelectedIndex < 0) return;
 
-            int idexa = cbP.SelectedIndex;
-
-         MessageBox.Show(metodos.GuardaEscala(Nomes, exames[idexa].Idxa));
-
-
+            Exame selecionado = examesAtuais[cbP.SelectedIndex];
+            MessageBox.Show(metodos.GuardaEscala(Nomes, selecionado.Idxa));
         }
     }
-    
+
 }

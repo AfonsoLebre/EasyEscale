@@ -64,9 +64,9 @@
         <Grid Grid.Row="1">
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
 
-                <TextBlock Text="Configurar Horário" 
-                           FontSize="32" FontWeight="Bold" 
-                           Foreground="#2D3436" Margin="0,0,0,30" 
+                <TextBlock Text="Configurar Horário"
+                           FontSize="32" FontWeight="Bold"
+                           Foreground="#2D3436" Margin="0,0,0,30"
                            HorizontalAlignment="Center"/>
 
                 <Border Background="White" CornerRadius="15" Padding="40" Width="600"
@@ -141,13 +141,12 @@
                             </StackPanel>
                         </Grid>
 
-
-                        <Button Content="REGISTAR HORÁRIO" 
+                        <Button Content="REGISTAR HORÁRIO"
                                 Margin="0,20,0,0"
-                                Height="55" 
-                                Background="#27AE60" 
-                                Foreground="White" 
-                                FontSize="18" 
+                                Height="55"
+                                Background="#27AE60"
+                                Foreground="White"
+                                FontSize="18"
                                 FontWeight="Bold"
                                 Cursor="Hand"
                                 Click="Add">

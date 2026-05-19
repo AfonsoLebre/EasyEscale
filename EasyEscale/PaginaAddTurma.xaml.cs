@@ -15,12 +15,9 @@ using System.Windows.Shapes;
 
 namespace EasyEscale
 {
-    /// <summary>
-    /// Lógica interna para PaginaAddTurma.xaml
-    /// </summary>
     public partial class PaginaAddTurma : Window
     {
-        
+
         public PaginaAddTurma(Window x)
         {
             x.Close();
@@ -41,18 +38,14 @@ namespace EasyEscale
                     {
                         CheckBox cb = new CheckBox
                         {
-                            Content = reader.GetString("Nome"),   
-                            Tag = reader.GetInt32("idProfessor"),         
+                            Content = reader.GetString("Nome"),
+                            Tag = reader.GetInt32("idProfessor"),
                             Margin = new Thickness(0, 5, 0, 5),
                             FontSize = 16
                         };
                         Professores.Children.Add(cb);
 
-
-
-
                     }
-
 
                 }
                 catch (Exception ex)
@@ -61,11 +54,8 @@ namespace EasyEscale
                     MessageBox.Show(ex.Message);
                 }
 
-
-
             }
         }
-
 
         private void IR(object sender, RoutedEventArgs e)
         {
@@ -86,7 +76,6 @@ namespace EasyEscale
             PaginaPDF pdf = new PaginaPDF(this);
 
             MenuItem x = (MenuItem)sender;
-
 
             if (x.Name == "Professor")
             {
@@ -171,14 +160,10 @@ namespace EasyEscale
 
             Char letra = TXL.Text[0];
 
-
-
          string sucesso=  metodos.AddTurmasP(valorA,letra, valorAL, idsSelecionados);
-
 
             MessageBox.Show(sucesso);
         }
 
-       
     }
 }

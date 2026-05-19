@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyEscale"
         mc:Ignorable="d"
-       
+
         Title="PaginaExamesEpocaEspecial"
         Height="750"
         Width="1000"
@@ -19,58 +19,51 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0"
-             Background="White"
-             BorderBrush="#DDD"
-             BorderThickness="0,0,0,1">
+        <Border Grid.Row="0" Background="White" BorderBrush="#DDD" BorderThickness="0,0,0,1">
+            <Grid>
+                <Menu Background="Transparent" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="18">
+                    <MenuItem Header="Início">
+                        <MenuItem Name="Ini" Header="Início" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Professor" Header="Professores" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Horario" Header="Horários" Click="IR"/>
+                    </MenuItem>
+                    <MenuItem Header="Gerar">
+                        <MenuItem Name="Exames" Header="Escalas Exames" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Epoca" Header="Escalas Época Especial" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Reuniao" Header="Escalas Reuniões" Click="IR"/>
+                        <MenuItem Name="Pdf" Header="Exportar PDF" Click="IR"/>
+                        <MenuItem Name="Graf" Header="Gráficos" Click="IR"/>
+                    </MenuItem>
+                    <MenuItem Name="EscalasGuarda" Header="Escalas Guardadas" Click="IR"/>
+                    <MenuItem Header="Adicionar">
+                        <MenuItem Name="AddProf" Header="Professor" Click="IR" />
+                        <Separator/>
+                        <MenuItem Name="AddTurma" Header="Turma" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
+                    </MenuItem>
+                </Menu>
 
-            <Menu Background="Transparent"
-               VerticalAlignment="Center"
-               Margin="10,0,0,0"
-               FontSize="18">
-
-                <MenuItem Header="inicio">
-
-                    <MenuItem Name="Ini" Header="Inicio" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Professor" Header="Professores" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Horario" Header="Horario" Click="IR"/>
-
-                </MenuItem>
-
-                <MenuItem Header="Gerar">
-
-                    <MenuItem Name="Exames" Header="Escalas Exames" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Epoca" Header="Escalas Epoca Especial" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Reuniao" Header="Escalas Reuniões" Click="IR"/>
-                    <MenuItem Name="Pdf" Header="pdf" Click="IR"/>
-                    <MenuItem Name="Graf" Header="Gráficos" Click="IR"/>
-
-                </MenuItem>
-
-                <MenuItem Name="EscalasGuarda"
-                       Header="Escalas guardadas"
-                       Click="IR"/>
-
-                <MenuItem Header="Adicionar">
-
-                    <MenuItem Name="AddProf" Header="Professor" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="AddTurma" Header="Turma" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
-                    <Separator/>
-                    <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
-
-                </MenuItem>
-
-            </Menu>
-
+                <Button Content="✕" HorizontalAlignment="Right" Width="45" Background="Transparent" Foreground="#666" BorderThickness="0" FontSize="18" FontWeight="Bold" Cursor="Hand" Click="FecharJanela_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#E81123"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+            </Grid>
         </Border>
-
 
         <Grid Grid.Row="1" Margin="50">
 
@@ -97,8 +90,6 @@
                    Height="35"
                    SelectionChanged="cbP_SelectionChanged">
 
-
-
                     </ComboBox>
 
                     <Button Name="btn1"
@@ -115,7 +106,6 @@
 
             </Border>
 
-
             <Border Grid.Row="1"
          Background="White"
          CornerRadius="10"
@@ -131,7 +121,6 @@
 
                         <TextBlock Name="TextDados" />
                     </StackPanel>
-
 
                     <StackPanel Name="Info2"
                      Orientation="Horizontal"
@@ -164,7 +153,6 @@
 
             </Border>
 
-
             <Grid Grid.Row="2" Margin="0,40,0,0">
 
                 <Grid.ColumnDefinitions>
@@ -172,7 +160,6 @@
                     <ColumnDefinition Width="20"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-
 
                 <Border Background="White"
              CornerRadius="10"
@@ -198,24 +185,17 @@
 
                             <DataGrid.Columns>
 
-
-
-
                                 <DataGridTextColumn Header="ID"
                               Binding="{Binding Key}"
                               Width="50"/>
-
-
 
                                 <DataGridTextColumn Header="Nome Professor"
                              Binding="{Binding Value}"
                             Width="*"/>
 
-
                             </DataGrid.Columns>
 
                         </DataGrid>
-
 
                         <Button Name="btn2"
                  Content="Guardar Escala"
@@ -229,18 +209,13 @@
 
                     </StackPanel>
 
-
-
-
                 </Border>
-
 
                 <Rectangle Name="quadrado"
                 Grid.Column="1"
                 Fill="#DDD"
                 Width="1"
                 Visibility="Collapsed"/>
-
 
                 <Border Grid.Column="2"
              Background="White"
@@ -265,26 +240,17 @@
                        AlternatingRowBackground="#EEF2F7"
                        GridLinesVisibility="None">
 
-
-
                             <DataGrid.Columns>
-
-
-
 
                                 <DataGridTextColumn Header="ID"
     Binding="{Binding Key}"
     Width="50"/>
 
-
-
                                 <DataGridTextColumn Header="Nome Professor"
    Binding="{Binding Value}"
   Width="*"/>
 
-
                             </DataGrid.Columns>
-
 
                         </DataGrid>
 

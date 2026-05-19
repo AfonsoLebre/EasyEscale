@@ -17,15 +17,11 @@ namespace EasyEscale
 
         public string AnoLetivo { get; set; }
 
-
         public string Juncao { get; set; }
         public Turma()
         {
-            
 
         }
-
-
 
         public Turma(int a, int b, string c, string d)
         {
@@ -43,7 +39,6 @@ namespace EasyEscale
             AnoLetivo = d;
             Juncao = e;
         }
-
 
         public static List<Turma> BuscarN()
         {
@@ -94,8 +89,6 @@ namespace EasyEscale
 
                         string j = Ano + " " + Letra;
 
-
-
                         Turmas.Add(new Turma(IdTurma, Ano, Letra, AnoLetivo,j));
                     }
                 }
@@ -103,7 +96,6 @@ namespace EasyEscale
 
             return Turmas;
         }
-
 
     }
 }

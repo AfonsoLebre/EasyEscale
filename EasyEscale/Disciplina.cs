@@ -14,13 +14,10 @@ namespace EasyEscale
         public Curso NCurso { get; set; }
         public string  Designacao { get; set; }
 
-
-
         public Disciplina()
         {
-            
-        }
 
+        }
 
         public Disciplina(int a, Curso b, string c)
         {
@@ -28,7 +25,6 @@ namespace EasyEscale
             NCurso = b;
             Designacao = c;
         }
-
 
         public Disciplina(int f)
         {

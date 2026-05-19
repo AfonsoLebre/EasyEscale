@@ -16,13 +16,9 @@ namespace EasyEscale
 
         public string Email { get; set; }
         public string NProcesso { get; set; }
-        
-       
-
 
         public Professor()
         {
-            
 
         }
 
@@ -34,8 +30,6 @@ namespace EasyEscale
             Email = d;
 
         }
-
-
 
         public static List<Professor> Buscar()
         {
@@ -65,28 +59,7 @@ namespace EasyEscale
             return profs;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
 
         }
 

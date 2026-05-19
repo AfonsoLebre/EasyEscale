@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace EasyEscale
 {
-    public class Aula : Professor 
+    public class Aula : Professor
     {
-
-       
 
         public int IdA { get; set; }
 
@@ -22,10 +20,9 @@ namespace EasyEscale
 
         public int IdT { get; set; }
 
-
         public Aula()
         {
-            
+
         }
 
         public Aula(int idProf, string nProc, string nome, string email,
@@ -39,7 +36,6 @@ namespace EasyEscale
             Hf = horaFim;
             DSemana = diaSemana;
         }
-
 
     }
 }

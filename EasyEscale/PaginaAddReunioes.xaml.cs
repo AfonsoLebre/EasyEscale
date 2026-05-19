@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace EasyEscale
 {
-    /// <summary>
-    /// Lógica interna para PaginaAddReunioes.xaml
-    /// </summary>
     public partial class PaginaAddReunioes : Window
     {
         public PaginaAddReunioes(Window x)
@@ -24,6 +21,16 @@ namespace EasyEscale
             x.Close();
             InitializeComponent();
         }
+        private void FecharJanela_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Button_ClickADD(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Reunião agendada com sucesso!");
+        }
+
         private void IR(object sender, RoutedEventArgs e)
         {
             MainWindow a = new MainWindow();
@@ -42,7 +49,6 @@ namespace EasyEscale
             PaginaPDF pdf = new PaginaPDF(this);
 
             MenuItem x = (MenuItem)sender;
-
 
             if (x.Name == "Professor")
             {

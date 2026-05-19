@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EasyEscale"
         mc:Ignorable="d"
-        Title="Adicionar Turma" Height="700" Width="1000" 
-    WindowState="Maximized" 
+        Title="Adicionar Turma" Height="700" Width="1000"
+    WindowState="Maximized"
         Background="#F0F2F5">
 
     <Grid>
@@ -84,7 +84,7 @@
                                 <ComboBoxItem Content="10"/>
                                 <ComboBoxItem Content="11"/>
                                 <ComboBoxItem Content="12"/>
-                                
+
                             </ComboBox>
 
                             <TextBlock Text="Letra da Turma" FontSize="16" Foreground="#555" Margin="0,0,0,8"/>
@@ -104,7 +104,7 @@
                             <TextBlock Text="Vincular Professores" FontSize="18" FontWeight="SemiBold" Foreground="#333" Margin="0,0,0,15" HorizontalAlignment="Center"/>
                             <ScrollViewer Height="150" VerticalScrollBarVisibility="Auto">
                                 <StackPanel x:Name="Professores">
-                                  
+
                                 </StackPanel>
                             </ScrollViewer>
                         </StackPanel>

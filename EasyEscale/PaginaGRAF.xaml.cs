@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace EasyEscale
 {
-    /// <summary>
-    /// Lógica interna para PaginaGRAF.xaml
-    /// </summary>
     public partial class PaginaGRAF : Window
     {
         public PaginaGRAF(Window x)
@@ -43,7 +40,6 @@ namespace EasyEscale
             PaginaPDF pdf = new PaginaPDF(this);
 
             MenuItem x = (MenuItem)sender;
-
 
             if (x.Name == "Professor")
             {
@@ -106,23 +102,32 @@ namespace EasyEscale
                 a.Show();
             }
         }
+        private void FecharJanela_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Gráfico gerado e transferido com sucesso!");
+        }
+
         private void cbP_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbP.SelectedItem is ComboBoxItem item)
             {
                 string valor = item.Content.ToString();
 
-                if (valor == "Numero de Vigias por Professor")
+                if (valor == "Número de Vigias por Professor")
                 {
                     St1.Visibility = Visibility.Visible;
                     btnP.Visibility = Visibility.Visible;
-                    lb1.Content = "Graph Preview";
+                    lb1.Content = "Pré-visualização do Gráfico: Vigilâncias por Docente";
                 }
                 else
                 {
                     St1.Visibility = Visibility.Collapsed;
-
-
+                    btnP.Visibility = Visibility.Collapsed;
                 }
             }
         }

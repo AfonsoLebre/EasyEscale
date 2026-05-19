@@ -21,13 +21,12 @@ namespace EasyEscale
 
         public Exame()
         {
-            
-        }
 
+        }
 
         public Exame(int idDisciplina, Curso curso, string designacao,
            int idExame, DateTime data, string horaIni, string horaFini, int codExa)
-         : base(idDisciplina, curso, designacao) 
+         : base(idDisciplina, curso, designacao)
         {
             Idxa = idExame;
             Data = data;
@@ -38,7 +37,7 @@ namespace EasyEscale
 
         public Exame(int idDisciplina, Curso curso, string designacao,
           int idExame, DateTime data, string horaIni, string horaFini, int codExa,string juncao)
-        : base(idDisciplina, curso, designacao) 
+        : base(idDisciplina, curso, designacao)
         {
             Idxa = idExame;
             Data = data;
@@ -47,7 +46,6 @@ namespace EasyEscale
             CodExa = codExa;
             Juncao = juncao;
         }
-
 
         public static List<Exame> Buscar()
         {
@@ -150,12 +148,12 @@ namespace EasyEscale
 
         public static Exame BuscarEspecifico(int id)
         {
-           
+
             string conx = "server=localhost;user=root;password=root;database=easyescale";
             Exame x = new Exame();
             using (MySqlConnection con = new MySqlConnection(conx))
             {
-               
+
                 con.Open();
                 string query = " SELECT * FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina WHERE exames.IdExame = @ID; ";
 

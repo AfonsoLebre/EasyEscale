@@ -1,4 +1,4 @@
-﻿using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
@@ -16,29 +16,24 @@ using System.Windows.Shapes;
 
 namespace EasyEscale
 {
-    /// <summary>
-    /// Lógica interna para PaginaReuniao.xaml
-    /// </summary>
     public partial class PaginaReuniao : Window
     {
         Dictionary<int, string> Nomes = new Dictionary<int, string>();
-        List<Reuniao> Reu = EasyEscale.Reuniao.Buscar();
+        List<Reuniao> ReuAtuais = new List<Reuniao>();
+
         public PaginaReuniao(Window x)
         {
             x.Close();
             InitializeComponent();
-          
 
-
-
-            cbP.ItemsSource = Reu;
-
+            ReuAtuais = EasyEscale.Reuniao.Buscar();
+            cbP.ItemsSource = ReuAtuais;
             cbP.DisplayMemberPath = "juncao";
             cbP.SelectedValuePath = "IdRe";
         }
+
         private void IR(object sender, RoutedEventArgs e)
         {
-
             MainWindow a = new MainWindow();
             PaginaProfs b = new PaginaProfs(this);
             PaginaHorarios c = new PaginaHorarios(this);
@@ -56,106 +51,59 @@ namespace EasyEscale
 
             MenuItem x = (MenuItem)sender;
 
-
-            if (x.Name == "Professor")
-            {
-
-                b.Show();
-            }
-            else if (x.Name == "Horario")
-            {
-
-                c.Show();
-            }
-            else if (x.Name == "Exames")
-            {
-
-                d.Show();
-            }
-            else if (x.Name == "Epoca")
-            {
-
-                f.Show();
-            }
-            else if (x.Name == "Reuniao")
-            {
-                g.Show();
-            }
-            else if (x.Name == "EscalasGuarda")
-            {
-                h.Show();
-            }
-            else if (x.Name == "AddProf")
-            {
-                i.Show();
-            }
-            else if (x.Name == "AddTurma")
-            {
-                m.Show();
-            }
-            else if (x.Name == "AddHorario")
-            {
-                hora.Show();
-            }
-            else if (x.Name == "Addexames")
-            {
-                exa.Show();
-            }
-            else if (x.Name == "Addreunioes")
-            {
-                reu.Show();
-            }
-            else if (x.Name == "Pdf")
-            {
-                pdf.Show();
-            }
-            else if (x.Name == "Graf")
-            {
-                graf.Show();
-            }
-            else if (x.Name == "Ini")
-            {
-                a.Show();
-            }
-
+            if (x.Name == "Professor") { b.Show(); }
+            else if (x.Name == "Horario") { c.Show(); }
+            else if (x.Name == "Exames") { d.Show(); }
+            else if (x.Name == "Epoca") { f.Show(); }
+            else if (x.Name == "Reuniao") { g.Show(); }
+            else if (x.Name == "EscalasGuarda") { h.Show(); }
+            else if (x.Name == "AddProf") { i.Show(); }
+            else if (x.Name == "AddTurma") { m.Show(); }
+            else if (x.Name == "AddHorario") { hora.Show(); }
+            else if (x.Name == "Addexames") { exa.Show(); }
+            else if (x.Name == "Addreunioes") { reu.Show(); }
+            else if (x.Name == "Pdf") { pdf.Show(); }
+            else if (x.Name == "Graf") { graf.Show(); }
+            else if (x.Name == "Ini") { a.Show(); }
         }
+
         private void gerar(object sender, RoutedEventArgs e)
         {
+            if (cbP.SelectedIndex < 0) return;
 
-            int idReuniao = cbP.SelectedIndex;
-            Reuniao este = Reu[idReuniao];
+            Reuniao este = ReuAtuais[cbP.SelectedIndex];
             Nomes = metodos.GeradorEscalasReunioes(este);
 
-            List<KeyValuePair<int, string>> listaProfessores = Nomes.ToList();
-
             MessageBox.Show("Professores encontrados para esta turma: " + Nomes.Count);
-            DG1.ItemsSource = listaProfessores;
+            DG1.ItemsSource = Nomes;
 
             DG1.Visibility = Visibility.Visible;
-            
             lb1.Visibility = Visibility.Visible;
-           
+            btnguarda.Visibility = Visibility.Visible;
+        }
+
+        private void FecharJanela_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
 
         private void cbP_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Reu = EasyEscale.Reuniao.Buscar();
-            int idReuniao = cbP.SelectedIndex;
-            Reuniao este = Reu[idReuniao];
+            if (cbP.SelectedIndex < 0) return;
 
-            txt.Text = "  Data:  " + este.Data.ToShortDateString() + " Dia da Semana: " + metodos.DiaSenana(este.Data.DayOfWeek) + "   " + "  Hora de Inicio: " + este.HoraIni + "  Hora Final: " + este.HoraFini + "\n" + "  turma: " + este.Ano + este.Letra;
-
-
-          
+            Reuniao este = ReuAtuais[cbP.SelectedIndex];
+            txt.Text = "  Data:  " + este.Data.ToShortDateString() + " | Dia: " + metodos.DiaSenana(este.Data.DayOfWeek) + " | Início: " + este.HoraIni + " | Fim: " + este.HoraFini + "\n" + "  Turma: " + este.Ano + este.Letra;
 
             btn1.Visibility = Visibility.Visible;
-            Info1 .Visibility = Visibility.Visible;
+            Info1.Visibility = Visibility.Visible;
             Info2.Visibility = Visibility.Visible;
-
-
-
         }
-        
+
+        private void Guarda(object sender, RoutedEventArgs e)
+        {
+            if (cbP.SelectedIndex < 0) return;
+            Reuniao este = ReuAtuais[cbP.SelectedIndex];
+            MessageBox.Show(metodos.GuardaEscalaReu(Nomes, este.IdRe));
+        }
     }
-    
 }
