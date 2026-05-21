@@ -176,9 +176,7 @@ namespace EasyEscale
                         doc.Add(new Paragraph("\nDETALHES da Reunião", fonteSubtitulo));
 
                     }
-                    {
-                        doc.Add(new Paragraph("\nDETALHES DO Exame", fonteSubtitulo));
-                    }
+                   
                     doc.Add(new Paragraph(Dados.Text, fonteNormal));
                     doc.Add(new Paragraph("\n"));
 

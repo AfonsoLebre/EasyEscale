@@ -73,24 +73,30 @@
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="25" Direction="270" Opacity="0.1" ShadowDepth="5"/>
                     </Border.Effect>
+<StackPanel>
+    <TextBlock Text="Selecione um professor para visualizar o horário" FontSize="14" Foreground="#3498DB" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+    <ComboBox Name="cbP" SelectionChanged="cbP_SelectionChanged" Height="45" FontSize="16" VerticalContentAlignment="Center" Margin="0,0,0,30" DisplayMemberPath="Nome" SelectedValuePath="IdProfessor">
+    </ComboBox>
 
-                    <StackPanel>
-                        <TextBlock Text="Selecione um professor para visualizar o horário" FontSize="14" Foreground="#3498DB" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
-                        <ComboBox Name="cbP" SelectionChanged="cbP_SelectionChanged" Height="45" FontSize="16" VerticalContentAlignment="Center" Margin="0,0,0,30">
-                            <ComboBoxItem Content="Prof1" />
-                            <ComboBoxItem Content="Prof2" />
-                        </ComboBox>
+    <Separator Background="#EEE" Margin="0,0,0,30"/>
 
-                        <Separator Background="#EEE" Margin="0,0,0,30"/>
+    <DataGrid Name="dgHorario" AutoGenerateColumns="False" IsReadOnly="True" 
+              HeadersVisibility="Column" Background="White" RowHeight="35"
+              HorizontalGridLinesBrush="#EEE" VerticalGridLinesBrush="#EEE"
+              BorderThickness="1" BorderBrush="#D1D8E0" Visibility="Collapsed"
+              MaxHeight="400" FontSize="14">
+        <DataGrid.Columns>
+            <DataGridTextColumn Header="Dia" Binding="{Binding Dia_Semana}" Width="150"/>
+            <DataGridTextColumn Header="Início" Binding="{Binding Inicio}" Width="100"/>
+            <DataGridTextColumn Header="Fim" Binding="{Binding Fim}" Width="100"/>
+            <DataGridTextColumn Header="Disciplina" Binding="{Binding Disciplina}" Width="*"/>
+            <DataGridTextColumn Header="Turma" Binding="{Binding Turma}" Width="80"/>
+        </DataGrid.Columns>
+    </DataGrid>
 
-                        <Border Name="ImageBorder" Visibility="Collapsed" BorderBrush="#EEE" BorderThickness="2" CornerRadius="10" Padding="5">
-                             <Image Name="Horar" Source="/Imagem/WhatsApp Image 2026-01-07 at 15.07.44.jpeg"
-                                    Stretch="Uniform" MaxHeight="400"/>
-                        </Border>
-
-                        <TextBlock Name="EmptyState" Text="Nenhum horário selecionado."
-                                   FontSize="16" Foreground="#999" HorizontalAlignment="Center" Margin="0,20"/>
-                    </StackPanel>
+    <TextBlock Name="EmptyState" Text="Nenhum horário selecionado."
+               FontSize="16" Foreground="#999" HorizontalAlignment="Center" Margin="0,20"/>
+</StackPanel>
                 </Border>
             </StackPanel>
         </Grid>

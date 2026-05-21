@@ -375,6 +375,24 @@ namespace EasyEscale
             escolhidos[idProf] = 0;
         }
 
+        string queryExa = "Select IdProfessor,Count(*) as Total From Vigiasexames Group By IdProfessor";
+                using(MySqlCommand cmdExa = new MySqlCommand(queryExa, con))
+                {
+                    using(MySqlDataReader leitorE = cmdExa.ExecuteReader())
+                    {
+                        while (leitorE.Read())
+                        {
+                            int idP = (int)leitorE["IdProfessor"];
+                            int total = Convert.ToInt32(leitorE["Total"]);
+                            if (escolhidos.ContainsKey(idP))
+                            {
+                                escolhidos[idP] += total * 1000;
+                            }
+                        }
+                    }
+                }
+
+
                 try
                 {
                     if (!TimeSpan.TryParse(x.HoraIni, out TimeSpan HoraExIni))
@@ -725,16 +743,16 @@ namespace EasyEscale
                     con.Open();
                     string query = @"
                         SELECT 
-                            e.Data, 
-                            e.HoraInicial AS Inicio, 
-                            e.HoraFinal AS Fim, 
-                            d.Designacao AS Disciplina, 
-                            v.Estado 
-                        FROM vigiasexames v
-                        INNER JOIN exames e ON v.IdExame = e.IdExame
-                        INNER JOIN disciplina d ON e.IdDisciplina = d.IdDisciplina
-                        WHERE v.IdProfessor = @idProf
-                        ORDER BY e.Data ASC";
+                            exames.Data, 
+                            exames.HoraInicial AS Inicio, 
+                            exames.HoraFinal AS Fim, 
+                            disciplina.Designacao AS Disciplina, 
+                            vigiasexames.Estado 
+                        FROM vigiasexames 
+                        INNER JOIN exames ON vigiasexames.IdExame = exames.IdExame
+                        INNER JOIN disciplina  ON exames.IdDisciplina = disciplina.IdDisciplina
+                        WHERE vigiasexames.IdProfessor = @idProf
+                        ORDER BY exames.Data ASC";
 
                     using (MySqlCommand cmd = new MySqlCommand(query, con))
                     {
@@ -752,6 +770,49 @@ namespace EasyEscale
             }
             return dt;
         }
+
+
+        public static DataTable HorarioDoProfessor(int idProfessor)
+        {
+            DataTable dt = new DataTable();
+            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            using(MySqlConnection con = new MySqlConnection(conx))
+            {
+                con.Open();
+                try
+                {
+                    string query = @"
+                        SELECT 
+                            aulas.Dia_Semana, 
+                            aulas.HoraInicial AS Inicio, 
+                            aulas.HoraFinal AS Fim, 
+                            disciplina.Designacao AS Disciplina, 
+                            turmas.AnoLetivo, 
+                            CONCAT(turmas.Ano, turmas.Letra) AS Turma
+                        FROM aulas
+                        INNER JOIN disciplina ON aulas.IdDisciplina = disciplina.IdDisciplina
+                        INNER JOIN turmas ON aulas.IdTurma = turmas.IdTurma
+                        WHERE aulas.IdProfessor = @idProf
+                        ORDER BY FIELD(aulas.Dia_Semana, 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sabado', 'Domingo'),
+                                 aulas.HoraInicial ASC";
+                    MySqlCommand cmd = new MySqlCommand(query, con);
+                    cmd.Parameters.AddWithValue("@idProf", idProfessor);
+
+                    using(MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        dt.Load(reader);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Erro a carregar horário: " + ex.Message);
+                }
+            }
+           
+
+            return dt;
+        }
+
 
     }
 }

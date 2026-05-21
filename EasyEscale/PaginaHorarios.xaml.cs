@@ -16,10 +16,15 @@ namespace EasyEscale
 {
     public partial class PaginaHorarios : Window
     {
+        List<Professor> professores = new List<Professor>();
         public PaginaHorarios( Window x)
         {
             x.Close();
             InitializeComponent();
+            professores = EasyEscale.Professor.Buscar();
+            cbP.ItemsSource = professores;
+            cbP.DisplayMemberPath = "Nome";
+            cbP.SelectedValuePath = "Idprof";
         }
 
         private void IR(object sender, RoutedEventArgs e)
@@ -112,11 +117,26 @@ namespace EasyEscale
 
         private void cbP_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbP.SelectedItem is ComboBoxItem item)
+            if (cbP.SelectedValue != null)
             {
-                ImageBorder.Visibility = Visibility.Visible;
-                Horar.Visibility = Visibility.Visible;
-                EmptyState.Visibility = Visibility.Collapsed;
+
+
+                int idProfessor = (int)cbP.SelectedValue;
+                var horarios = metodos.HorarioDoProfessor(idProfessor);
+
+                if (horarios != null)
+                {
+                    dgHorario.ItemsSource = horarios.DefaultView;
+                    dgHorario.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    dgHorario.Visibility = Visibility.Collapsed;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Selecione um professor para visualizar o horário.");
             }
         }
     }
