@@ -101,7 +101,7 @@ namespace EasyEscale
                 }
                 else if (valor == "Reuniões")
                 {
-                    reunioesAtuais = EasyEscale.Reuniao.Buscar();
+                    reunioesAtuais = EasyEscale.Reuniao.Buscar(todosAnos);
                     cbE.ItemsSource = reunioesAtuais;
                     cbE.DisplayMemberPath = "juncao";
                     cbE.SelectedValuePath = "IdRe";
@@ -133,7 +133,7 @@ namespace EasyEscale
                     if (reunioesAtuais.Count > index)
                     {
                         estaReuniao = reunioesAtuais[index];
-                        Dados.Text = "Data: " + estaReuniao.Data.ToShortDateString() + " | Início: " + estaReuniao.HoraIni + " | Fim: " + estaReuniao.HoraFini + "\nTurma: " + estaReuniao.Ano + estaReuniao.Letra;
+                        Dados.Text = "Data: " + estaReuniao.Data.ToShortDateString() + " | Início: " + estaReuniao.HoraIni + " | Fim: " + estaReuniao.HoraFini + "\nTurma: " + estaReuniao.Ano + estaReuniao.Letra + " | Sala: " + estaReuniao.NomeSala;
                         Nomes = metodos.BuscaGuardadosReuniao(estaReuniao.IdRe);
                         lb1.Text = "Resumo: Reunião com " + Nomes.Count + " professores convocados.";
                     }

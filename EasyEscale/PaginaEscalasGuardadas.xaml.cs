@@ -155,7 +155,7 @@ namespace EasyEscale
                         estaReuniao = reunioes[index];
                         if (estaReuniao != null)
                         {
-                            Dados.Text = "  Data:  " + estaReuniao.Data.ToShortDateString() + " | Dia: " + metodos.DiaSenana(estaReuniao.Data.DayOfWeek) + " | Início: " + estaReuniao.HoraIni + " | Fim: " + estaReuniao.HoraFini + "\n" + "  Turma: " + estaReuniao.Ano + estaReuniao.Letra;
+                            Dados.Text = "  Data:  " + estaReuniao.Data.ToShortDateString() + " | Dia: " + metodos.DiaSenana(estaReuniao.Data.DayOfWeek) + " | Início: " + estaReuniao.HoraIni + " | Fim: " + estaReuniao.HoraFini + "\n" + "  Turma: " + estaReuniao.Ano + estaReuniao.Letra + " | Sala: " + estaReuniao.NomeSala;
 
                             Nomes = metodos.BuscaGuardadosReuniao(estaReuniao.IdRe);
 
@@ -218,7 +218,7 @@ namespace EasyEscale
                 }
                 else if (valor == "Reuniões")
                 {
-                    reunioes = EasyEscale.Reuniao.Buscar();
+                    reunioes = EasyEscale.Reuniao.Buscar(todosAnos);
                     cbE.ItemsSource = reunioes;
                     cbE.DisplayMemberPath = "juncao";
                     cbE.SelectedValuePath = "IdRe";

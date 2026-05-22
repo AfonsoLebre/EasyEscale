@@ -20,7 +20,18 @@ namespace EasyEscale
         {
             x.Close();
             InitializeComponent();
+            CarregarDados();
         }
+
+        private void CarregarDados()
+        {
+            CBTurma.ItemsSource = Turma.BuscarJ();
+            CBTurma.DisplayMemberPath = "Juncao";
+            CBTurma.SelectedValuePath = "IdTurma";
+
+            CBSala.ItemsSource = metodos.GetSalas();
+        }
+
         private void FecharJanela_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
@@ -28,7 +39,25 @@ namespace EasyEscale
 
         private void Button_ClickADD(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Reunião agendada com sucesso!");
+            if (DP.SelectedDate == null || CBI.SelectedIndex < 0 || CBT.SelectedIndex < 0 || CBTurma.SelectedIndex < 0 || string.IsNullOrEmpty(CBSala.Text))
+            {
+                MessageBox.Show("Por favor, preencha todos os campos.");
+                return;
+            }
+
+            DateTime data = DP.SelectedDate.Value;
+            string horaIni = (CBI.SelectedItem as ComboBoxItem).Content.ToString();
+            string horaFini = (CBT.SelectedItem as ComboBoxItem).Content.ToString();
+            int idTurma = (int)CBTurma.SelectedValue;
+            string sala = CBSala.Text;
+
+            string resultado = metodos.AddREU(data, horaIni, horaFini, idTurma, sala);
+            MessageBox.Show(resultado);
+
+            if (resultado.Contains("Sucesso"))
+            {
+                CBSala.ItemsSource = metodos.GetSalas(); // Atualizar lista de salas
+            }
         }
 
         private void IR(object sender, RoutedEventArgs e)

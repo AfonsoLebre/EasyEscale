@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +16,7 @@ namespace EasyEscale
         public string HoraFini { get; set; }
 
         public int sala { get; set; }
+        public string NomeSala { get; set; }
 
         public string juncao { get; set; }
         public Reuniao()
@@ -41,7 +42,7 @@ namespace EasyEscale
             juncao = f;
         }
 
-        public static List<Reuniao> Buscar()
+        public static List<Reuniao> Buscar(bool todosAnos = false, bool soComEscala = false)
         {
             List<Reuniao> Reu = new List<Reuniao>();
             string conx = "server=localhost;user=root;password=root;database=easyescale";
@@ -49,7 +50,21 @@ namespace EasyEscale
             using (MySqlConnection con = new MySqlConnection(conx))
             {
                 con.Open();
-                string query = "SELECT reuniao.IdReuniao, reuniao.HoraInicial, reuniao.HoraFinal, reuniao.`Data`,\r\n     reuniao.IdTurma, reuniao.sala, turmas.Letra, turmas.Ano, turmas.AnoLetivo FROM reuniao INNER JOIN turmas ON\r\n     reuniao.IdTurma = turmas.IdTurma";
+                string query = @"SELECT DISTINCT reuniao.IdReuniao, reuniao.HoraInicial, reuniao.HoraFinal, reuniao.`Data`, 
+                                 reuniao.IdTurma, salas.Nome as NomeSala, reuniao.sala as IdSala, turmas.Letra, turmas.Ano, turmas.AnoLetivo 
+                                 FROM reuniao 
+                                 INNER JOIN turmas ON reuniao.IdTurma = turmas.IdTurma
+                                 LEFT JOIN salas ON reuniao.sala = salas.IdSala";
+
+                if (soComEscala)
+                {
+                    query += " INNER JOIN reuniaoprofessor ON reuniao.IdReuniao = reuniaoprofessor.IdReuniao ";
+                }
+
+                if (!todosAnos)
+                {
+                    query += " WHERE YEAR(reuniao.Data) = YEAR(CURDATE())";
+                }
 
                 using (MySqlCommand cmd = new MySqlCommand(query, con))
                 using (MySqlDataReader leitor = cmd.ExecuteReader())
@@ -61,13 +76,17 @@ namespace EasyEscale
                         string Horafini = leitor["HoraFinal"].ToString();
                         DateTime Data = Convert.ToDateTime(leitor["Data"]);
                         int IdTurma = (int)leitor["IdTurma"];
-                        int sala = (int)leitor["sala"];
-                       string Letra = leitor["Letra"].ToString();
+                        string sNome = leitor["NomeSala"] != DBNull.Value ? leitor["NomeSala"].ToString() : "N/D";
+                        int sId = leitor["IdSala"] != DBNull.Value ? (int)leitor["IdSala"] : 0;
+                        string Letra = leitor["Letra"].ToString();
                         int ano = (int)leitor["Ano"];
                         string anoLetivo = leitor["AnoLetivo"].ToString();
-                        string Jucao ="Reunião" + "   " + ano + "  " + Letra;
+                        string Jucao = "Reunião" + "   " + ano + "  " + Letra;
 
-                        Reu.Add(new Reuniao(IdTurma,ano,Letra,anoLetivo,IdReu,Data,Horaini,Horafini,sala,Jucao));
+                        Reuniao r = new Reuniao(IdTurma, ano, Letra, anoLetivo, IdReu, Data, Horaini, Horafini, sId, Jucao);
+                        r.NomeSala = sNome;
+                        r.juncao = Jucao + " - Sala " + sNome;
+                        Reu.Add(r);
                     }
                 }
             }

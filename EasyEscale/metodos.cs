@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using Org.BouncyCastle.Crypto;
 using System;
@@ -19,6 +19,22 @@ namespace EasyEscale
 {
     internal class metodos
     {
+
+        public static string GetAnoLetivoAtual()
+        {
+            DateTime hoje = DateTime.Now;
+            int ano = hoje.Year;
+            int mes = hoje.Month;
+
+            if (mes >= 9)
+            {
+                return $"{ano}/{ano + 1}";
+            }
+            else
+            {
+                return $"{ano - 1}/{ano}";
+            }
+        }
 
         public static DataTable Disciplinas()
         {
@@ -87,39 +103,96 @@ namespace EasyEscale
             return sucesso;
 
         }
-        public static string AddREU(DateTime a, string horai, string horaf, int idD, int CoDE)
+        public static List<string> GetSalas()
+        {
+            List<string> salas = new List<string>();
+            string con = "server=localhost;user=root;password=root;database=easyescale";
+            using (MySqlConnection conx = new MySqlConnection(con))
+            {
+                try
+                {
+                    conx.Open();
+                    string query = "Select Nome from salas";
+                    MySqlCommand cmd = new MySqlCommand(query, conx);
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            salas.Add(reader.GetString("Nome"));
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            return salas;
+        }
+
+        public static string AddREU(DateTime a, string horai, string horaf, int idT, string sala)
         {
             string sucesso = "";
-            string con = "server=localhost;user=root;password=rootroot;database=easyescale";
-            MySqlConnection conx = new MySqlConnection(con);
-            string query = "START TRANSACTION;\r\n\r\nInsert into exames(exames.`Data`,HoraInicial,HoraFinal,IdDisciplina,CodExame) values(@Data,@HoraIni,@HoraFini,@Dis,@Cod);\r\nCOMMIT;";
-            MySqlCommand cmd = new MySqlCommand(query, conx);
-            cmd.Parameters.AddWithValue("@Data", a);
-            cmd.Parameters.AddWithValue("@HoraIni", horai);
-            cmd.Parameters.AddWithValue("@HoraFini", horaf);
-            cmd.Parameters.AddWithValue("@Dis", idD);
-            cmd.Parameters.AddWithValue("@Cod", CoDE);
+            string con = "server=localhost;user=root;password=root;database=easyescale";
 
-            try
+            using (MySqlConnection conx = new MySqlConnection(con))
             {
                 conx.Open();
-                cmd.ExecuteNonQuery();
-                sucesso = "Exame Adicinado com Sucesso";
-            }
-            catch (Exception ex)
-            {
-                sucesso = ex.Message;
+                MySqlTransaction tran = conx.BeginTransaction();
 
-            }
+                try
+                {
+                    // Verificar se a sala existe, se não, adicionar
+                    string querySala = "SELECT IdSala FROM salas WHERE Nome = @Nome";
+                    MySqlCommand cmdSala = new MySqlCommand(querySala, conx, tran);
+                    cmdSala.Parameters.AddWithValue("@Nome", sala);
+                    object result = cmdSala.ExecuteScalar();
+                    int idSala;
 
+                    if (result == null)
+                    {
+                        string queryInsSala = "INSERT INTO salas(Nome) VALUES(@Nome)";
+                        MySqlCommand cmdInsSala = new MySqlCommand(queryInsSala, conx, tran);
+                        cmdInsSala.Parameters.AddWithValue("@Nome", sala);
+                        cmdInsSala.ExecuteNonQuery();
+                        idSala = (int)cmdInsSala.LastInsertedId;
+                    }
+                    else
+                    {
+                        idSala = Convert.ToInt32(result);
+                    }
+
+                    // Obter próximo ID de reunião (já que IdReuniao não é AUTO_INCREMENT no SQL original)
+                    string queryNextId = "SELECT IFNULL(MAX(IdReuniao), 0) + 1 FROM reuniao";
+                    MySqlCommand cmdNextId = new MySqlCommand(queryNextId, conx, tran);
+                    int nextId = Convert.ToInt32(cmdNextId.ExecuteScalar());
+
+                    string query = "Insert into reuniao(IdReuniao, IdTurma, HoraInicial, HoraFinal, Data, sala) values(@Id, @IdT, @HoraIni, @HoraFini, @Data, @Sala);";
+                    MySqlCommand cmd = new MySqlCommand(query, conx, tran);
+                    cmd.Parameters.AddWithValue("@Id", nextId);
+                    cmd.Parameters.AddWithValue("@IdT", idT);
+                    cmd.Parameters.AddWithValue("@HoraIni", horai);
+                    cmd.Parameters.AddWithValue("@HoraFini", horaf);
+                    cmd.Parameters.AddWithValue("@Data", a);
+                    cmd.Parameters.AddWithValue("@Sala", idSala);
+
+                    cmd.ExecuteNonQuery();
+                    tran.Commit();
+                    sucesso = "Reunião Adicionada com Sucesso";
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    sucesso = "Erro ao adicionar reunião: " + ex.Message;
+                }
+            }
             return sucesso;
-
         }
 
         public static string AddTurmas(DateTime a, string horai, string horaf, int idD, int CoDE)
         {
             string sucesso = "";
-            string con = "server=localhost;user=root;password=rootroot;database=easyescale";
+            string con = "server=localhost;user=root;password=root;database=easyescale";
             MySqlConnection conx = new MySqlConnection(con);
             string query = "START TRANSACTION;\r\n\r\nInsert into exames(exames.`Data`,HoraInicial,HoraFinal,IdDisciplina,CodExame) values(@Data,@HoraIni,@HoraFini,@Dis,@Cod);\r\nCOMMIT;";
             MySqlCommand cmd = new MySqlCommand(query, conx);
@@ -148,7 +221,7 @@ namespace EasyEscale
         public static string AddTurmasP(int A, char L, string AL, List<int> Ids)
         {
             string sucesso = "";
-            string con = "server=localhost;user=root;password=rootroot;database=easyescale";
+            string con = "server=localhost;user=root;password=root;database=easyescale";
 
             using(MySqlConnection conx = new MySqlConnection(con))
             {
@@ -199,7 +272,7 @@ namespace EasyEscale
 
         public static string AddHora(int Idp,string HI,string Hf,string Ds,int IdD,int Idt)
         {
-            string conx = "server=localhost;user=root;password=rootroot;database=easyescale";
+            string conx = "server=localhost;user=root;password=root;database=easyescale";
             string sucesso = "";
 
             using (MySqlConnection con = new MySqlConnection(conx))
@@ -241,7 +314,7 @@ namespace EasyEscale
 
         public static string AddP(string N, string E, string Np, List<int> Dis)
         {
-            string conx = "server=localhost;user=root;password=rootroot;database=easyescale";
+            string conx = "server=localhost;user=root;password=root;database=easyescale";
 
             string sucesso = "";
 
@@ -795,11 +868,12 @@ namespace EasyEscale
                         FROM aulas
                         INNER JOIN disciplina ON aulas.IdDisciplina = disciplina.IdDisciplina
                         INNER JOIN turmas ON aulas.IdTurma = turmas.IdTurma
-                        WHERE aulas.IdProfessor = @idProf
+                        WHERE aulas.IdProfessor = @idProf AND turmas.AnoLetivo = @AL
                         ORDER BY FIELD(aulas.Dia_Semana, 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sabado', 'Domingo'),
                                  aulas.HoraInicial ASC";
                     MySqlCommand cmd = new MySqlCommand(query, con);
                     cmd.Parameters.AddWithValue("@idProf", idProfessor);
+                    cmd.Parameters.AddWithValue("@AL", metodos.GetAnoLetivoAtual());
 
                     using(MySqlDataReader reader = cmd.ExecuteReader())
                     {

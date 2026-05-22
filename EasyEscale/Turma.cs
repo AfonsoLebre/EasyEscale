@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +40,7 @@ namespace EasyEscale
             Juncao = e;
         }
 
-        public static List<Turma> BuscarN()
+        public static List<Turma> BuscarN(bool todosAnos = false)
         {
             List<Turma> Turmas = new List<Turma>();
             string conx = "server=localhost;user=root;password=root;database=easyescale";
@@ -49,25 +49,35 @@ namespace EasyEscale
             {
                 con.Open();
                 string query = "SELECT * FROM turmas";
+                if (!todosAnos)
+                {
+                    query += " WHERE AnoLetivo = @AL";
+                }
 
                 using (MySqlCommand cmd = new MySqlCommand(query, con))
-                using (MySqlDataReader leitor = cmd.ExecuteReader())
                 {
-                    while (leitor.Read())
+                    if (!todosAnos)
                     {
-                        int IdTurma = (int)leitor["IdTurma"];
-                        int Ano = (int)leitor["Ano"];
-                        string Letra = leitor["Letra"].ToString();
-                        string AnoLetivo = leitor["AnoLetivo"].ToString();
+                        cmd.Parameters.AddWithValue("@AL", metodos.GetAnoLetivoAtual());
+                    }
+                    using (MySqlDataReader leitor = cmd.ExecuteReader())
+                    {
+                        while (leitor.Read())
+                        {
+                            int IdTurma = (int)leitor["IdTurma"];
+                            int Ano = (int)leitor["Ano"];
+                            string Letra = leitor["Letra"].ToString();
+                            string AnoLetivo = leitor["AnoLetivo"].ToString();
 
-                        Turmas.Add(new Turma(IdTurma, Ano, Letra, AnoLetivo));
+                            Turmas.Add(new Turma(IdTurma, Ano, Letra, AnoLetivo));
+                        }
                     }
                 }
             }
 
             return Turmas;
         }
-        public static List<Turma> BuscarJ()
+        public static List<Turma> BuscarJ(bool todosAnos = false)
         {
             List<Turma> Turmas = new List<Turma>();
             string conx = "server=localhost;user=root;password=root;database=easyescale";
@@ -76,20 +86,30 @@ namespace EasyEscale
             {
                 con.Open();
                 string query = "SELECT * FROM turmas";
+                if (!todosAnos)
+                {
+                    query += " WHERE AnoLetivo = @AL";
+                }
 
                 using (MySqlCommand cmd = new MySqlCommand(query, con))
-                using (MySqlDataReader leitor = cmd.ExecuteReader())
                 {
-                    while (leitor.Read())
+                    if (!todosAnos)
                     {
-                        int IdTurma = (int)leitor["IdTurma"];
-                        int Ano = (int)leitor["Ano"];
-                        string Letra = leitor["Letra"].ToString();
-                        string AnoLetivo = leitor["AnoLetivo"].ToString();
+                        cmd.Parameters.AddWithValue("@AL", metodos.GetAnoLetivoAtual());
+                    }
+                    using (MySqlDataReader leitor = cmd.ExecuteReader())
+                    {
+                        while (leitor.Read())
+                        {
+                            int IdTurma = (int)leitor["IdTurma"];
+                            int Ano = (int)leitor["Ano"];
+                            string Letra = leitor["Letra"].ToString();
+                            string AnoLetivo = leitor["AnoLetivo"].ToString();
 
-                        string j = Ano + " " + Letra;
+                            string j = Ano + " " + Letra;
 
-                        Turmas.Add(new Turma(IdTurma, Ano, Letra, AnoLetivo,j));
+                            Turmas.Add(new Turma(IdTurma, Ano, Letra, AnoLetivo, j));
+                        }
                     }
                 }
             }

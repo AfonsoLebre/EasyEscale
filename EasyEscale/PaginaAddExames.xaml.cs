@@ -129,6 +129,12 @@ namespace EasyEscale
                 {
                     exame = false;
 
+                    CBTurma.ItemsSource = Turma.BuscarJ();
+                    CBTurma.DisplayMemberPath = "Juncao";
+                    CBTurma.SelectedValuePath = "IdTurma";
+
+                    CBSala.ItemsSource = metodos.GetSalas();
+
                     Exa1.Visibility = Visibility.Collapsed;
                     Reuna.Visibility = Visibility.Visible;
                 }
@@ -142,23 +148,48 @@ namespace EasyEscale
 
         private void Button_ClickADD(object sender, RoutedEventArgs e)
         {
+            if (DP.SelectedDate == null || CBI.SelectedIndex < 0 || CBT.SelectedIndex < 0)
+            {
+                MessageBox.Show("Por favor, selecione a data e as horas.");
+                return;
+            }
+
+            string valorHI = (CBI.SelectedItem as ComboBoxItem).Content.ToString();
+            string valorF = (CBT.SelectedItem as ComboBoxItem).Content.ToString();
+
             if (exame)
             {
-                string valorHI =  (CBI.SelectedItem as ComboBoxItem).Content.ToString();
-                string valorF = (CBT.SelectedItem as ComboBoxItem).Content.ToString();
-                int id = (int)CBD.SelectedValue;
-                int Cod = int.Parse(TxtCod.Text);
-                int es = 0;
-
-                if(check.IsChecked == true)
+                if (CBD.SelectedValue == null || string.IsNullOrEmpty(TxtCod.Text))
                 {
-                    es = 1;
+                    MessageBox.Show("Por favor, preencha os dados do exame.");
+                    return;
                 }
 
-                string sucesso = metodos.AddExame(DP.SelectedDate.Value,valorHI,valorF,id,Cod,es);
+                int id = (int)CBD.SelectedValue;
+                int Cod = int.Parse(TxtCod.Text);
+                int es = (check.IsChecked == true) ? 1 : 0;
 
+                string sucesso = metodos.AddExame(DP.SelectedDate.Value, valorHI, valorF, id, Cod, es);
                 MessageBox.Show(sucesso);
+            }
+            else
+            {
+                if (CBTurma.SelectedValue == null || string.IsNullOrEmpty(CBSala.Text))
+                {
+                    MessageBox.Show("Por favor, selecione a turma e a sala.");
+                    return;
+                }
 
+                int idTurma = (int)CBTurma.SelectedValue;
+                string sala = CBSala.Text;
+
+                string sucesso = metodos.AddREU(DP.SelectedDate.Value, valorHI, valorF, idTurma, sala);
+                MessageBox.Show(sucesso);
+                
+                if (sucesso.Contains("Sucesso"))
+                {
+                    CBSala.ItemsSource = metodos.GetSalas();
+                }
             }
         }
     }

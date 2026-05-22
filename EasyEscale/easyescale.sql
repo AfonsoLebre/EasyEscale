@@ -11,7 +11,7 @@
  Target Server Version : 80046 (8.0.46)
  File Encoding         : 65001
 
- Date: 22/05/2026 09:26:33
+ Date: 22/05/2026 11:06:43
 */
 
 SET NAMES utf8mb4;
@@ -119,7 +119,7 @@ CREATE TABLE `exames`  (
   PRIMARY KEY (`IdExame`) USING BTREE,
   INDEX `IdDisciplina`(`IdDisciplina` ASC) USING BTREE,
   CONSTRAINT `exames_ibfk_1` FOREIGN KEY (`IdDisciplina`) REFERENCES `disciplina` (`IdDisciplina`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 110 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of exames
@@ -128,6 +128,7 @@ INSERT INTO `exames` VALUES (100, '2025-06-30', '9:00', '12:00', 1, 639, b'0');
 INSERT INTO `exames` VALUES (101, '2025-07-02', '13:00', '15:30', 2, 714, b'0');
 INSERT INTO `exames` VALUES (108, '2026-07-10', '9:00', '12:00', 1, 888, b'1');
 INSERT INTO `exames` VALUES (109, '2026-07-12', '10:00', '12:00', 2, 889, b'1');
+INSERT INTO `exames` VALUES (110, '2026-05-22', '8:00', '11:00', 3, 222, b'0');
 
 -- ----------------------------
 -- Table structure for professor
@@ -172,30 +173,22 @@ DROP TABLE IF EXISTS `reuniao`;
 CREATE TABLE `reuniao`  (
   `IdReuniao` int NOT NULL,
   `IdTurma` int NULL DEFAULT NULL,
-  `HoraInicial` enum('8:00','9:00','10:00','11:00') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `HoraFinal` enum('13:00','14:00','15:00','16:00') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `HoraInicial` enum('9:00','9:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  `HoraFinal` enum('9:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30','20:00') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `Data` date NULL DEFAULT NULL,
   `sala` int NULL DEFAULT NULL,
   PRIMARY KEY (`IdReuniao`) USING BTREE,
   INDEX `IdTurma`(`IdTurma` ASC) USING BTREE,
-  CONSTRAINT `reuniao_ibfk_1` FOREIGN KEY (`IdTurma`) REFERENCES `turmas` (`IdTurma`) ON DELETE CASCADE ON UPDATE CASCADE
+  INDEX `sala`(`sala` ASC) USING BTREE,
+  CONSTRAINT `reuniao_ibfk_1` FOREIGN KEY (`IdTurma`) REFERENCES `turmas` (`IdTurma`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `reuniao_ibfk_2` FOREIGN KEY (`sala`) REFERENCES `salas` (`IdSala`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of reuniao
 -- ----------------------------
-INSERT INTO `reuniao` VALUES (1, 1, '8:00', '13:00', '2025-06-16', 101);
-INSERT INTO `reuniao` VALUES (2, 2, '9:00', '14:00', '2025-06-16', 102);
-INSERT INTO `reuniao` VALUES (3, 3, '10:00', '15:00', '2025-06-16', 103);
-INSERT INTO `reuniao` VALUES (4, 4, '11:00', '16:00', '2025-06-17', 104);
-INSERT INTO `reuniao` VALUES (5, 5, '8:00', '13:00', '2025-06-17', 105);
-INSERT INTO `reuniao` VALUES (6, 6, '9:00', '14:00', '2025-06-17', 106);
-INSERT INTO `reuniao` VALUES (7, 7, '10:00', '15:00', '2025-06-18', 107);
-INSERT INTO `reuniao` VALUES (8, 8, '11:00', '16:00', '2025-06-18', 108);
-INSERT INTO `reuniao` VALUES (9, 9, '8:00', '13:00', '2025-06-18', 109);
-INSERT INTO `reuniao` VALUES (10, 10, '9:00', '14:00', '2025-06-19', 110);
-INSERT INTO `reuniao` VALUES (11, 11, '10:00', '15:00', '2025-06-19', 111);
-INSERT INTO `reuniao` VALUES (12, 12, '11:00', '16:00', '2025-06-19', 112);
+INSERT INTO `reuniao` VALUES (1, 1, '11:00', '16:00', '2026-05-22', 11);
+INSERT INTO `reuniao` VALUES (2, 38, '10:00', '11:00', '2026-05-30', 8);
 
 -- ----------------------------
 -- Table structure for reuniaoprofessor
@@ -215,15 +208,26 @@ CREATE TABLE `reuniaoprofessor`  (
 -- ----------------------------
 -- Records of reuniaoprofessor
 -- ----------------------------
-INSERT INTO `reuniaoprofessor` VALUES (5, 3, 16);
-INSERT INTO `reuniaoprofessor` VALUES (6, 3, 17);
-INSERT INTO `reuniaoprofessor` VALUES (7, 3, 18);
-INSERT INTO `reuniaoprofessor` VALUES (12, 1, 6);
-INSERT INTO `reuniaoprofessor` VALUES (13, 1, 7);
-INSERT INTO `reuniaoprofessor` VALUES (14, 1, 8);
-INSERT INTO `reuniaoprofessor` VALUES (19, 2, 11);
-INSERT INTO `reuniaoprofessor` VALUES (20, 2, 12);
-INSERT INTO `reuniaoprofessor` VALUES (21, 2, 13);
+
+-- ----------------------------
+-- Table structure for salas
+-- ----------------------------
+DROP TABLE IF EXISTS `salas`;
+CREATE TABLE `salas`  (
+  `IdSala` int NOT NULL AUTO_INCREMENT,
+  `Nome` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`IdSala`) USING BTREE,
+  UNIQUE INDEX `uk_nome_sala`(`Nome` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of salas
+-- ----------------------------
+INSERT INTO `salas` VALUES (8, 'Auditório');
+INSERT INTO `salas` VALUES (5, 'Sala 10');
+INSERT INTO `salas` VALUES (6, 'Sala 11');
+INSERT INTO `salas` VALUES (7, 'Sala 12');
+INSERT INTO `salas` VALUES (11, 'Sala 35');
 
 -- ----------------------------
 -- Table structure for turmas
@@ -235,7 +239,7 @@ CREATE TABLE `turmas`  (
   `Letra` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   `AnoLetivo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`IdTurma`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 37 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 40 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of turmas
@@ -252,6 +256,9 @@ INSERT INTO `turmas` VALUES (9, 12, 'C', '2025/2026');
 INSERT INTO `turmas` VALUES (10, 7, 'A', '2025/2026');
 INSERT INTO `turmas` VALUES (11, 8, 'A', '2025/2026');
 INSERT INTO `turmas` VALUES (12, 9, 'A', '2025/2026');
+INSERT INTO `turmas` VALUES (37, 20, 'D', '2026/2027');
+INSERT INTO `turmas` VALUES (38, 22, 'H', '2025/2026');
+INSERT INTO `turmas` VALUES (39, 11, 'F', '2025/2026');
 
 -- ----------------------------
 -- Table structure for turmasprofessor
@@ -266,7 +273,7 @@ CREATE TABLE `turmasprofessor`  (
   INDEX `IdProfessor`(`IdProfessor` ASC) USING BTREE,
   CONSTRAINT `turmasprofessor_ibfk_2` FOREIGN KEY (`IdProfessor`) REFERENCES `professor` (`IdProfessor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `turmasprofessor_ibfk_3` FOREIGN KEY (`IdTurma`) REFERENCES `turmas` (`IdTurma`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 429 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 432 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of turmasprofessor
@@ -331,6 +338,9 @@ INSERT INTO `turmasprofessor` VALUES (425, 12, 18);
 INSERT INTO `turmasprofessor` VALUES (426, 12, 19);
 INSERT INTO `turmasprofessor` VALUES (427, 12, 20);
 INSERT INTO `turmasprofessor` VALUES (428, 12, 1);
+INSERT INTO `turmasprofessor` VALUES (429, 39, 2);
+INSERT INTO `turmasprofessor` VALUES (430, 39, 3);
+INSERT INTO `turmasprofessor` VALUES (431, 39, 4);
 
 -- ----------------------------
 -- Table structure for vigiasexames
