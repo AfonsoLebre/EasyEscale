@@ -65,11 +65,17 @@ namespace EasyEscale
         List<Exame> examesAtuais = new List<Exame>();
         List<Reuniao> reunioesAtuais = new List<Reuniao>();
 
+        private void checkAnos_Checked(object sender, RoutedEventArgs e)
+        {
+            cbP_SelectionChanged(null, null);
+        }
+
         private void cbP_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cbP.SelectedItem is ComboBoxItem item)
             {
                 string valor = item.Content.ToString();
+                bool todosAnos = checkAnos.IsChecked == true;
 
                 St1.Visibility = Visibility.Collapsed;
                 btnP.Visibility = Visibility.Collapsed;
@@ -77,7 +83,7 @@ namespace EasyEscale
 
                 if (valor == "Exames")
                 {
-                    examesAtuais = Exame.BuscarJ();
+                    examesAtuais = Exame.BuscarJ(todosAnos);
                     cbE.ItemsSource = examesAtuais;
                     cbE.DisplayMemberPath = "Juncao";
                     cbE.SelectedValuePath = "Idxa";
@@ -86,7 +92,7 @@ namespace EasyEscale
                 }
                 else if (valor == "Epocas Especias")
                 {
-                    examesAtuais = Exame.BuscarSE();
+                    examesAtuais = Exame.BuscarSE(todosAnos);
                     cbE.ItemsSource = examesAtuais;
                     cbE.DisplayMemberPath = "Juncao";
                     cbE.SelectedValuePath = "Idxa";

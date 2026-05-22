@@ -90,6 +90,8 @@
                             <ComboBoxItem Content="Reuniões"/>
                         </ComboBox>
 
+                        <CheckBox Name="checkAnos" Content="Mostrar todos os anos" Margin="0,0,0,15" Checked="checkAnos_Checked" Unchecked="checkAnos_Checked" FontWeight="SemiBold"/>
+
                         <StackPanel x:Name="st1" Visibility="Collapsed">
                             <Label Name="lbE" Content="Selecione o Evento:" Padding="0,0,0,5" FontWeight="SemiBold"/>
                             <ComboBox Name="cbE" Height="35" SelectionChanged="cbP_SelectionChanged2">

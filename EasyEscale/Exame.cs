@@ -55,7 +55,7 @@ namespace EasyEscale
             using (MySqlConnection con = new MySqlConnection(conx))
             {
                 con.Open();
-                string query = "SELECT * FROM exames INNER JOIN disciplina where exames.IdDisciplina = disciplina.IdDisciplina ";
+                string query = "SELECT * FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina WHERE YEAR(exames.Data) = YEAR(CURDATE()) ";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, con))
                 using (MySqlDataReader leitor = cmd.ExecuteReader())
@@ -78,7 +78,7 @@ namespace EasyEscale
 
             return exames;
         }
-        public static List<Exame> BuscarJ()
+        public static List<Exame> BuscarJ(bool todosAnos = false)
         {
             List<Exame> exames = new List<Exame>();
             string conx = "server=localhost;user=root;password=root;database=easyescale";
@@ -86,7 +86,12 @@ namespace EasyEscale
             using (MySqlConnection con = new MySqlConnection(conx))
             {
                 con.Open();
-                string query = "  SELECT * FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina WHERE exames.ES = 0; ";
+                string query = "  SELECT * FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina WHERE exames.ES = 0 ";
+                if (!todosAnos)
+                {
+                    query += " AND YEAR(exames.Data) = YEAR(CURDATE()) ";
+                }
+                query += ";";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, con))
                 using (MySqlDataReader leitor = cmd.ExecuteReader())
@@ -112,7 +117,7 @@ namespace EasyEscale
             return exames;
         }
 
-        public static List<Exame> BuscarSE()
+        public static List<Exame> BuscarSE(bool todosAnos = false)
         {
             List<Exame> exames = new List<Exame>();
             string conx = "server=localhost;user=root;password=root;database=easyescale";
@@ -120,7 +125,12 @@ namespace EasyEscale
             using (MySqlConnection con = new MySqlConnection(conx))
             {
                 con.Open();
-                string query = "  SELECT * FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina WHERE exames.ES = 1; ";
+                string query = "  SELECT * FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina WHERE exames.ES = 1 ";
+                if (!todosAnos)
+                {
+                    query += " AND YEAR(exames.Data) = YEAR(CURDATE()) ";
+                }
+                query += ";";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, con))
                 using (MySqlDataReader leitor = cmd.ExecuteReader())
