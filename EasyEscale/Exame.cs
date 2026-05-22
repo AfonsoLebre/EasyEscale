@@ -78,7 +78,7 @@ namespace EasyEscale
 
             return exames;
         }
-        public static List<Exame> BuscarJ(bool todosAnos = false)
+        public static List<Exame> BuscarJ(bool todosAnos = false, bool apenasComEscala = false)
         {
             List<Exame> exames = new List<Exame>();
             string conx = "server=localhost;user=root;password=root;database=easyescale";
@@ -86,7 +86,15 @@ namespace EasyEscale
             using (MySqlConnection con = new MySqlConnection(conx))
             {
                 con.Open();
-                string query = "  SELECT * FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina WHERE exames.ES = 0 ";
+                string query = "  SELECT DISTINCT exames.*, disciplina.Designacao, disciplina.Curso FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina ";
+                
+                if (apenasComEscala)
+                {
+                    query += " INNER JOIN vigiasexames ON exames.IdExame = vigiasexames.IdExame ";
+                }
+
+                query += " WHERE exames.ES = 0 ";
+                
                 if (!todosAnos)
                 {
                     query += " AND YEAR(exames.Data) = YEAR(CURDATE()) ";
@@ -117,7 +125,7 @@ namespace EasyEscale
             return exames;
         }
 
-        public static List<Exame> BuscarSE(bool todosAnos = false)
+        public static List<Exame> BuscarSE(bool todosAnos = false, bool apenasComEscala = false)
         {
             List<Exame> exames = new List<Exame>();
             string conx = "server=localhost;user=root;password=root;database=easyescale";
@@ -125,7 +133,15 @@ namespace EasyEscale
             using (MySqlConnection con = new MySqlConnection(conx))
             {
                 con.Open();
-                string query = "  SELECT * FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina WHERE exames.ES = 1 ";
+                string query = "  SELECT DISTINCT exames.*, disciplina.Designacao, disciplina.Curso FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina ";
+
+                if (apenasComEscala)
+                {
+                    query += " INNER JOIN vigiasexames ON exames.IdExame = vigiasexames.IdExame ";
+                }
+
+                query += " WHERE exames.ES = 1 ";
+
                 if (!todosAnos)
                 {
                     query += " AND YEAR(exames.Data) = YEAR(CURDATE()) ";

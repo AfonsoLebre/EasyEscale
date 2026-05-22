@@ -42,7 +42,7 @@ namespace EasyEscale
             juncao = f;
         }
 
-        public static List<Reuniao> Buscar(bool todosAnos = false, bool soComEscala = false)
+        public static List<Reuniao> Buscar(bool todosAnos = false, bool apenasComEscala = false)
         {
             List<Reuniao> Reu = new List<Reuniao>();
             string conx = "server=localhost;user=root;password=root;database=easyescale";
@@ -56,7 +56,7 @@ namespace EasyEscale
                                  INNER JOIN turmas ON reuniao.IdTurma = turmas.IdTurma
                                  LEFT JOIN salas ON reuniao.sala = salas.IdSala";
 
-                if (soComEscala)
+                if (apenasComEscala)
                 {
                     query += " INNER JOIN reuniaoprofessor ON reuniao.IdReuniao = reuniaoprofessor.IdReuniao ";
                 }

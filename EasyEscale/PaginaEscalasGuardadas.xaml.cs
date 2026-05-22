@@ -198,7 +198,7 @@ namespace EasyEscale
 
                 if (valor == "Exames")
                 {
-                    exames = Exame.BuscarJ(todosAnos);
+                    exames = Exame.BuscarJ(todosAnos, true);
                     cbE.ItemsSource = exames;
                     cbE.DisplayMemberPath = "Juncao";
                     cbE.SelectedValuePath = "IdExa";
@@ -208,7 +208,7 @@ namespace EasyEscale
                 }
                 else if (valor == "Epocas Especias")
                 {
-                    exames = Exame.BuscarSE(todosAnos);
+                    exames = Exame.BuscarSE(todosAnos, true);
                     cbE.ItemsSource = exames;
                     cbE.DisplayMemberPath = "Juncao";
                     cbE.SelectedValuePath = "IdExa";
@@ -218,7 +218,7 @@ namespace EasyEscale
                 }
                 else if (valor == "Reuniões")
                 {
-                    reunioes = EasyEscale.Reuniao.Buscar(todosAnos);
+                    reunioes = EasyEscale.Reuniao.Buscar(todosAnos, true);
                     cbE.ItemsSource = reunioes;
                     cbE.DisplayMemberPath = "juncao";
                     cbE.SelectedValuePath = "IdRe";
