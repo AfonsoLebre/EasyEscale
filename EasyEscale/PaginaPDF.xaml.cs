@@ -146,17 +146,42 @@ namespace EasyEscale
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            
+
             if (cbE.SelectedIndex < 0) return;
+            string tipo = ((ComboBoxItem)cbP.SelectedItem).Content.ToString();
+           
+
 
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "PDF Files (*.pdf)|*.pdf";
-            sfd.FileName = "Relatorio_EasyEscale_" + DateTime.Now.ToString("yyyyMMdd_HHmm") + ".pdf";
+           
+            if (tipo == "Exames")
+            {
+                sfd.FileName = $"Escala de Exame - {esteExame.Designacao.ToUpper()} Codigo: { esteExame.CodExa} Data: {esteExame.Data.ToShortDateString()}";
+
+
+
+            }
+            else if (tipo == "Epocas Especias")
+            {
+                sfd.FileName = $"Escala de Exame de Época Especial - {esteExame.Designacao.ToUpper()} Codigo: {esteExame.CodExa} Data: {esteExame.Data.ToShortDateString()}";
+
+            }
+            else
+            {
+
+                sfd.FileName = $"Convocatoria para Exame {estaReuniao.Ano}{estaReuniao.Letra} Data: {estaReuniao.Data.ToShortDateString()}  " ;
+
+            }
+
+
 
             if (sfd.ShowDialog() == true)
             {
                 try
                 {
-                    string tipo = ((ComboBoxItem)cbP.SelectedItem).Content.ToString();
+                    
                     Document doc = new Document(PageSize.A4, 50, 50, 50, 50);
                     PdfWriter.GetInstance(doc, new FileStream(sfd.FileName, FileMode.Create));
                     doc.Open();
