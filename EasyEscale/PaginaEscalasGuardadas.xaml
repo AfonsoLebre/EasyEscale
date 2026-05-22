@@ -141,7 +141,10 @@
                                   RowBackground="#F8F9FA"
                                   AlternatingRowBackground="#EEF2F7"
                                   GridLinesVisibility="None"
-                                  ItemsSource="{Binding}">
+                                  ItemsSource="{Binding}"
+                                  RowHeight="80"
+                                  FontSize="18"
+                                  VerticalContentAlignment="Center">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Nome Professor" Binding="{Binding Value}" Width="*"/>
                                 <DataGridTextColumn Header="Nº Processo" Binding="{Binding Key}" Width="150"/>
@@ -169,7 +172,10 @@
                                   RowBackground="#F8F9FA"
                                   AlternatingRowBackground="#EEF2F7"
                                   GridLinesVisibility="None"
-                                  ItemsSource="{Binding}">
+                                  ItemsSource="{Binding}"
+                                  RowHeight="80"
+                                  FontSize="18"
+                                  VerticalContentAlignment="Center">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Nome Professor" Binding="{Binding Value}" Width="*"/>
                                 <DataGridTextColumn Header="Nº Processo" Binding="{Binding Key}" Width="150"/>

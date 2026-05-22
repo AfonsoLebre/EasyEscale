@@ -311,13 +311,14 @@ namespace EasyEscale
             }
         }
 
-       public static Dictionary<int, string> GeradorEsCalasExames(Exame x)
+       public static Dictionary<string, string> GeradorEsCalasExames(Exame x)
 {
     string conx = "server=localhost;user=root;password=root;database=easyescale";
-     Dictionary<int, string> ProfsEscolhidos = new Dictionary<int, string>();
+     Dictionary<string, string> ProfsEscolhidos = new Dictionary<string, string>();
     List<Aula> aulas = new List<Aula>();
     Dictionary<int, int> escolhidos = new Dictionary<int, int>();
     Dictionary<int, string> professores = new Dictionary<int, string>();
+    Dictionary<int, string> nProcessos = new Dictionary<int, string>();
 
     using (MySqlConnection con = new MySqlConnection(conx))
     {
@@ -361,6 +362,7 @@ namespace EasyEscale
                 if (!professores.ContainsKey(idProf))
                 {
                     professores.Add(idProf, nome);
+                    nProcessos.Add(idProf, leitor["NProcesso"].ToString());
                 }
 
                 aulas.Add(new Aula(idProf, leitor["NProcesso"].ToString(), nome, leitor["Email"].ToString(),
@@ -432,7 +434,7 @@ namespace EasyEscale
 
                    foreach (int m in menores)
                     {
-                        ProfsEscolhidos.Add(m, professores[m]);
+                        ProfsEscolhidos.Add(nProcessos[m], professores[m]);
                     }
 
                 }
@@ -449,14 +451,15 @@ namespace EasyEscale
 
         }
 
-        public static Dictionary<int, string> GeradorEscalasReunioes(Reuniao r)
+        public static Dictionary<string, string> GeradorEscalasReunioes(Reuniao r)
         {
             string conx = "server=localhost;user=root;password=root;database=easyescale";
-            Dictionary<int, string> ProfsEscolhidos = new Dictionary<int, string>();
+            Dictionary<string, string> ProfsEscolhidos = new Dictionary<string, string>();
             List<Aula> aulas = new List<Aula>();
 
             Dictionary<int, int> sobreposicoes = new Dictionary<int, int>();
             Dictionary<int, string> professores = new Dictionary<int, string>();
+            Dictionary<int, string> nProcessos = new Dictionary<int, string>();
 
             using (MySqlConnection con = new MySqlConnection(conx))
             {
@@ -482,6 +485,7 @@ namespace EasyEscale
                         if (!professores.ContainsKey(idProf))
                         {
                             professores.Add(idProf, nome);
+                            nProcessos.Add(idProf, leitor["NProcesso"].ToString());
                             sobreposicoes.Add(idProf, 0);
                         }
 
@@ -525,7 +529,7 @@ namespace EasyEscale
 
                     foreach (var kvp in ordenados)
                     {
-                        ProfsEscolhidos.Add(kvp.Key, professores[kvp.Key]);
+                        ProfsEscolhidos.Add(nProcessos[kvp.Key], professores[kvp.Key]);
                     }
                 }
                 catch (Exception ex)
@@ -538,7 +542,7 @@ namespace EasyEscale
             }
         }
 
-        public static string GuardaEscala(Dictionary<int,string> x, int z, bool eReuniao = false)
+        public static string GuardaEscala(Dictionary<string, string> x, int z, bool eReuniao = false)
         {
             string conx = "server=localhost;user=root;password=root;database=easyescale";
             int contador = 0;
@@ -554,13 +558,13 @@ namespace EasyEscale
                     cmdDel.Parameters.AddWithValue("@P", z);
                     cmdDel.ExecuteNonQuery();
 
-                    string query = "Insert into vigiasexames(IdProfessor, IdExame, Estado) values(@T, @P, @E);";
+                    string query = "Insert into vigiasexames(IdProfessor, IdExame, Estado) values((SELECT IdProfessor FROM professor WHERE NProcesso = @NP LIMIT 1), @P, @E);";
                     MySqlCommand cmd = new MySqlCommand(query, con, tran);
 
                     cmd.Parameters.AddWithValue("@P", z);
-                    cmd.Parameters.AddWithValue("@T", 0);
+                    cmd.Parameters.Add("@NP", MySqlDbType.VarChar);
                     cmd.Parameters.AddWithValue("@E", "efetivo");
-                    foreach (int m in x.Keys)
+                    foreach (string np in x.Keys)
                     {
                         contador++;
 
@@ -579,7 +583,7 @@ namespace EasyEscale
                                 cmd.Parameters["@E"].Value = "suplente";
                             }
                         }
-                        cmd.Parameters["@T"].Value = m;
+                        cmd.Parameters["@NP"].Value = np;
                         cmd.ExecuteNonQuery();
                     }
 
@@ -594,7 +598,7 @@ namespace EasyEscale
                 return "Erro a Guardar Escala: " + A.Message;
             }
         }
-        public static string GuardaEscalaReu(Dictionary<int, string> x, int z)
+        public static string GuardaEscalaReu(Dictionary<string, string> x, int z)
         {
             string conx = "server=localhost;user=root;password=root;database=easyescale";
             int contador = 0;
@@ -610,15 +614,14 @@ namespace EasyEscale
                     cmdDel.Parameters.AddWithValue("@IRR", z);
                     cmdDel.ExecuteNonQuery();
 
-                    string query = "Insert into reuniaoprofessor(IdReuniao, IdProfessor) values (@IR,@IP);";
+                    string query = "Insert into reuniaoprofessor(IdReuniao, IdProfessor) values (@IR, (SELECT IdProfessor FROM professor WHERE NProcesso = @NP LIMIT 1));";
                     MySqlCommand cmd = new MySqlCommand(query, con, tran);
 
                     cmd.Parameters.AddWithValue("@IR", z);
-                    cmd.Parameters.AddWithValue("@IP", 0);
-                    foreach (int m in x.Keys)
+                    cmd.Parameters.Add("@NP", MySqlDbType.VarChar);
+                    foreach (string np in x.Keys)
                     {
-
-                        cmd.Parameters["@IP"].Value = m;
+                        cmd.Parameters["@NP"].Value = np;
                         cmd.ExecuteNonQuery();
                     }
 

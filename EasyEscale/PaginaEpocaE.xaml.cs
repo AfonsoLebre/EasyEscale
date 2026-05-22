@@ -62,7 +62,7 @@ namespace EasyEscale
             else if (x.Name == "Ini") { a.Show(); }
         }
 
-        Dictionary<int, string> Nomes = new Dictionary<int, string>();
+        Dictionary<string, string> Nomes = new Dictionary<string, string>();
         List<Exame> examesAtuais = new List<Exame>();
 
         private void gerar(object sender, RoutedEventArgs e)

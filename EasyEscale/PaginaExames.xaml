@@ -181,13 +181,16 @@
                           Visibility="Collapsed"
                           RowBackground="#F8F9FA"
                           AlternatingRowBackground="#EEF2F7"
-                          GridLinesVisibility="None">
+                          GridLinesVisibility="None"
+                          RowHeight="80"
+                          FontSize="18"
+                          VerticalContentAlignment="Center">
 
                             <DataGrid.Columns>
 
-                                <DataGridTextColumn Header="ID"
+                                <DataGridTextColumn Header="Nº Processo"
                                  Binding="{Binding Key}"
-                                 Width="50"/>
+                                 Width="150"/>
 
                                 <DataGridTextColumn Header="Nome Professor"
                                 Binding="{Binding Value}"
@@ -238,17 +241,20 @@
                           Visibility="Collapsed"
                           RowBackground="#F8F9FA"
                           AlternatingRowBackground="#EEF2F7"
-                          GridLinesVisibility="None">
+                          GridLinesVisibility="None"
+                          RowHeight="80"
+                          FontSize="18"
+                          VerticalContentAlignment="Center">
 
                             <DataGrid.Columns>
 
-                                <DataGridTextColumn Header="ID"
-       Binding="{Binding Key}"
-       Width="50"/>
+                                <DataGridTextColumn Header="Nº Processo"
+                                 Binding="{Binding Key}"
+                                 Width="150"/>
 
                                 <DataGridTextColumn Header="Nome Professor"
-      Binding="{Binding Value}"
-     Width="*"/>
+                                Binding="{Binding Value}"
+                               Width="*"/>
 
                             </DataGrid.Columns>
 

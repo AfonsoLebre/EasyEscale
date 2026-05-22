@@ -28,7 +28,7 @@ namespace EasyEscale
             cbP.DisplayMemberPath = "Juncao";
             cbP.SelectedValuePath = "IdExa";
         }
-        Dictionary<int, string> Nomes = new Dictionary<int, string>();
+        Dictionary<string, string> Nomes = new Dictionary<string, string>();
             private void IR(object sender, RoutedEventArgs e)
         {
 

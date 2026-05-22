@@ -136,36 +136,43 @@
                            HorizontalAlignment="Center"
                            Visibility="Collapsed"
                            Margin="0,0,0,10"/>
+<DataGrid Name="DG1"
+          AutoGenerateColumns="False"
+          MinHeight="200"
+          MaxHeight="400"
+          Visibility="Collapsed"
+          RowBackground="#F8F9FA"
+          AlternatingRowBackground="#EEF2F7"
+          GridLinesVisibility="None"
+          ItemsSource="{Binding}"
+          RowHeight="80"
+          FontSize="18"
+          VerticalContentAlignment="Center">
 
-                    <DataGrid Name="DG1"
-                              AutoGenerateColumns="False"
-                              MinHeight="200"
-                              MaxHeight="400"
-                              Visibility="Collapsed"
-                              RowBackground="#F8F9FA"
-                              AlternatingRowBackground="#EEF2F7"
-                              GridLinesVisibility="None"
-                              ItemsSource="{Binding}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Nome Professor"
-                                                Binding="{Binding Value}"
-                                                Width="*"/>
-                            <DataGridTextColumn Header="Nº Processo"
-                                                Binding="{Binding Key}"
-                                                Width="150"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                    <Button Name="btnguarda"
-          Content="Gerar Escala"
-          Click="Guarda"
-          Margin="0,15,0,0"
-          Height="40"
-          Background="#27AE60"
-          Foreground="White"
-          FontWeight="Bold"
-          Visibility="Collapsed"/>
-                </StackPanel>
-            </Border>
+    <DataGrid.Columns>
+
+        <DataGridTextColumn Header="Nome Professor"
+                             Binding="{Binding Value}"
+                            Width="*"/>
+
+        <DataGridTextColumn Header="Nº Processo"
+                             Binding="{Binding Key}"
+                            Width="150"/>
+
+    </DataGrid.Columns>
+
+</DataGrid>
+
+<Button Name="btnguarda"
+        Content="Guardar Escala"
+        Click="Guarda"
+        Margin="0,15,0,0"
+        Height="40"
+        Background="#27AE60"
+        Foreground="White"
+        FontWeight="Bold"
+        Visibility="Collapsed"/>
+</StackPanel>            </Border>
         </Grid>
     </Grid>
 </Window>

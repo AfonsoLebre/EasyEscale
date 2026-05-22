@@ -18,7 +18,7 @@ namespace EasyEscale
 {
     public partial class PaginaReuniao : Window
     {
-        Dictionary<int, string> Nomes = new Dictionary<int, string>();
+        Dictionary<string, string> Nomes = new Dictionary<string, string>();
         List<Reuniao> ReuAtuais = new List<Reuniao>();
 
         public PaginaReuniao(Window x)
