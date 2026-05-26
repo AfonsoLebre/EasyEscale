@@ -69,7 +69,7 @@
                            Foreground="#2D3436" Margin="0,0,0,10"
                            HorizontalAlignment="Center"/>
 
-                <TextBlock Text="Sistema Inteligente de Elaboração de Escalas de Vigilância"
+                <TextBlock Text="Aplicação de elaboração das escalas de vigilancia para exames e Reuniões escolares"
                            FontSize="20" Foreground="#636E72" Margin="0,0,0,50"
                            HorizontalAlignment="Center"/>
 
@@ -80,19 +80,7 @@
                     </Border.Effect>
 
                     <StackPanel>
-                        <Image Source="/Imagem/unnamed.jpg" Height="250" Stretch="Uniform" Margin="0,0,0,30">
-                            <Image.Clip>
-                                <RectangleGeometry Rect="0,0,620,250" RadiusX="10" RadiusY="10"/>
-                            </Image.Clip>
-                        </Image>
-
-                        <TextBlock Text="Gestão eficiente para a sua instituição"
-                                   FontSize="22" FontWeight="SemiBold" Foreground="#34495E"
-                                   HorizontalAlignment="Center" Margin="0,0,0,10"/>
-
-                        <TextBlock Text="Utilize o menu superior para começar a gerir professores, horários e gerar as suas escalas de forma automática e otimizada."
-                                   FontSize="16" Foreground="#7F8C8D" TextWrapping="Wrap"
-                                   TextAlignment="Center" MaxWidth="500"/>
+                        <Image Source="/Imagem/Logo_EasyEscale-removebg-preview.png" Height="500" Stretch="Uniform" Margin="0"/>
                     </StackPanel>
                 </Border>
             </StackPanel>

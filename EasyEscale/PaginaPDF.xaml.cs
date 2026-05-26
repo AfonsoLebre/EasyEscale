@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Paragraph = iTextSharp.text.Paragraph;
+using System.Diagnostics;
 
 namespace EasyEscale
 {
@@ -78,7 +79,7 @@ namespace EasyEscale
                 bool todosAnos = checkAnos.IsChecked == true;
 
                 St1.Visibility = Visibility.Collapsed;
-                btnP.Visibility = Visibility.Collapsed;
+                panelBotoes.Visibility = Visibility.Collapsed;
                 Dados.Text = "";
 
                 if (valor == "Exames")
@@ -140,108 +141,112 @@ namespace EasyEscale
                 }
 
                 St1.Visibility = Visibility.Visible;
-                btnP.Visibility = Visibility.Visible;
+                panelBotoes.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void GerarRelatorioPDF(string caminho)
+        {
+            string tipo = ((ComboBoxItem)cbP.SelectedItem).Content.ToString();
+            
+            using (FileStream fs = new FileStream(caminho, FileMode.Create))
+            {
+                Document doc = new Document(PageSize.A4, 50, 50, 50, 50);
+                PdfWriter.GetInstance(doc, fs);
+                doc.Open();
+
+                var fonteTitulo = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18);
+                var fonteSubtitulo = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14);
+                var fonteNormal = FontFactory.GetFont(FontFactory.HELVETICA, 12);
+                var fonteNegrito = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
+
+                doc.Add(new Paragraph("EASY ESCALE - RELATÓRIO DE ESCALAS", fonteTitulo));
+                doc.Add(new Paragraph("Gerado em: " + DateTime.Now.ToString("G"), fonteNormal));
+                doc.Add(new Paragraph("------------------------------------------------------------------------------------------"));
+
+                if (tipo == "Exames") doc.Add(new Paragraph("\nDETALHES DO EXAME", fonteSubtitulo));
+                else if (tipo == "Epocas Especias") doc.Add(new Paragraph("\nDETALHES DA ÉPOCA ESPECIAL", fonteSubtitulo));
+                else doc.Add(new Paragraph("\nDETALHES DA REUNIÃO", fonteSubtitulo));
+
+                doc.Add(new Paragraph(Dados.Text, fonteNormal));
+                doc.Add(new Paragraph("\n"));
+
+                var listaProfs = Nomes.ToList();
+
+                if (tipo == "Exames" || tipo == "Epocas Especias")
+                {
+                    doc.Add(new Paragraph("VIGILANTES EFETIVOS", fonteSubtitulo));
+                    PdfPTable tableEfetivos = CriarTabelaProfessores(listaProfs.Take(3).ToList(), fonteNegrito, fonteNormal);
+                    doc.Add(tableEfetivos);
+                    doc.Add(new Paragraph("\n"));
+                    doc.Add(new Paragraph("VIGILANTES SUPLENTES", fonteSubtitulo));
+                    PdfPTable tableSuplentes = CriarTabelaProfessores(listaProfs.Skip(3).Take(2).ToList(), fonteNegrito, fonteNormal);
+                    doc.Add(tableSuplentes);
+                }
+                else
+                {
+                    doc.Add(new Paragraph("PROFESSORES CONVOCADOS", fonteSubtitulo));
+                    PdfPTable tableReu = CriarTabelaProfessores(listaProfs, fonteNegrito, fonteNormal);
+                    doc.Add(tableReu);
+                }
+
+                doc.Add(new Paragraph("\n\nAssinatura da Direção: __________________________________________"));
+                doc.Close();
             }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
-
             if (cbE.SelectedIndex < 0) return;
             string tipo = ((ComboBoxItem)cbP.SelectedItem).Content.ToString();
-           
-
 
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "PDF Files (*.pdf)|*.pdf";
            
-            if (tipo == "Exames")
-            {
-                sfd.FileName = $"Escala de Exame - {esteExame.Designacao.ToUpper()} Codigo: { esteExame.CodExa} Data: {esteExame.Data.ToShortDateString()}";
-
-
-
-            }
-            else if (tipo == "Epocas Especias")
-            {
-                sfd.FileName = $"Escala de Exame de Época Especial - {esteExame.Designacao.ToUpper()} Codigo: {esteExame.CodExa} Data: {esteExame.Data.ToShortDateString()}";
-
-            }
-            else
-            {
-
-                sfd.FileName = $"Convocatoria para Exame {estaReuniao.Ano}{estaReuniao.Letra} Data: {estaReuniao.Data.ToShortDateString()}  " ;
-
-            }
-
-
+            if (tipo == "Exames") sfd.FileName = $"Escala de Exame - {esteExame.Designacao.ToUpper()} Codigo {esteExame.CodExa}";
+            else if (tipo == "Epocas Especias") sfd.FileName = $"Escala Época Especial - {esteExame.Designacao.ToUpper()} Codigo {esteExame.CodExa}";
+            else sfd.FileName = $"Convocatoria Reunião {estaReuniao.Ano}{estaReuniao.Letra}";
 
             if (sfd.ShowDialog() == true)
             {
                 try
                 {
-                    
-                    Document doc = new Document(PageSize.A4, 50, 50, 50, 50);
-                    PdfWriter.GetInstance(doc, new FileStream(sfd.FileName, FileMode.Create));
-                    doc.Open();
-
-                    var fonteTitulo = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18);
-                    var fonteSubtitulo = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14);
-                    var fonteNormal = FontFactory.GetFont(FontFactory.HELVETICA, 12);
-                    var fonteNegrito = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12);
-
-                    doc.Add(new Paragraph("EASY ESCALE - RELATÓRIO DE ESCALAS", fonteTitulo));
-                    doc.Add(new Paragraph("Gerado em: " + DateTime.Now.ToString("G"), fonteNormal));
-                    doc.Add(new Paragraph("------------------------------------------------------------------------------------------"));
-                  if(tipo == "Exames")
-                    {
-                        doc.Add(new Paragraph("\nDETALHES DO Exame", fonteSubtitulo));
-                    }
-                  else if(tipo == "Epocas Especias")
-                    {
-                        doc.Add(new Paragraph("\nDETALHES da Época Especial", fonteSubtitulo));
-                    }
-                  else
-                    {
-                        doc.Add(new Paragraph("\nDETALHES da Reunião", fonteSubtitulo));
-
-                    }
-                   
-                    doc.Add(new Paragraph(Dados.Text, fonteNormal));
-                    doc.Add(new Paragraph("\n"));
-
-                    
-                    var listaProfs = Nomes.ToList();
-
-                    if (tipo == "Exames" || tipo == "Epocas Especias")
-                    {
-                        doc.Add(new Paragraph("VIGILANTES EFETIVOS", fonteSubtitulo));
-                        PdfPTable tableEfetivos = CriarTabelaProfessores(listaProfs.Take(3).ToList(), fonteNegrito, fonteNormal);
-                        doc.Add(tableEfetivos);
-
-                        doc.Add(new Paragraph("\n"));
-
-                        doc.Add(new Paragraph("VIGILANTES SUPLENTES", fonteSubtitulo));
-                        PdfPTable tableSuplentes = CriarTabelaProfessores(listaProfs.Skip(3).Take(2).ToList(), fonteNegrito, fonteNormal);
-                        doc.Add(tableSuplentes);
-                    }
-                    else
-                    {
-                        doc.Add(new Paragraph("PROFESSORES CONVOCADOS", fonteSubtitulo));
-                        PdfPTable tableReu = CriarTabelaProfessores(listaProfs, fonteNegrito, fonteNormal);
-                        doc.Add(tableReu);
-                    }
-
-                    doc.Add(new Paragraph("\n\nAssinatura da Direção: __________________________________________"));
-
-                    doc.Close();
+                    GerarRelatorioPDF(sfd.FileName);
                     MessageBox.Show("Relatório PDF gerado com sucesso!");
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Erro ao gerar PDF: " + ex.Message);
                 }
+            }
+        }
+
+        private void btnPre_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Criar um nome de ficheiro único para evitar problemas de cache ou bloqueio do browser
+                string fileName = $"preview_{DateTime.Now.Ticks}.pdf";
+                string tempPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, fileName);
+                
+                GerarRelatorioPDF(tempPath);
+
+                if (File.Exists(tempPath))
+                {
+                    // Limpar a página antes de carregar o novo PDF
+                    PdfViewr.Navigate("about:blank");
+                    
+                    // Pequena pausa para o sistema de ficheiros libertar totalmente o documento
+                    System.Threading.Thread.Sleep(100);
+
+                    // Usar o URI absoluto bem formatado
+                    Uri uri = new Uri(tempPath);
+                    PdfViewr.Navigate(uri.AbsoluteUri);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ao abrir previsualização: " + ex.Message);
             }
         }
 
