@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using System.Windows;
@@ -142,6 +143,12 @@ namespace EasyEscale
             string Nome = txNome.Text;
             string Email = txMail.Text;
             string pro = txtProc.Text;
+
+            if (!Regex.IsMatch(Email, @"^[^@\s]+@esdmm\.pt$"))
+            {
+                MessageBox.Show("O email deve ter o formato xxxxx@esdmm.pt");
+                return;
+            }
 
             List<int> idsSelecionados = Disciplinas.Children
             .OfType<CheckBox>()

@@ -87,16 +87,25 @@
                         <Separator Background="#EEE" Margin="0,0,0,25"/>
 
                         <Grid Margin="0,0,0,20">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="15"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="20"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
 
-                            <StackPanel Grid.Column="0">
+                            <!-- Data ocupa as duas colunas -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3">
                                 <TextBlock Text="Data" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
-                                <DatePicker Name="DP" Height="40" FontSize="16" VerticalContentAlignment="Center" Margin="0,0,0,15"/>
+                                <DatePicker Name="DP" Height="40" FontSize="16" VerticalContentAlignment="Center"/>
+                            </StackPanel>
 
+                            <!-- Hora de Início -->
+                            <StackPanel Grid.Row="2" Grid.Column="0">
                                 <TextBlock Text="Hora de Início" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
                                 <ComboBox Name="CBI" Height="40" FontSize="16" VerticalContentAlignment="Center">
                                     <ComboBoxItem Content="9:00"/>
@@ -123,9 +132,10 @@
                                 </ComboBox>
                             </StackPanel>
 
-                            <StackPanel Grid.Column="2">
-                                <TextBlock Text="Hora de Termino" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
-                                <ComboBox Name="CBT" Height="40" FontSize="16" VerticalContentAlignment="Center" Margin="0,0,0,15">
+                            <!-- Hora de Término -->
+                            <StackPanel Grid.Row="2" Grid.Column="2">
+                                <TextBlock Text="Hora de Término" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
+                                <ComboBox Name="CBT" Height="40" FontSize="16" VerticalContentAlignment="Center">
                                     <ComboBoxItem Content="9:30"/>
                                     <ComboBoxItem Content="10:00"/>
                                     <ComboBoxItem Content="10:30"/>
@@ -171,16 +181,13 @@
                         </StackPanel>
 
                         <StackPanel Name="Exa1" Visibility="Collapsed" Margin="0,0,0,20">
+                            <!-- Linha 1: Disciplina | Código do Exame -->
                             <Grid Margin="0,0,0,15">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="20"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock Text="Epoca Especial" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
-                                    <CheckBox Name="check" Height="40" FontSize="16" VerticalContentAlignment="Center" Padding="5,0"/>
-                                </StackPanel>
                                 <StackPanel Grid.Column="0">
                                     <TextBlock Text="Disciplina" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
                                     <ComboBox Name="CBD" Height="40" FontSize="16" VerticalContentAlignment="Center"/>
@@ -190,6 +197,7 @@
                                     <TextBox Name="TxtCod" Height="40" FontSize="16" VerticalContentAlignment="Center" Padding="5,0"/>
                                 </StackPanel>
                             </Grid>
+                            <!-- Linha 2: Nº de Alunos | Época Especial -->
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -199,6 +207,10 @@
                                 <StackPanel Grid.Column="0">
                                     <TextBlock Text="Nº de Alunos" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
                                     <TextBox Name="TxtNAlunos" Height="40" FontSize="16" VerticalContentAlignment="Center" Padding="5,0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
+                                    <TextBlock Text="Época Especial" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
+                                    <CheckBox Name="check" Height="40" FontSize="16" VerticalContentAlignment="Center" Padding="5,0"/>
                                 </StackPanel>
                             </Grid>
                         </StackPanel>

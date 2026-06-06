@@ -112,7 +112,10 @@ namespace EasyEscale
                 return;
             }
 
-            if (!int.TryParse(tamanhoStr, out int tamanho) || tamanho <= 0)
+            int tamanho = 0;
+            int.TryParse(tamanhoStr, out tamanho);
+
+            if (tamanho <= 0)
             {
                 MessageBox.Show("Por favor, insira uma capacidade válida.");
                 return;

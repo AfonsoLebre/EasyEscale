@@ -1,17 +1,17 @@
 /*
- Navicat Premium Data Transfer
+ Navicat Premium Dump SQL
 
  Source Server         : PAP
  Source Server Type    : MySQL
- Source Server Version : 80046 (8.0.46)
+ Source Server Version : 80042 (8.0.42)
  Source Host           : localhost:3306
  Source Schema         : easyescale
 
  Target Server Type    : MySQL
- Target Server Version : 80046 (8.0.46)
+ Target Server Version : 80042 (8.0.42)
  File Encoding         : 65001
 
- Date: 22/05/2026 11:06:43
+ Date: 06/06/2026 17:09:23
 */
 
 SET NAMES utf8mb4;
@@ -116,19 +116,44 @@ CREATE TABLE `exames`  (
   `IdDisciplina` int NULL DEFAULT NULL,
   `CodExame` int NULL DEFAULT NULL,
   `ES` bit(1) NULL DEFAULT b'0',
+  `NPessoas` int NULL DEFAULT NULL,
   PRIMARY KEY (`IdExame`) USING BTREE,
   INDEX `IdDisciplina`(`IdDisciplina` ASC) USING BTREE,
   CONSTRAINT `exames_ibfk_1` FOREIGN KEY (`IdDisciplina`) REFERENCES `disciplina` (`IdDisciplina`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 111 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 113 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of exames
 -- ----------------------------
-INSERT INTO `exames` VALUES (100, '2025-06-30', '9:00', '12:00', 1, 639, b'0');
-INSERT INTO `exames` VALUES (101, '2025-07-02', '13:00', '15:30', 2, 714, b'0');
-INSERT INTO `exames` VALUES (108, '2026-07-10', '9:00', '12:00', 1, 888, b'1');
-INSERT INTO `exames` VALUES (109, '2026-07-12', '10:00', '12:00', 2, 889, b'1');
-INSERT INTO `exames` VALUES (110, '2026-05-22', '8:00', '11:00', 3, 222, b'0');
+INSERT INTO `exames` VALUES (100, '2025-06-30', '9:00', '12:00', 1, 639, b'0', NULL);
+INSERT INTO `exames` VALUES (101, '2025-07-02', '13:00', '15:30', 2, 714, b'0', NULL);
+INSERT INTO `exames` VALUES (108, '2026-07-10', '9:00', '12:00', 1, 888, b'1', NULL);
+INSERT INTO `exames` VALUES (109, '2026-07-12', '10:00', '12:00', 2, 889, b'1', NULL);
+INSERT INTO `exames` VALUES (110, '2026-05-22', '8:00', '11:00', 3, 222, b'0', NULL);
+INSERT INTO `exames` VALUES (111, '2026-06-06', '9:00', '10:00', 2, 7879, b'0', 30);
+INSERT INTO `exames` VALUES (112, '2026-06-06', '9:00', '10:30', 9, 7896, b'0', 40);
+
+-- ----------------------------
+-- Table structure for examesalas
+-- ----------------------------
+DROP TABLE IF EXISTS `examesalas`;
+CREATE TABLE `examesalas`  (
+  `IdExameSala` int NOT NULL AUTO_INCREMENT,
+  `IdExame` int NULL DEFAULT NULL,
+  `IdSala` int NULL DEFAULT NULL,
+  PRIMARY KEY (`IdExameSala`) USING BTREE,
+  INDEX `IdExame`(`IdExame` ASC) USING BTREE,
+  INDEX `IdSala`(`IdSala` ASC) USING BTREE,
+  CONSTRAINT `examesalas_ibfk_1` FOREIGN KEY (`IdExame`) REFERENCES `exames` (`IdExame`) ON DELETE CASCADE ON UPDATE RESTRICT,
+  CONSTRAINT `examesalas_ibfk_2` FOREIGN KEY (`IdSala`) REFERENCES `salas` (`IdSala`) ON DELETE CASCADE ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of examesalas
+-- ----------------------------
+INSERT INTO `examesalas` VALUES (3, 112, 12);
+INSERT INTO `examesalas` VALUES (4, 112, 13);
+INSERT INTO `examesalas` VALUES (5, 111, 12);
 
 -- ----------------------------
 -- Table structure for professor
@@ -216,18 +241,21 @@ DROP TABLE IF EXISTS `salas`;
 CREATE TABLE `salas`  (
   `IdSala` int NOT NULL AUTO_INCREMENT,
   `Nome` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Tamanho` int NULL DEFAULT NULL,
   PRIMARY KEY (`IdSala`) USING BTREE,
   UNIQUE INDEX `uk_nome_sala`(`Nome` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of salas
 -- ----------------------------
-INSERT INTO `salas` VALUES (8, 'Auditório');
-INSERT INTO `salas` VALUES (5, 'Sala 10');
-INSERT INTO `salas` VALUES (6, 'Sala 11');
-INSERT INTO `salas` VALUES (7, 'Sala 12');
-INSERT INTO `salas` VALUES (11, 'Sala 35');
+INSERT INTO `salas` VALUES (5, 'Sala 10', NULL);
+INSERT INTO `salas` VALUES (6, 'Sala 11', NULL);
+INSERT INTO `salas` VALUES (7, 'Sala 12', NULL);
+INSERT INTO `salas` VALUES (8, 'Auditório', NULL);
+INSERT INTO `salas` VALUES (11, 'Sala 35', NULL);
+INSERT INTO `salas` VALUES (12, 'sala 20', 30);
+INSERT INTO `salas` VALUES (13, 'sala 40', 10);
 
 -- ----------------------------
 -- Table structure for turmas
@@ -356,7 +384,7 @@ CREATE TABLE `vigiasexames`  (
   INDEX `IdExame`(`IdExame` ASC) USING BTREE,
   CONSTRAINT `vigiasexames_ibfk_1` FOREIGN KEY (`IdProfessor`) REFERENCES `professor` (`IdProfessor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `vigiasexames_ibfk_2` FOREIGN KEY (`IdExame`) REFERENCES `exames` (`IdExame`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 76 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 91 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of vigiasexames
@@ -376,20 +404,15 @@ INSERT INTO `vigiasexames` VALUES (72, 13, 100, 'efetivo');
 INSERT INTO `vigiasexames` VALUES (73, 14, 100, 'efetivo');
 INSERT INTO `vigiasexames` VALUES (74, 15, 100, 'suplente');
 INSERT INTO `vigiasexames` VALUES (75, 19, 100, 'suplente');
-
--- ----------------------------
--- Table structure for examesalas
--- ----------------------------
-DROP TABLE IF EXISTS `examesalas`;
-CREATE TABLE `examesalas`  (
-  `IdExameSala` int NOT NULL AUTO_INCREMENT,
-  `IdExame` int NULL DEFAULT NULL,
-  `IdSala` int NULL DEFAULT NULL,
-  PRIMARY KEY (`IdExameSala`) USING BTREE,
-  INDEX `IdExame`(`IdExame` ASC) USING BTREE,
-  INDEX `IdSala`(`IdSala` ASC) USING BTREE,
-  CONSTRAINT `examesalas_ibfk_1` FOREIGN KEY (`IdExame`) REFERENCES `exames` (`IdExame`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `examesalas_ibfk_2` FOREIGN KEY (`IdSala`) REFERENCES `salas` (`IdSala`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+INSERT INTO `vigiasexames` VALUES (81, 9, 112, 'efetivo');
+INSERT INTO `vigiasexames` VALUES (82, 16, 112, 'efetivo');
+INSERT INTO `vigiasexames` VALUES (83, 17, 112, 'efetivo');
+INSERT INTO `vigiasexames` VALUES (84, 18, 112, 'suplente');
+INSERT INTO `vigiasexames` VALUES (85, 20, 112, 'suplente');
+INSERT INTO `vigiasexames` VALUES (86, 1, 111, 'efetivo');
+INSERT INTO `vigiasexames` VALUES (87, 3, 111, 'efetivo');
+INSERT INTO `vigiasexames` VALUES (88, 4, 111, 'efetivo');
+INSERT INTO `vigiasexames` VALUES (89, 5, 111, 'suplente');
+INSERT INTO `vigiasexames` VALUES (90, 6, 111, 'suplente');
 
 SET FOREIGN_KEY_CHECKS = 1;
