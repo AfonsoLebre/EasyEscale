@@ -1,4 +1,4 @@
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using Org.BouncyCastle.Crypto;
 using System;
@@ -39,9 +39,9 @@ namespace EasyEscale
         public static DataTable Disciplinas()
         {
             DataTable dt = new DataTable();
-            string con = "server=localhost;user=root;password=root;database=easyescale";
+            
             List<string> valor = new List<string>();
-            using (MySqlConnection conx = new MySqlConnection(con))
+            using (MySqlConnection conx = Conexao.Nova())
             {
                 try
                 {
@@ -68,15 +68,15 @@ namespace EasyEscale
 
         }
 
-        public static string AddExame(DateTime a,string horai,string horaf,int idD, int CoDE,int es)
+        public static string AddExame(DateTime a,string horai,string horaf,int idD, int CoDE,int es, int nPessoas = 0)
         {
             string sucesso = "";
-            string con = "server=localhost;user=root;password=root;database=easyescale";
-            using (MySqlConnection conx = new MySqlConnection(con))
+            
+            using (MySqlConnection conx = Conexao.Nova())
             {
                 conx.Open();
                 MySqlTransaction tran = conx.BeginTransaction();
-                string query = "Insert into exames(exames.`Data`,HoraInicial,HoraFinal,IdDisciplina,CodExame,ES) values(@Data,@HoraIni,@HoraFini,@Dis,@Cod,@ES);";
+                string query = "Insert into exames(exames.`Data`,HoraInicial,HoraFinal,IdDisciplina,CodExame,ES,NPessoas) values(@Data,@HoraIni,@HoraFini,@Dis,@Cod,@ES,@NPessoas);";
                 MySqlCommand cmd = new MySqlCommand(query, conx);
                 cmd.Parameters.AddWithValue("@Data", a);
                 cmd.Parameters.AddWithValue("@HoraIni", horai);
@@ -84,6 +84,7 @@ namespace EasyEscale
                 cmd.Parameters.AddWithValue("@Dis", idD);
                 cmd.Parameters.AddWithValue("@Cod", CoDE);
                 cmd.Parameters.AddWithValue("@ES", es);
+                cmd.Parameters.AddWithValue("@NPessoas", nPessoas);
 
                 try
                 {
@@ -103,11 +104,39 @@ namespace EasyEscale
             return sucesso;
 
         }
+        public static string AddSala(string nome, int tamanho)
+        {
+            string sucesso = "";
+            
+            using (MySqlConnection conx = Conexao.Nova())
+            {
+                conx.Open();
+                MySqlTransaction tran = conx.BeginTransaction();
+                string query = "INSERT INTO salas(Nome, Tamanho) VALUES(@Nome, @Tamanho);";
+                MySqlCommand cmd = new MySqlCommand(query, conx, tran);
+                cmd.Parameters.AddWithValue("@Nome", nome);
+                cmd.Parameters.AddWithValue("@Tamanho", tamanho);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    sucesso = "Sala Adicionada com Sucesso";
+                    tran.Commit();
+                }
+                catch (Exception ex)
+                {
+                    sucesso = ex.Message;
+                    tran.Rollback();
+                }
+            }
+            return sucesso;
+        }
+
         public static List<string> GetSalas()
         {
             List<string> salas = new List<string>();
-            string con = "server=localhost;user=root;password=root;database=easyescale";
-            using (MySqlConnection conx = new MySqlConnection(con))
+            
+            using (MySqlConnection conx = Conexao.Nova())
             {
                 try
                 {
@@ -133,9 +162,9 @@ namespace EasyEscale
         public static string AddREU(DateTime a, string horai, string horaf, int idT, string sala)
         {
             string sucesso = "";
-            string con = "server=localhost;user=root;password=root;database=easyescale";
+            
 
-            using (MySqlConnection conx = new MySqlConnection(con))
+            using (MySqlConnection conx = Conexao.Nova())
             {
                 conx.Open();
                 MySqlTransaction tran = conx.BeginTransaction();
@@ -192,8 +221,8 @@ namespace EasyEscale
         public static string AddTurmas(DateTime a, string horai, string horaf, int idD, int CoDE)
         {
             string sucesso = "";
-            string con = "server=localhost;user=root;password=root;database=easyescale";
-            MySqlConnection conx = new MySqlConnection(con);
+            
+            MySqlConnection conx = Conexao.Nova();
             string query = "START TRANSACTION;\r\n\r\nInsert into exames(exames.`Data`,HoraInicial,HoraFinal,IdDisciplina,CodExame) values(@Data,@HoraIni,@HoraFini,@Dis,@Cod);\r\nCOMMIT;";
             MySqlCommand cmd = new MySqlCommand(query, conx);
             cmd.Parameters.AddWithValue("@Data", a);
@@ -221,9 +250,9 @@ namespace EasyEscale
         public static string AddTurmasP(int A, char L, string AL, List<int> Ids)
         {
             string sucesso = "";
-            string con = "server=localhost;user=root;password=root;database=easyescale";
+            
 
-            using(MySqlConnection conx = new MySqlConnection(con))
+            using(MySqlConnection conx = Conexao.Nova())
             {
                 conx.Open();
 
@@ -272,10 +301,10 @@ namespace EasyEscale
 
         public static string AddHora(int Idp,string HI,string Hf,string Ds,int IdD,int Idt)
         {
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
             string sucesso = "";
 
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
 
@@ -314,11 +343,11 @@ namespace EasyEscale
 
         public static string AddP(string N, string E, string Np, List<int> Dis)
         {
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
 
             string sucesso = "";
 
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 {
 
@@ -384,16 +413,17 @@ namespace EasyEscale
             }
         }
 
-       public static Dictionary<string, string> GeradorEsCalasExames(Exame x)
+       public static (Dictionary<string, string> Professores, List<string> Salas) GeradorEsCalasExames(Exame x)
 {
-    string conx = "server=localhost;user=root;password=root;database=easyescale";
+    
      Dictionary<string, string> ProfsEscolhidos = new Dictionary<string, string>();
+    List<string> salasEscolhidas = new List<string>();
     List<Aula> aulas = new List<Aula>();
     Dictionary<int, int> escolhidos = new Dictionary<int, int>();
     Dictionary<int, string> professores = new Dictionary<int, string>();
     Dictionary<int, string> nProcessos = new Dictionary<int, string>();
 
-    using (MySqlConnection con = new MySqlConnection(conx))
+    using (MySqlConnection con = Conexao.Nova())
     {
         con.Open();
         string query = "SELECT * FROM professor LEFT JOIN aulas ON aulas.IdProfessor = professor.IdProfessor";
@@ -510,6 +540,37 @@ namespace EasyEscale
                         ProfsEscolhidos.Add(nProcessos[m], professores[m]);
                     }
 
+                    if (x.NPessoas > 0)
+                    {
+                        string querySalas = "SELECT Nome, Tamanho FROM salas WHERE Tamanho > 0 ORDER BY Tamanho ASC";
+                        List<(string Nome, int Tamanho)> todasSalas = new List<(string, int)>();
+
+                        using (MySqlCommand cmdSalas = new MySqlCommand(querySalas, con))
+                        using (MySqlDataReader leitorS = cmdSalas.ExecuteReader())
+                        {
+                            while (leitorS.Read())
+                                todasSalas.Add((leitorS["Nome"].ToString(), Convert.ToInt32(leitorS["Tamanho"])));
+                        }
+
+                        // tenta encontrar uma única sala que chegue
+                        var salaUnica = todasSalas.FirstOrDefault(s => s.Tamanho >= x.NPessoas);
+                        if (salaUnica.Nome != null)
+                        {
+                            salasEscolhidas.Add(salaUnica.Nome);
+                        }
+                        else
+                        {
+                            // combina salas da maior para a menor até cobrir todos os alunos
+                            int restantes = x.NPessoas;
+                            foreach (var sala in todasSalas.OrderByDescending(s => s.Tamanho))
+                            {
+                                salasEscolhidas.Add(sala.Nome);
+                                restantes -= sala.Tamanho;
+                                if (restantes <= 0) break;
+                            }
+                        }
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -518,7 +579,7 @@ namespace EasyEscale
 
                 }
 
-                return ProfsEscolhidos;
+                return (ProfsEscolhidos, salasEscolhidas);
 
             }
 
@@ -526,7 +587,7 @@ namespace EasyEscale
 
         public static Dictionary<string, string> GeradorEscalasReunioes(Reuniao r)
         {
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
             Dictionary<string, string> ProfsEscolhidos = new Dictionary<string, string>();
             List<Aula> aulas = new List<Aula>();
 
@@ -534,7 +595,7 @@ namespace EasyEscale
             Dictionary<int, string> professores = new Dictionary<int, string>();
             Dictionary<int, string> nProcessos = new Dictionary<int, string>();
 
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
 
@@ -615,13 +676,49 @@ namespace EasyEscale
             }
         }
 
+        public static string GuardaEscalaSalas(List<string> salas, int idExame)
+        {
+            
+            try
+            {
+                using (MySqlConnection con = Conexao.Nova())
+                {
+                    con.Open();
+                    MySqlTransaction tran = con.BeginTransaction();
+
+                    string queryDel = "DELETE FROM examesalas WHERE IdExame = @IE;";
+                    MySqlCommand cmdDel = new MySqlCommand(queryDel, con, tran);
+                    cmdDel.Parameters.AddWithValue("@IE", idExame);
+                    cmdDel.ExecuteNonQuery();
+
+                    string query = "INSERT INTO examesalas(IdExame, IdSala) VALUES(@IE, (SELECT IdSala FROM salas WHERE Nome = @Nome LIMIT 1));";
+                    MySqlCommand cmd = new MySqlCommand(query, con, tran);
+                    cmd.Parameters.AddWithValue("@IE", idExame);
+                    cmd.Parameters.Add("@Nome", MySqlDbType.VarChar);
+
+                    foreach (string sala in salas)
+                    {
+                        cmd.Parameters["@Nome"].Value = sala;
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    tran.Commit();
+                }
+                return "Salas guardadas com sucesso";
+            }
+            catch (Exception ex)
+            {
+                return "Erro a guardar salas: " + ex.Message;
+            }
+        }
+
         public static string GuardaEscala(Dictionary<string, string> x, int z, bool eReuniao = false)
         {
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
             int contador = 0;
             try
             {
-                using (MySqlConnection con = new MySqlConnection(conx))
+                using (MySqlConnection con = Conexao.Nova())
                 {
                     con.Open();
                     MySqlTransaction tran = con.BeginTransaction();
@@ -673,11 +770,11 @@ namespace EasyEscale
         }
         public static string GuardaEscalaReu(Dictionary<string, string> x, int z)
         {
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
             int contador = 0;
             try
             {
-                using (MySqlConnection con = new MySqlConnection(conx))
+                using (MySqlConnection con = Conexao.Nova())
                 {
                     con.Open();
                     MySqlTransaction tran = con.BeginTransaction();
@@ -709,11 +806,30 @@ namespace EasyEscale
                 return "Erro a Guardar Escala: " + A.Message;
             }
         }
+        public static List<string> BuscaSalasGuardadas(int idExame)
+        {
+            
+            List<string> salas = new List<string>();
+            using (MySqlConnection con = Conexao.Nova())
+            {
+                con.Open();
+                string query = "SELECT salas.Nome FROM examesalas INNER JOIN salas ON examesalas.IdSala = salas.IdSala WHERE examesalas.IdExame = @id";
+                MySqlCommand cmd = new MySqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@id", idExame);
+                using (MySqlDataReader leitor = cmd.ExecuteReader())
+                {
+                    while (leitor.Read())
+                        salas.Add(leitor["Nome"].ToString());
+                }
+            }
+            return salas;
+        }
+
         public static Dictionary<string, string> BuscaGuardados(int id)
         {
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
             Dictionary<string, string> Escala = new Dictionary<string, string>();
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
                 string query = "SELECT DISTINCT professor.Nome, professor.NProcesso, vigiasexames.Estado FROM professor INNER JOIN vigiasexames ON professor.IdProfessor = vigiasexames.IdProfessor WHERE vigiasexames.IdExame = @id ORDER BY vigiasexames.Estado ASC";
@@ -738,9 +854,9 @@ namespace EasyEscale
 
         public static Dictionary<string, string> BuscaGuardadosReuniao(int idReuniao)
         {
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
             Dictionary<string, string> Escala = new Dictionary<string, string>();
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
                 string query = "SELECT p.Nome, p.NProcesso FROM professor p INNER JOIN reuniaoprofessor rp ON p.IdProfessor = rp.IdProfessor WHERE rp.IdReuniao = @id";
@@ -766,12 +882,12 @@ namespace EasyEscale
 
         public static (int totalAulas, int totalVigilancias, string diasTrabalho) ObterEstatisticasProfessor(int idProfessor)
         {
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
             int aulas = 0;
             int vigilancias = 0;
             List<string> diasList = new List<string>();
 
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
 
@@ -810,9 +926,9 @@ namespace EasyEscale
         public static System.Data.DataTable ObterExamesDoProfessor(int idProfessor)
         {
             System.Data.DataTable dt = new System.Data.DataTable();
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
 
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 try
                 {
@@ -851,8 +967,8 @@ namespace EasyEscale
         public static DataTable HorarioDoProfessor(int idProfessor)
         {
             DataTable dt = new DataTable();
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
-            using(MySqlConnection con = new MySqlConnection(conx))
+            
+            using(MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
                 try
@@ -893,3 +1009,4 @@ namespace EasyEscale
 
     }
 }
+

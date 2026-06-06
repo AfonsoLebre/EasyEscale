@@ -1,4 +1,4 @@
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,9 +43,9 @@ namespace EasyEscale
         public static List<Turma> BuscarN(bool todosAnos = false)
         {
             List<Turma> Turmas = new List<Turma>();
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
 
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
                 string query = "SELECT * FROM turmas";
@@ -80,9 +80,9 @@ namespace EasyEscale
         public static List<Turma> BuscarJ(bool todosAnos = false)
         {
             List<Turma> Turmas = new List<Turma>();
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
 
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
                 string query = "SELECT * FROM turmas";
@@ -119,3 +119,4 @@ namespace EasyEscale
 
     }
 }
+

@@ -90,6 +90,10 @@ namespace EasyEscale
             {
                 reu.Show();
             }
+            else if (x.Name == "AddSala")
+            {
+                new PaginaAddSalas(this).Show();
+            }
             else if (x.Name == "Pdf")
             {
                 pdf.Show();
@@ -136,6 +140,17 @@ namespace EasyEscale
                             var listaProfessores = Nomes.ToList();
                             DG1.ItemsSource = listaProfessores.Take(3);
                             DG2.ItemsSource = listaProfessores.Skip(3).Take(2);
+
+                            var salas = metodos.BuscaSalasGuardadas(esteExame.Idxa);
+                            if (salas.Count > 0)
+                            {
+                                TextSalas.Text = string.Join(", ", salas);
+                                InfoSalas.Visibility = Visibility.Visible;
+                            }
+                            else
+                            {
+                                InfoSalas.Visibility = Visibility.Collapsed;
+                            }
 
                             Info1.Visibility = Visibility.Visible;
                             lb1.Visibility = Visibility.Visible;
@@ -195,6 +210,7 @@ namespace EasyEscale
                 DG1.Visibility = Visibility.Collapsed;
                 DG2.Visibility = Visibility.Collapsed;
                 quadrado.Visibility = Visibility.Collapsed;
+                InfoSalas.Visibility = Visibility.Collapsed;
 
                 if (valor == "Exames")
                 {

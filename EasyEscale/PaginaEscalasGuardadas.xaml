@@ -55,6 +55,8 @@
                     <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
                     <Separator/>
                     <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
+                    <Separator/>
+                    <MenuItem Name="AddSala" Header="Sala" Click="IR"/>
                 </MenuItem>
             </Menu>
         </Border>
@@ -114,6 +116,18 @@
                         <TextBlock Name="Dados" FontWeight="Bold" Margin="0,0,5,0" FontSize="16"/>
 
                         <StackPanel Name="Info1" Orientation="Horizontal" Visibility="Collapsed" Margin="0,0,0,10">
+                        </StackPanel>
+
+                        <StackPanel Name="InfoSalas"
+                                    Orientation="Horizontal"
+                                    Margin="0,10,0,0"
+                                    Visibility="Collapsed">
+                            <TextBlock Text="Sala(s) atribuída(s):"
+                                       FontWeight="Bold"
+                                       Margin="0,0,8,0"
+                                       Foreground="#2980B9"/>
+                            <TextBlock Name="TextSalas"
+                                       Foreground="#2980B9"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>

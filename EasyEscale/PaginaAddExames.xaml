@@ -43,6 +43,8 @@
                         <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
                         <Separator/>
                         <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="AddSala" Header="Sala" Click="IR"/>
                     </MenuItem>
                 </Menu>
 
@@ -169,7 +171,7 @@
                         </StackPanel>
 
                         <StackPanel Name="Exa1" Visibility="Collapsed" Margin="0,0,0,20">
-                            <Grid>
+                            <Grid Margin="0,0,0,15">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="20"/>
@@ -187,7 +189,17 @@
                                     <TextBlock Text="Código do Exame" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
                                     <TextBox Name="TxtCod" Height="40" FontSize="16" VerticalContentAlignment="Center" Padding="5,0"/>
                                 </StackPanel>
-
+                            </Grid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Nº de Alunos" FontSize="14" Foreground="#555" Margin="0,0,0,5"/>
+                                    <TextBox Name="TxtNAlunos" Height="40" FontSize="16" VerticalContentAlignment="Center" Padding="5,0"/>
+                                </StackPanel>
                             </Grid>
                         </StackPanel>
 

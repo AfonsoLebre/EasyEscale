@@ -45,6 +45,8 @@
                         <MenuItem Name="AddHorario" Header="Horário" Click="IR"/>
                         <Separator/>
                         <MenuItem Name="Addexames" Header="Exames/Reuniões" Click="IR"/>
+                        <Separator/>
+                        <MenuItem Name="AddSala" Header="Sala" Click="IR"/>
                     </MenuItem>
                 </Menu>
 

@@ -29,6 +29,7 @@ namespace EasyEscale
             cbP.SelectedValuePath = "IdExa";
         }
         Dictionary<string, string> Nomes = new Dictionary<string, string>();
+        List<string> SalasGeradas = new List<string>();
             private void IR(object sender, RoutedEventArgs e)
         {
 
@@ -97,6 +98,10 @@ namespace EasyEscale
             {
                 reu.Show();
             }
+            else if (x.Name == "AddSala")
+            {
+                new PaginaAddSalas(this).Show();
+            }
             else if (x.Name == "Pdf")
             {
                 pdf.Show();
@@ -118,7 +123,9 @@ namespace EasyEscale
             if (cbP.SelectedIndex < 0) return;
 
             Exame selecionado = examesAtuais[cbP.SelectedIndex];
-            Nomes = metodos.GeradorEsCalasExames(selecionado);
+            var resultado = metodos.GeradorEsCalasExames(selecionado);
+            Nomes = resultado.Professores;
+            SalasGeradas = resultado.Salas;
 
             DG1.ItemsSource = Nomes.Take(3);
             DG2.ItemsSource = Nomes.Skip(3).Take(2);
@@ -128,6 +135,16 @@ namespace EasyEscale
             lb1.Visibility = Visibility.Visible;
             lb2.Visibility = Visibility.Visible;
             btn2.Visibility = Visibility.Visible;
+
+            if (SalasGeradas.Count > 0)
+            {
+                TextSalas.Text = string.Join(", ", SalasGeradas);
+                InfoSalas.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                InfoSalas.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void FecharJanela_Click(object sender, RoutedEventArgs e)
@@ -152,7 +169,17 @@ namespace EasyEscale
             if (cbP.SelectedIndex < 0) return;
 
             Exame selecionado = examesAtuais[cbP.SelectedIndex];
-            MessageBox.Show(metodos.GuardaEscala(Nomes, selecionado.Idxa));
+            string msgProfs = metodos.GuardaEscala(Nomes, selecionado.Idxa);
+
+            if (SalasGeradas.Count > 0)
+            {
+                string msgSalas = metodos.GuardaEscalaSalas(SalasGeradas, selecionado.Idxa);
+                MessageBox.Show(msgProfs + "\n" + msgSalas);
+            }
+            else
+            {
+                MessageBox.Show(msgProfs);
+            }
         }
     }
 

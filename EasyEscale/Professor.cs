@@ -34,9 +34,9 @@ namespace EasyEscale
         public static List<Professor> Buscar()
         {
             List<Professor> profs = new List<Professor>();
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
 
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
                 string query = "SELECT * FROM professor";
@@ -62,4 +62,5 @@ namespace EasyEscale
     }
 
         }
+
 

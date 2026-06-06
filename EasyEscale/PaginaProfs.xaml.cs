@@ -97,6 +97,10 @@ namespace EasyEscale
             {
                 reu.Show();
             }
+            else if (x.Name == "AddSala")
+            {
+                new PaginaAddSalas(this).Show();
+            }
             else if (x.Name == "Pdf")
             {
                 pdf.Show();

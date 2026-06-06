@@ -1,4 +1,4 @@
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,9 +45,9 @@ namespace EasyEscale
         public static List<Reuniao> Buscar(bool todosAnos = false, bool apenasComEscala = false)
         {
             List<Reuniao> Reu = new List<Reuniao>();
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
 
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
                 string query = @"SELECT DISTINCT reuniao.IdReuniao, reuniao.HoraInicial, reuniao.HoraFinal, reuniao.`Data`, 
@@ -96,3 +96,4 @@ namespace EasyEscale
 
     }
 }
+

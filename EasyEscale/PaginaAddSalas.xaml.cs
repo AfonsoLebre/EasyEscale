@@ -1,65 +1,19 @@
-﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace EasyEscale
 {
-    public partial class PaginaAddTurma : Window
+    public partial class PaginaAddSalas : Window
     {
-
-        public PaginaAddTurma(Window x)
+        public PaginaAddSalas(Window x)
         {
             x.Close();
             InitializeComponent();
-
-            
-
-            using (MySqlConnection conx = Conexao.Nova())
-            {
-                try
-                {
-                    conx.Open();
-                    string queryCombo = "Select IdProfessor,Nome from professor";
-
-                    MySqlCommand cmd = new MySqlCommand(queryCombo, conx);
-                    MySqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        CheckBox cb = new CheckBox
-                        {
-                            Content = reader.GetString("Nome"),
-                            Tag = reader.GetInt32("idProfessor"),
-                            Margin = new Thickness(0, 5, 0, 5),
-                            FontSize = 16
-                        };
-                        Professores.Children.Add(cb);
-
-                    }
-
-                }
-                catch (Exception ex)
-                {
-
-                    MessageBox.Show(ex.Message);
-                }
-
-            }
         }
 
         private void IR(object sender, RoutedEventArgs e)
         {
-
             MainWindow a = new MainWindow();
             PaginaProfs b = new PaginaProfs(this);
             PaginaHorarios c = new PaginaHorarios(this);
@@ -74,27 +28,28 @@ namespace EasyEscale
             PaginaAddReunioes reu = new PaginaAddReunioes(this);
             PaginaGRAF graf = new PaginaGRAF(this);
             PaginaPDF pdf = new PaginaPDF(this);
+            PaginaAddSalas sala = new PaginaAddSalas(this);
 
             MenuItem x = (MenuItem)sender;
 
-            if (x.Name == "Professor")
+            if (x.Name == "Ini")
             {
-
+                a.Show();
+            }
+            else if (x.Name == "Professor")
+            {
                 b.Show();
             }
             else if (x.Name == "Horario")
             {
-
                 c.Show();
             }
             else if (x.Name == "Exames")
             {
-
                 d.Show();
             }
             else if (x.Name == "Epoca")
             {
-
                 f.Show();
             }
             else if (x.Name == "Reuniao")
@@ -125,10 +80,6 @@ namespace EasyEscale
             {
                 reu.Show();
             }
-            else if (x.Name == "AddSala")
-            {
-                new PaginaAddSalas(this).Show();
-            }
             else if (x.Name == "Pdf")
             {
                 pdf.Show();
@@ -137,11 +88,10 @@ namespace EasyEscale
             {
                 graf.Show();
             }
-            else if (x.Name == "Ini")
+            else if (x.Name == "AddSala")
             {
-                a.Show();
+                sala.Show();
             }
-
         }
 
         private void FecharJanela_Click(object sender, RoutedEventArgs e)
@@ -151,24 +101,24 @@ namespace EasyEscale
             this.Close();
         }
 
-        private void BTNADD(object sender, RoutedEventArgs e)
+        private void Add(object sender, RoutedEventArgs e)
         {
-            List<int> idsSelecionados = Professores.Children
-            .OfType<CheckBox>()
-            .Where(c => c.IsChecked == true)
-            .Select(c => (int)c.Tag)
-            .ToList();
+            string nome = txNome.Text.Trim();
+            string tamanhoStr = txTamanho.Text.Trim();
 
-            int valorA = int.Parse((CBA.SelectedItem as ComboBoxItem).Content.ToString());
-            string valorAL =(CBAL.SelectedItem as ComboBoxItem).Content.ToString();
+            if (string.IsNullOrEmpty(nome))
+            {
+                MessageBox.Show("Por favor, insira o nome da sala.");
+                return;
+            }
 
-            Char letra = TXL.Text[0];
+            if (!int.TryParse(tamanhoStr, out int tamanho) || tamanho <= 0)
+            {
+                MessageBox.Show("Por favor, insira uma capacidade válida.");
+                return;
+            }
 
-         string sucesso=  metodos.AddTurmasP(valorA,letra, valorAL, idsSelecionados);
-
-            MessageBox.Show(sucesso);
+            MessageBox.Show(metodos.AddSala(nome, tamanho));
         }
-
     }
 }
-

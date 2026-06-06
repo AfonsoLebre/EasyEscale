@@ -40,6 +40,7 @@ namespace EasyEscale
             PaginaAddReunioes reu = new PaginaAddReunioes(this);
             PaginaGRAF graf = new PaginaGRAF(this);
             PaginaPDF pdf = new PaginaPDF(this);
+            PaginaAddSalas sala = new PaginaAddSalas(this);
 
             MenuItem x = (MenuItem)sender;
 
@@ -90,6 +91,10 @@ namespace EasyEscale
             else if (x.Name == "Addreunioes")
             {
                 reu.Show();
+            }
+            else if (x.Name == "AddSala")
+            {
+                sala.Show();
             }
              else if(x.Name == "Pdf")
             {

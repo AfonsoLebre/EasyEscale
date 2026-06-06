@@ -377,4 +377,19 @@ INSERT INTO `vigiasexames` VALUES (73, 14, 100, 'efetivo');
 INSERT INTO `vigiasexames` VALUES (74, 15, 100, 'suplente');
 INSERT INTO `vigiasexames` VALUES (75, 19, 100, 'suplente');
 
+-- ----------------------------
+-- Table structure for examesalas
+-- ----------------------------
+DROP TABLE IF EXISTS `examesalas`;
+CREATE TABLE `examesalas`  (
+  `IdExameSala` int NOT NULL AUTO_INCREMENT,
+  `IdExame` int NULL DEFAULT NULL,
+  `IdSala` int NULL DEFAULT NULL,
+  PRIMARY KEY (`IdExameSala`) USING BTREE,
+  INDEX `IdExame`(`IdExame` ASC) USING BTREE,
+  INDEX `IdSala`(`IdSala` ASC) USING BTREE,
+  CONSTRAINT `examesalas_ibfk_1` FOREIGN KEY (`IdExame`) REFERENCES `exames` (`IdExame`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `examesalas_ibfk_2` FOREIGN KEY (`IdSala`) REFERENCES `salas` (`IdSala`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
 SET FOREIGN_KEY_CHECKS = 1;

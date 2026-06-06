@@ -62,6 +62,7 @@ namespace EasyEscale
             else if (x.Name == "AddHorario") { hora.Show(); }
             else if (x.Name == "Addexames") { exa.Show(); }
             else if (x.Name == "Addreunioes") { reu.Show(); }
+            else if (x.Name == "AddSala") { new PaginaAddSalas(this).Show(); }
             else if (x.Name == "Pdf") { pdf.Show(); }
             else if (x.Name == "Graf") { graf.Show(); }
             else if (x.Name == "Ini") { a.Show(); }

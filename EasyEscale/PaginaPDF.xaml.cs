@@ -50,6 +50,7 @@ namespace EasyEscale
             else if (x.Name == "AddHorario") { hora.Show(); }
             else if (x.Name == "Addexames") { exa.Show(); }
             else if (x.Name == "Addreunioes") { reu.Show(); }
+            else if (x.Name == "AddSala") { new PaginaAddSalas(this).Show(); }
             else if (x.Name == "Pdf") { pdf.Show(); }
             else if (x.Name == "Graf") { graf.Show(); }
             else if (x.Name == "Ini") { a.Show(); }
@@ -61,6 +62,7 @@ namespace EasyEscale
         }
 
         Dictionary<string, string> Nomes = new Dictionary<string, string>();
+        List<string> salasAtuais = new List<string>();
         Exame esteExame = new Exame();
         Reuniao estaReuniao = new Reuniao();
         List<Exame> examesAtuais = new List<Exame>();
@@ -126,6 +128,7 @@ namespace EasyEscale
                         esteExame = examesAtuais[index];
                         Dados.Text = "Data: " + esteExame.Data.ToShortDateString() + " | Início: " + esteExame.HoraIni + " | Fim: " + esteExame.HoraFini + "\nDisciplina: " + esteExame.Designacao + " | Código: " + esteExame.CodExa;
                         Nomes = metodos.BuscaGuardados(esteExame.Idxa);
+                        salasAtuais = metodos.BuscaSalasGuardadas(esteExame.Idxa);
                         lb1.Text = "Resumo: Escala com " + Nomes.Count + " professores vinculados (Efetivos e Suplentes).";
                     }
                 }
@@ -169,6 +172,10 @@ namespace EasyEscale
                 else doc.Add(new Paragraph("\nDETALHES DA REUNIÃO", fonteSubtitulo));
 
                 doc.Add(new Paragraph(Dados.Text, fonteNormal));
+
+                if ((tipo == "Exames" || tipo == "Epocas Especias") && salasAtuais.Count > 0)
+                    doc.Add(new Paragraph("Sala(s) atribuída(s): " + string.Join(", ", salasAtuais), fonteNegrito));
+
                 doc.Add(new Paragraph("\n"));
 
                 var listaProfs = Nomes.ToList();

@@ -93,6 +93,10 @@ namespace EasyEscale
             {
                 reu.Show();
             }
+            else if (x.Name == "AddSala")
+            {
+                new PaginaAddSalas(this).Show();
+            }
             else if (x.Name == "Pdf")
             {
                 pdf.Show();
@@ -168,8 +172,9 @@ namespace EasyEscale
                 int id = (int)CBD.SelectedValue;
                 int Cod = int.Parse(TxtCod.Text);
                 int es = (check.IsChecked == true) ? 1 : 0;
+                int nAlunos = int.TryParse(TxtNAlunos.Text, out int parsedAlunos) ? parsedAlunos : 0;
 
-                string sucesso = metodos.AddExame(DP.SelectedDate.Value, valorHI, valorF, id, Cod, es);
+                string sucesso = metodos.AddExame(DP.SelectedDate.Value, valorHI, valorF, id, Cod, es, nAlunos);
                 MessageBox.Show(sucesso);
             }
             else

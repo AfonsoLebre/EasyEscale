@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -40,6 +40,7 @@ namespace EasyEscale
             else if (item.Name == "Addexames") new PaginaAddExames(this).Show();
             else if (item.Name == "Pdf") new PaginaPDF(this).Show();
             else if (item.Name == "Graf") new PaginaGRAF(this).Show();
+            else if (item.Name == "AddSala") new PaginaAddSalas(this).Show();
         }
 
         private void FecharJanela_Click(object sender, RoutedEventArgs e) => this.Close();
@@ -70,8 +71,8 @@ namespace EasyEscale
         {
             var labels = new List<string>();
             var values = new List<double>();
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
-            using (MySqlConnection con = new MySqlConnection(conx))
+            
+            using (MySqlConnection con = Conexao.Nova())
             {
                 try {
                     con.Open();

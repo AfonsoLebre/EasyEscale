@@ -41,7 +41,7 @@ namespace EasyEscale
             }
         }
 
-        string con = "server=localhost;user=root;password=root;database=easyescale";
+        
         private void IR(object sender, RoutedEventArgs e)
         {
 
@@ -110,6 +110,10 @@ namespace EasyEscale
             {
                 reu.Show();
             }
+            else if (x.Name == "AddSala")
+            {
+                new PaginaAddSalas(this).Show();
+            }
             else if (x.Name == "Pdf")
             {
                 pdf.Show();
@@ -150,3 +154,4 @@ namespace EasyEscale
         }
     }
 }
+

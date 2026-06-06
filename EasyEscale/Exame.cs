@@ -17,6 +17,8 @@ namespace EasyEscale
 
         public int CodExa { get; set; }
 
+        public int NPessoas { get; set; }
+
         public string Juncao { get; set; }
 
         public Exame()
@@ -25,7 +27,7 @@ namespace EasyEscale
         }
 
         public Exame(int idDisciplina, Curso curso, string designacao,
-           int idExame, DateTime data, string horaIni, string horaFini, int codExa)
+           int idExame, DateTime data, string horaIni, string horaFini, int codExa, int nPessoas = 0)
          : base(idDisciplina, curso, designacao)
         {
             Idxa = idExame;
@@ -33,10 +35,11 @@ namespace EasyEscale
             HoraIni = horaIni;
             HoraFini = horaFini;
             CodExa = codExa;
+            NPessoas = nPessoas;
         }
 
         public Exame(int idDisciplina, Curso curso, string designacao,
-          int idExame, DateTime data, string horaIni, string horaFini, int codExa,string juncao)
+          int idExame, DateTime data, string horaIni, string horaFini, int codExa, string juncao, int nPessoas = 0)
         : base(idDisciplina, curso, designacao)
         {
             Idxa = idExame;
@@ -45,17 +48,18 @@ namespace EasyEscale
             HoraFini = horaFini;
             CodExa = codExa;
             Juncao = juncao;
+            NPessoas = nPessoas;
         }
 
         public static List<Exame> Buscar()
         {
             List<Exame> exames = new List<Exame>();
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
 
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
-                string query = "SELECT * FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina WHERE YEAR(exames.Data) = YEAR(CURDATE()) ";
+                string query = "SELECT exames.*, disciplina.Designacao, disciplina.Curso FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina WHERE YEAR(exames.Data) = YEAR(CURDATE()) ";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, con))
                 using (MySqlDataReader leitor = cmd.ExecuteReader())
@@ -68,10 +72,11 @@ namespace EasyEscale
                         string Horafini = leitor["HoraFinal"].ToString();
                         int IdDisc = (int)leitor["IdDisciplina"];
                         int Codexa = (int)leitor["CodExame"];
+                        int NPess = leitor["NPessoas"] == DBNull.Value ? 0 : Convert.ToInt32(leitor["NPessoas"]);
                         Disciplina.Curso Cur = Enum.Parse<Disciplina.Curso>(leitor["Curso"].ToString());
                         string Designa = leitor["Designacao"].ToString();
 
-                        exames.Add(new Exame(IdDisc,Cur,Designa,IdExa, Data, Horaini, Horafini, Codexa));
+                        exames.Add(new Exame(IdDisc, Cur, Designa, IdExa, Data, Horaini, Horafini, Codexa, NPess));
                     }
                 }
             }
@@ -81,9 +86,9 @@ namespace EasyEscale
         public static List<Exame> BuscarJ(bool todosAnos = false, bool apenasComEscala = false)
         {
             List<Exame> exames = new List<Exame>();
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
 
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
                 string query = "  SELECT DISTINCT exames.*, disciplina.Designacao, disciplina.Curso FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina ";
@@ -112,12 +117,13 @@ namespace EasyEscale
                         string Horafini = leitor["HoraFinal"].ToString();
                         int IdDisc = (int)leitor["IdDisciplina"];
                         int Codexa = (int)leitor["CodExame"];
+                        int NPess = leitor["NPessoas"] == DBNull.Value ? 0 : Convert.ToInt32(leitor["NPessoas"]);
                         Disciplina.Curso Cur = Enum.Parse<Disciplina.Curso>(leitor["Curso"].ToString());
                         string Designa = leitor["Designacao"].ToString();
 
                         string Jucao = Designa + "   " + Codexa;
 
-                        exames.Add(new Exame(IdDisc, Cur, Designa, IdExa, Data, Horaini, Horafini, Codexa, Jucao));
+                        exames.Add(new Exame(IdDisc, Cur, Designa, IdExa, Data, Horaini, Horafini, Codexa, Jucao, NPess));
                     }
                 }
             }
@@ -128,9 +134,9 @@ namespace EasyEscale
         public static List<Exame> BuscarSE(bool todosAnos = false, bool apenasComEscala = false)
         {
             List<Exame> exames = new List<Exame>();
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
 
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
                 con.Open();
                 string query = "  SELECT DISTINCT exames.*, disciplina.Designacao, disciplina.Curso FROM exames INNER JOIN disciplina ON exames.IdDisciplina = disciplina.IdDisciplina ";
@@ -159,12 +165,13 @@ namespace EasyEscale
                         string Horafini = leitor["HoraFinal"].ToString();
                         int IdDisc = (int)leitor["IdDisciplina"];
                         int Codexa = (int)leitor["CodExame"];
+                        int NPess = leitor["NPessoas"] == DBNull.Value ? 0 : Convert.ToInt32(leitor["NPessoas"]);
                         Disciplina.Curso Cur = Enum.Parse<Disciplina.Curso>(leitor["Curso"].ToString());
                         string Designa = leitor["Designacao"].ToString();
 
                         string Jucao = Designa + "   " + Codexa;
 
-                        exames.Add(new Exame(IdDisc, Cur, Designa, IdExa, Data, Horaini, Horafini, Codexa, Jucao));
+                        exames.Add(new Exame(IdDisc, Cur, Designa, IdExa, Data, Horaini, Horafini, Codexa, Jucao, NPess));
                     }
                 }
             }
@@ -175,9 +182,9 @@ namespace EasyEscale
         public static Exame BuscarEspecifico(int id)
         {
 
-            string conx = "server=localhost;user=root;password=root;database=easyescale";
+            
             Exame x = new Exame();
-            using (MySqlConnection con = new MySqlConnection(conx))
+            using (MySqlConnection con = Conexao.Nova())
             {
 
                 con.Open();
@@ -196,12 +203,13 @@ namespace EasyEscale
                             string Horafini = leitor["HoraFinal"].ToString();
                             int IdDisc = (int)leitor["IdDisciplina"];
                             int Codexa = (int)leitor["CodExame"];
+                            int NPess = leitor["NPessoas"] == DBNull.Value ? 0 : Convert.ToInt32(leitor["NPessoas"]);
                             Disciplina.Curso Cur = Enum.Parse<Disciplina.Curso>(leitor["Curso"].ToString());
                             string Designa = leitor["Designacao"].ToString();
 
                             string Jucao = Designa + "   " + Codexa;
 
-                            x = new Exame(IdDisc, Cur, Designa, IdExa, Data, Horaini, Horafini, Codexa, Jucao);
+                            x = new Exame(IdDisc, Cur, Designa, IdExa, Data, Horaini, Horafini, Codexa, Jucao, NPess);
                         }
                     }
                 }
@@ -211,3 +219,4 @@ namespace EasyEscale
         }
     }
 }
+
