@@ -116,12 +116,12 @@
                         HorizontalAlignment="Center"
                         Grid.Column="0">
 
-                <TextBlock Text="Cadastro de Professores"
+                <TextBlock
                            FontSize="32"
                            FontWeight="Bold"
                            Foreground="#2D3436"
                            Margin="0,0,0,40"
-                           HorizontalAlignment="Center"/>
+                           HorizontalAlignment="Center"><Run Language="pt-pt" Text="Adicionar"/><Run Text=" Professor"/></TextBlock>
 
                 <Border Background="White"
                         CornerRadius="15"
@@ -219,7 +219,7 @@
                                HorizontalAlignment="Center"/>
 
                     <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                  Height="350">
+                                  Height="446">
 
                         <StackPanel x:Name="Disciplinas"/>
 
