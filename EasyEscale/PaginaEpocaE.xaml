@@ -83,10 +83,10 @@
 
                 <StackPanel>
 
-                    <TextBlock Text="Selecionar Exame de Época Especial"
+                    <TextBlock
                     FontSize="20"
                     FontWeight="Bold"
-                    Margin="0,0,0,10"/>
+                    Margin="0,0,0,10"><Run Text="Selecionar Exame de "/><Run Language="pt-pt" Text="E"/><Run Text="Especial"/></TextBlock>
 
                     <ComboBox Name="cbP"
                    Height="35"
